@@ -20,6 +20,10 @@
         "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
         "react-native-web": "~0.13.12"
     },
+    "lint-staged": {
+        "src/**/*.{js,jsx,ts,tsx}": "eslint",
+        "**/*.{js,jsx,ts,tsx,json}": "prettier --write"
+    },
     "devDependencies": {
         "@babel/core": "^7.9.0",
         "@types/react": "~16.9.35",
