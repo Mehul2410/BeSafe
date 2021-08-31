@@ -6,10 +6,7 @@ module.exports = {
     extends: [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "prettier/@typescript-eslint",
-        "prettier/react"
+        "plugin:@typescript-eslint/recommended"
     ],
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -20,12 +17,5 @@ module.exports = {
         sourceType: "module"
     },
     plugins: ["react", "@typescript-eslint"],
-    settings: {
-        react: {
-            version: "detect"
-        }
-    },
-    rules: {
-        "no-console": "warn"
-    }
+    rules: {}
 };
