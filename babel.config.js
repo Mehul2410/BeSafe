@@ -12,7 +12,7 @@ module.exports = function (api) {
                         "@contexts": "./src/contexts",
                         "@components": "./src/components",
                         "@utils": "./src/utils",
-                        "@assest": "./assets"
+                        "@assest": "/assets"
                     }
                 }
             ]
