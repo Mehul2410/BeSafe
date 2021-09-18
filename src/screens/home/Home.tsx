@@ -9,19 +9,12 @@ export function Getstarted({ navigation }: LanguageNavigationProps<"getStarted">
     return (
         <View style={styles.screenview}>
             <Image source={require("../../../assets/getstarted.png")} />
+
             <BoldText style={styles.landingtext}>Welcome to</BoldText>
             <BoldText style={styles.besafe}>BeSafe!</BoldText>
             <TouchableOpacity onPress={() => navigation.navigate("Language")}>
                 <RegularText style={styles.button}>Get Started</RegularText>
             </TouchableOpacity>
-        </View>
-    );
-}
-
-export function Language({ navigation }: LanguageNavigationProps<"Language">) {
-    return (
-        <View style={styles.screenview}>
-            <BoldText style={styles.besafe}>Language</BoldText>
         </View>
     );
 }

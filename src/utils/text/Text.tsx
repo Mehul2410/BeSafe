@@ -23,6 +23,16 @@ export function BoldText(props: any) {
     }
     return <DefaultText style={[styles.bold, props.style]}> {props.children} </DefaultText>;
 }
+export function LightText(props: any) {
+    const [loaded] = useFonts({
+        "Chillax-Regular": require("../../../assets/fonts/Chillax-Light.ttf")
+    });
+
+    if (!loaded) {
+        return null;
+    }
+    return <DefaultText style={[styles.regular, props.style]}> {props.children} </DefaultText>;
+}
 export function RegularText(props: any) {
     const [loaded] = useFonts({
         "Chillax-Regular": require("../../../assets/fonts/Chillax-Regular.ttf")
@@ -47,5 +57,9 @@ const styles = StyleSheet.create({
     regular: {
         fontSize: 25,
         fontFamily: "Chillax-Regular"
+    },
+    light: {
+        fontSize: 15,
+        fontFamily: "Chillax-Light"
     }
 });

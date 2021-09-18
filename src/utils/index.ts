@@ -1,1 +1,1 @@
-export { BoldText, MediumText, RegularText } from "./text/Text";
+export { BoldText, MediumText, RegularText, LightText } from "./text/Text";

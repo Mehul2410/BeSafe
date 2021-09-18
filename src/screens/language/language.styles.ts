@@ -9,21 +9,25 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%"
     },
-    landingtext: {
-        color: "#FFF",
-        textAlign: "center"
-    },
-    besafe: {
-        textAlign: "center",
-        color: "#1D0ECC",
-        marginBottom: 30
+    text: {
+        color: "#FFF"
     },
     button: {
-        backgroundColor: "#1D0ECC",
-        color: "#fff",
+        backgroundColor: "#FFF",
+        color: "#362C87",
+        margin: 10,
         paddingVertical: 10,
         paddingHorizontal: 30,
         borderRadius: 10
+    },
+    view: {
+        backgroundColor: "#1D0ECC",
+        borderRadius: 30,
+        marginTop: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "auto"
     }
 });
 
