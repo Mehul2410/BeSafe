@@ -1,6 +1,7 @@
 import React from "react";
 import { Text as DefaultText, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
+// import {app}
 
 export function MediumText(props: any) {
     const [loaded] = useFonts({

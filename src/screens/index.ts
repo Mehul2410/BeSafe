@@ -1,1 +1,1 @@
-export { default as Home } from "./home/Home";
+export { Getstarted, Language } from "./home/Home";
