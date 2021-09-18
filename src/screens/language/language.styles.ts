@@ -13,6 +13,11 @@ const styles = StyleSheet.create({
         color: "#FFF"
     },
     button: {
+        width: "100%",
+        maxWidth: 300,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: "#FFF",
         color: "#362C87",
         margin: 10,
@@ -21,8 +26,10 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     view: {
+        flex: 1,
         backgroundColor: "#1D0ECC",
-        borderRadius: 30,
+        borderTopRightRadius: 30,
+        borderTopLeftRadius: 30,
         marginTop: 10,
         alignItems: "center",
         justifyContent: "center",
