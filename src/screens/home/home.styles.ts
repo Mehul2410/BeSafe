@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     screenview: {
         display: "flex",
-        backgroundColor: "#0085FF",
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
