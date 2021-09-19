@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 200,
+        maxWidth: 200,
         textAlign: "center",
         backgroundColor: "#FFF",
         color: "#362C87",
