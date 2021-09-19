@@ -4,9 +4,9 @@
         "slug": "BeSafe",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./assets/logo.png",
+        "icon": "./img/logo.png",
         "splash": {
-            "image": "./assets/logo.png",
+            "image": "./img/logo.png",
             "resizeMode": "contain",
             "backgroundColor": "#0085FF"
         },
@@ -19,12 +19,12 @@
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./assets/logo.png",
+                "foregroundImage": "./img/logo.png",
                 "backgroundColor": "#0085FF"
             }
         },
         "web": {
-            "favicon": "./assets/logo.png"
+            "favicon": "./img/logo.png"
         }
     }
 }
