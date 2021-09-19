@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
+    scroll: {
+        width: "100%"
+    },
     text: {
         color: "#FFF"
     },
@@ -36,6 +39,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         height: 300,
+        padding: 20,
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50
