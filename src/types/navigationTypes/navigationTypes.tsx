@@ -4,6 +4,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 export type StackNavigatorParams = {
     Getstarted: undefined;
     Language: undefined;
+    Register: undefined;
 };
 
 export type LanguageNavigationProps<T extends keyof StackNavigatorParams> = {

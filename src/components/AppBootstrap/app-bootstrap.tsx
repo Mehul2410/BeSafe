@@ -9,10 +9,10 @@ type AppBootstrapProps = {
 
 export default function AppBootstrap({ children }: AppBootstrapProps): ReactElement {
     const [loaded] = useFonts({
-        "Chillax-Medium": require("../../../assets/fonts/Chillax-Medium.ttf"),
-        "Chillax-Regular": require("../../../assets/fonts/Chillax-Regular.ttf"),
-        "Chillax-Bold": require("../../../assets/fonts/Chillax-Bold.ttf"),
-        "Chillax-Light": require("../../../assets/fonts/Chillax-Light.ttf")
+        "Chillax-Medium": require("@assets/fonts/Chillax-Medium.ttf"),
+        "Chillax-Regular": require("@assets/fonts/Chillax-Regular.ttf"),
+        "Chillax-Bold": require("@assets/fonts/Chillax-Bold.ttf"),
+        "Chillax-Light": require("@assets/fonts/Chillax-Light.ttf")
     });
     return loaded ? <>{children}</> : <AppLoading />;
 }
