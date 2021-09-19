@@ -8,8 +8,10 @@ export function Language({ navigation }: LanguageNavigationProps<"Language">) {
     return (
         <Background>
             <ScrollView contentContainerStyle={styles.screenview}>
-                <Image source={require("../../../assets/lang.png")} />
-                <Text style={styles.text}>Select your langague</Text>
+                <View style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Image source={require("../../../assets/lang.png")} />
+                    <Text style={styles.text}>Select your langague</Text>
+                </View>
                 <View style={styles.view}>
                     <Text style={styles.button}>English</Text>
 

@@ -6,10 +6,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        height: "100%"
+        height: "100%",
+        marginTop: 80
     },
     text: {
-        color: "#FFF"
+        color: "#FFF",
+        textAlign: "justify"
     },
     button: {
         width: "100%",
@@ -25,15 +27,14 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     view: {
-        flex: 1,
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
-        marginTop: 10,
+        marginTop: 25,
+        paddingVertical: 30,
         alignItems: "center",
         justifyContent: "center",
-        width: "100%",
-        height: "auto"
+        width: "100%"
     }
 });
 
