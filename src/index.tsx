@@ -1,18 +1,11 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Home } from "@screens";
+import React, { ReactElement } from "react";
+import { AppBootstrap } from "@components";
+import Navigator from "@config/Navigator";
 
-export default function App() {
+export default function App(): ReactElement {
     return (
-        <View style={styles.container}>
-            <Home />
-        </View>
+        <AppBootstrap>
+            <Navigator />
+        </AppBootstrap>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: "#0085FF",
-        height: "100%"
-    }
-});
