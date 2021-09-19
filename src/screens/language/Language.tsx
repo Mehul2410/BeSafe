@@ -1,24 +1,20 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
+import { View, Image } from "react-native";
 import styles from "./language.styles";
-import { RegularText, BoldText, MediumText, LightText } from "@utils";
-import { LanguageRoute, LanguageNavigationProps } from "@types";
+import { Text } from "@components";
+import { LanguageNavigationProps } from "@types";
 
 export function Language({ navigation }: LanguageNavigationProps<"Language">) {
     return (
         <View style={styles.screenview}>
             <Image source={require("../../../assets/lang.png")} />
-            <MediumText style={styles.text}>Select your langague</MediumText>
+            <Text style={styles.text}>Select your langague</Text>
             <View style={styles.view}>
-                <TouchableOpacity style={styles.button}>
-                    <RegularText>English</RegularText>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <RegularText>हिंदी</RegularText>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
-                    <LightText>मराठी</LightText>
-                </TouchableOpacity>
+                <Text style={styles.button}>English</Text>
+
+                <Text style={styles.button}>हिंदी</Text>
+
+                <Text style={styles.button}>मराठी</Text>
             </View>
         </View>
     );

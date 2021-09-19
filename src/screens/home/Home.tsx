@@ -1,20 +1,26 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { View, Image } from "react-native";
 import styles from "./home.styles";
-import { RegularText, BoldText, MediumText } from "@utils";
-import { LanguageRoute, LanguageNavigationProps } from "@types";
+import { Text } from "@components";
+import { LanguageNavigationProps } from "@types";
 
-export function Getstarted({ navigation }: LanguageNavigationProps<"getStarted">) {
+export function Getstarted({ navigation }: LanguageNavigationProps<"Getstarted">) {
     return (
         <View style={styles.screenview}>
             <Image source={require("../../../assets/getstarted.png")} />
-
-            <BoldText style={styles.landingtext}>Welcome to</BoldText>
-            <BoldText style={styles.besafe}>BeSafe!</BoldText>
-            <TouchableOpacity onPress={() => navigation.navigate("Language")}>
-                <RegularText style={styles.button}>Get Started</RegularText>
-            </TouchableOpacity>
+            <Text weight="900" style={styles.landingtext}>
+                Welcome to
+            </Text>
+            <Text weight="900" style={styles.besafe}>
+                BeSafe!
+            </Text>
+            <Text
+                weight="900"
+                onPress={() => navigation.navigate("Language")}
+                style={styles.button}
+            >
+                Get Started
+            </Text>
         </View>
     );
 }
