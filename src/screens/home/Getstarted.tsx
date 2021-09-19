@@ -8,7 +8,7 @@ export function Getstarted({ navigation }: LanguageNavigationProps<"Getstarted">
     return (
         <Background>
             <ScrollView contentContainerStyle={styles.screenview}>
-                <Image source={require("../../../assets/getstarted.png")} />
+                <Image source={require("@assets/getstarted.png")} />
                 <Text weight="900" style={styles.landingtext}>
                     Welcome to
                 </Text>

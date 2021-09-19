@@ -2,12 +2,11 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     screenview: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         width: "100%",
         height: "100%",
-        marginTop: 80
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     },
     text: {
         color: "#FFF",
@@ -27,14 +26,16 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     view: {
+        flex: 1,
+        display: "flex",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 30,
         borderTopLeftRadius: 30,
-        marginTop: 25,
-        paddingVertical: 30,
-        alignItems: "center",
-        justifyContent: "center",
-        width: "100%"
+        marginTop: 10
     }
 });
 
