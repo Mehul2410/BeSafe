@@ -9,7 +9,7 @@ const Stack = createStackNavigator<StackNavigatorParams>();
 export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator initialRouteName="Getstarted">
                 <Stack.Screen name="Getstarted" component={Getstarted} />
                 <Stack.Screen name="Language" component={Language} />
             </Stack.Navigator>
