@@ -5,6 +5,11 @@ export type StackNavigatorParams = {
     Getstarted: undefined;
     Language: undefined;
     Register: undefined;
+    PoliceSignin: undefined;
+    PoliceSignup: undefined;
+    PoliceDetail: undefined;
+    CitizenSignin: undefined;
+    CitizenSignup: undefined;
 };
 
 export type LanguageNavigationProps<T extends keyof StackNavigatorParams> = {
