@@ -6,3 +6,4 @@ export { PoliceSignup } from "./register/police/signup/PoliceSignup";
 export { CitizenSignin } from "./register/citizen/signin/CitizenSignin";
 export { CitizenSignup } from "./register/citizen/signup/CitizenSignup";
 export { PoliceDetail } from "./register/police/detail/PoliceDetail";
+export { DetailFilled } from "./register/police/detailfilled/DetailFilled";

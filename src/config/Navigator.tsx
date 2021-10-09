@@ -8,6 +8,7 @@ import {
     PoliceSignin,
     PoliceSignup,
     PoliceDetail,
+    DetailFilled,
     CitizenSignin,
     CitizenSignup
 } from "@screens";
@@ -19,7 +20,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="PoliceDetail"
+                initialRouteName="DetailFilled"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false
@@ -33,6 +34,7 @@ export default function Navigator(): ReactElement {
                 <Stack.Screen name="CitizenSignin" component={CitizenSignin} />
                 <Stack.Screen name="CitizenSignup" component={CitizenSignup} />
                 <Stack.Screen name="PoliceDetail" component={PoliceDetail} />
+                <Stack.Screen name="DetailFilled" component={DetailFilled} />
             </Stack.Navigator>
         </NavigationContainer>
     );

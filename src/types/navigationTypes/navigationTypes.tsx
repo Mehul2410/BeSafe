@@ -8,6 +8,7 @@ export type StackNavigatorParams = {
     PoliceSignin: undefined;
     PoliceSignup: undefined;
     PoliceDetail: undefined;
+    DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;
 };

@@ -8,6 +8,12 @@ const styles = StyleSheet.create({
         paddingTop: 45,
         paddingBottom: 20
     },
+    box1: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "50%"
+    },
     text: {
         backgroundColor: "#FFF",
         color: "#000000",
@@ -19,15 +25,14 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         marginVertical: 12
     },
-    box: {
+    box2: {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1D0ECC",
-        paddingBottom: 250,
-        paddingTop: 30,
+        height: "55%",
         width: "100%",
-        marginVertical: 15,
+
         borderTopLeftRadius: 60,
         borderTopRightRadius: 60
     },
@@ -44,3 +49,22 @@ const styles = StyleSheet.create({
 });
 
 export default styles;
+// box1: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     paddingTop: 45,
+//     paddingBottom: 20
+// }
+// box2: {
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center",
+//     backgroundColor: "#1D0ECC",
+//     paddingBottom: 250,
+//     paddingTop: 30,
+//     width: "100%",
+//     marginVertical: 15,
+//     borderTopLeftRadius: 60,
+//     borderTopRightRadius: 60
+// },
