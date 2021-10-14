@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "50%"
+        paddingTop: 45,
+        paddingBottom: 20
     },
     text: {
         backgroundColor: "#FFF",
@@ -30,9 +31,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#1D0ECC",
-        height: "55%",
+        paddingBottom: 250,
+        paddingTop: 30,
         width: "100%",
-
+        marginVertical: 15,
         borderTopLeftRadius: 60,
         borderTopRightRadius: 60
     },
