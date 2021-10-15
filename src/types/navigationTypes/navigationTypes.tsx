@@ -7,7 +7,7 @@ export type StackNavigatorParams = {
     Register: undefined;
 };
 
-export type LanguageNavigationProps<T extends keyof StackNavigatorParams> = {
+export type NavigationProps<T extends keyof StackNavigatorParams> = {
     navigation: StackNavigationProp<StackNavigatorParams, T>;
     route: RouteProp<StackNavigatorParams, T>;
 };

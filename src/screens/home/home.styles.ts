@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 30,
         borderRadius: 10
+    },
+    img: {
+        height: 200,
+        maxWidth: "80%",
+        resizeMode: "contain"
     }
 });
 

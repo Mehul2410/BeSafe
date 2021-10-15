@@ -2,21 +2,22 @@ import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
 import { Background, Text } from "@components";
 import styles from "./register.styles";
+import { NavigationProps } from "@types";
 
-export default function Register() {
+export default function Register({ navigation }: NavigationProps<"Getstarted">) {
     return (
         <Background>
             <View style={styles.view}>
                 <Text weight="700">Select your role</Text>
                 <View style={styles.char}>
-                    <Image source={require("@assets/police.png")}></Image>
+                    <Image style={styles.img} source={require("@assets/police.png")} />
                     <Text>police</Text>
                 </View>
                 <View style={styles.char}>
-                    <Image source={require("@assets/citizen.png")}></Image>
+                    <Image style={styles.img} source={require("@assets/citizen.png")} />
                     <Text>citizen</Text>
                 </View>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={{
                         display: "flex",
                         flexDirection: "row",
@@ -31,7 +32,7 @@ export default function Register() {
                         Next
                         <Image source={require("@assets/arrow.png")} />
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </Background>
     );

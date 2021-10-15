@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "#FFF"
+    },
+    img: {
+        height: 180,
+        maxWidth: "80%",
+        resizeMode: "contain"
     }
 });
 

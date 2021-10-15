@@ -10,7 +10,6 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Register"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false

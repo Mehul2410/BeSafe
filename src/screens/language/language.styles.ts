@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         textAlign: "justify"
     },
     button: {
-        width: 200,
-        maxWidth: 200,
+        width: 350,
+        maxWidth: "80%",
         textAlign: "center",
         backgroundColor: "#FFF",
         color: "#362C87",
@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50
+    },
+    img: {
+        height: 250,
+        maxWidth: "80%",
+        resizeMode: "contain"
     }
 });
 
