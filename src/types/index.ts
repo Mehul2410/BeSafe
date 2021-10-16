@@ -1,1 +1,1 @@
-export { LanguageRoute, LanguageNavigationProps } from "./navigationTypes/navigation";
+export { StackNavigatorParams, NavigationProps } from "./navigationTypes/navigationTypes";

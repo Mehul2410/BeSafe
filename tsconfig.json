@@ -14,9 +14,9 @@
             "@components": ["src/components"],
             "@types": ["src/types"],
             "@utils": ["src/utils"],
-            "@contexts/": ["src/contexts/"],
-            "@assets/": ["src/assets/"],
-            "@config/": ["src/config/"]
+            "@contexts/*": ["src/contexts/*"],
+            "@assets/*": ["src/assets/*"],
+            "@config/*": ["src/config/*"]
         }
     }
 }

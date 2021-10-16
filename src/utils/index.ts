@@ -1,1 +1,1 @@
-export { BoldText, MediumText, RegularText } from "./text/Text";
+// export { default as Text } from "../components/text/Text";
