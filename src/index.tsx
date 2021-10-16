@@ -1,16 +1,23 @@
-import React from "react";
-import { Getstarted, Language } from "@screens";
+import React, { ReactElement } from "react";
+// import { AppBootstrap } from "@components";
+// import Navigator from "@config/Navigator";
+// import Tabs from "@config/tabnavigator/Tab";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useState } from "react";
 
-const Stack = createNativeStackNavigator();
-export default function App() {
+export default function App(): ReactElement {
+    const [login, setLogin] = useState(true);
+
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Getstarted" component={Getstarted} />
-                <Stack.Screen name="Language" component={Language} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <></>
+        // <AppBootstrap>
+        //     {login ? (
+        //         <NavigationContainer>
+        //             <Tabs />
+        //         </NavigationContainer>
+        //     ) : (
+        //         <Navigator />
+        //     )}
+        // </AppBootstrap>
     );
 }
