@@ -2,31 +2,38 @@ import React from "react";
 import { View, Image, TouchableOpacity } from "react-native";
 import { Background, Text } from "@components";
 import styles from "./register.styles";
+import { LanguageNavigationProps } from "@types";
 
-export default function Register() {
+export default function Register({ navigation }: LanguageNavigationProps<"Register">) {
     return (
         <Background>
             <View style={styles.view}>
-                <Text weight="700">Select your role</Text>
+                <Text weight="700" style={styles.text}>
+                    Select your role
+                </Text>
                 <View style={styles.char}>
                     <Image source={require("@assets/police.png")}></Image>
-                    <Text>police</Text>
+                    <Text weight="400" style={styles.text}>
+                        police
+                    </Text>
                 </View>
                 <View style={styles.char}>
                     <Image source={require("@assets/citizen.png")}></Image>
-                    <Text>citizen</Text>
+                    <Text weight="400" style={styles.text}>
+                        citizen
+                    </Text>
                 </View>
                 <TouchableOpacity
                     style={{
                         display: "flex",
-                        flexDirection: "row",
                         paddingVertical: 10,
-                        paddingHorizontal: 30,
+                        paddingHorizontal: 110,
+                        marginTop: 20,
                         backgroundColor: "#1D0ECC",
-                        borderRadius: 15
+                        borderRadius: 13
                     }}
                 >
-                    <Text weight="700" style={styles.text}>
+                    <Text weight="400" style={styles.text}>
                         {" "}
                         Next
                         <Image source={require("@assets/arrow.png")} />
