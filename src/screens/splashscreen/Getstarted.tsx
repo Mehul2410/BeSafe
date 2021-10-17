@@ -1,13 +1,14 @@
 import React from "react";
-import { Image, ScrollView } from "react-native";
+import { Image, ScrollView, View } from "react-native";
 import styles from "./home.styles";
-import { Background, Text } from "@components";
+import { Background, Button, Text } from "@components";
 import { NavigationProps } from "@types";
+import { colors } from "@utils";
 
 export function Getstarted({ navigation }: NavigationProps<"Getstarted">) {
     return (
         <Background>
-            <ScrollView contentContainerStyle={styles.screenview}>
+            <View style={styles.screenview}>
                 <Image style={styles.img} source={require("@assets/getstarted.png")} />
                 <Text weight="900" style={styles.landingtext}>
                     Welcome to
@@ -15,14 +16,13 @@ export function Getstarted({ navigation }: NavigationProps<"Getstarted">) {
                 <Text weight="900" style={styles.besafe}>
                     BeSafe!
                 </Text>
-                <Text
+                <Button
                     weight="700"
+                    btnName="Get Started"
                     onPress={() => navigation.navigate("Language")}
-                    style={styles.button}
-                >
-                    Get Started
-                </Text>
-            </ScrollView>
+                    style={{ backgroundColor: colors.tertiary }}
+                />
+            </View>
         </Background>
     );
 }

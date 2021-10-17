@@ -2,9 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     screenview: {
-        width: "100%",
-        height: "100%",
-        display: "flex",
+        flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
@@ -27,19 +25,16 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     container1: {
-        display: "flex",
-        width: "100%",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        paddingBottom: 30,
-        flex: 1
-    },
-    container2: {
-        display: "flex",
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        height: 300,
+        flex: 1
+    },
+    container2: {
+        flex: 1,
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
         padding: 20,
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 50,

@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { ImageSourcePropType } from "react-native";
 
 export type StackNavigatorParams = {
     Home: undefined;
@@ -12,6 +13,16 @@ export type StackNavigatorParams = {
     DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;
+    SignIn: {
+        uri: ImageSourcePropType;
+        role: string;
+        agree?: string;
+    };
+    SignUp: {
+        uri: ImageSourcePropType;
+        role: string;
+        agree?: string;
+    };
     Profile: undefined;
 };
 
