@@ -6,10 +6,15 @@ export type StackNavigatorParams = {
     Home: undefined;
     Getstarted: undefined;
     Language: undefined;
-    Register: undefined;
+    Register: {
+        langauge: string;
+    };
     PoliceSignin: undefined;
     PoliceSignup: undefined;
-    PoliceDetail: undefined;
+    PoliceDetail: {
+        uri: ImageSourcePropType;
+        role: string;
+    };
     DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;

@@ -6,39 +6,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    scroll: {
-        width: "100%"
-    },
-    text: {
-        color: "#FFF",
-        textAlign: "justify"
-    },
-    button: {
-        width: 350,
-        maxWidth: "80%",
-        textAlign: "center",
-        backgroundColor: "#FFF",
-        color: "#362C87",
-        marginVertical: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        borderRadius: 10
-    },
     container1: {
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        flex: 1
+        flex: 1.6,
+        marginBottom: 20
     },
     container2: {
-        flex: 1,
+        flex: 1.4,
         width: "100%",
+        paddingHorizontal: 20,
+        paddingTop: 50,
         justifyContent: "center",
         alignItems: "center",
-        padding: 20,
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50
+    },
+    list: {
+        width: "80%"
     },
     img: {
         height: 250,

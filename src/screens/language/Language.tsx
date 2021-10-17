@@ -26,17 +26,24 @@ export function Language({ navigation }: NavigationProps<"Language">) {
             <View style={styles.screenview}>
                 <View style={styles.container1}>
                     <Image style={styles.img} source={require("@assets/lang.png")} />
-                    <Text style={styles.text}>Select your langague</Text>
+                    <Text style={{ color: colors.white }}>Select your langague</Text>
                 </View>
                 <View style={styles.container2}>
                     <FlatList
+                        style={styles.list}
                         data={languages}
                         keyExtractor={lang => lang.id.toString()}
                         renderItem={({ item }) => (
                             <Button
                                 btnName={item.language}
                                 style={{ backgroundColor: colors.white, color: colors.quatnary }}
+                                onPress={() =>
+                                    navigation.navigate("Register", { langauge: item.language })
+                                }
                             />
+                        )}
+                        ItemSeparatorComponent={() => (
+                            <View style={{ width: "100%", paddingVertical: 15 }} />
                         )}
                     />
                 </View>

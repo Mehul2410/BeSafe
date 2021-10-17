@@ -1,3 +1,4 @@
+import { colors } from "@utils";
 import React from "react";
 import { StyleSheet, TextInputProps } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
@@ -6,20 +7,19 @@ type CustomInputProps = {
     placeholder: string;
 } & TextInputProps;
 
-export default function CustomInput({ placeholder, ...props }: CustomInputProps) {
-    return <TextInput style={styles.text} placeholder={placeholder} {...props} />;
+export default function CustomInput({ placeholder, style, ...props }: CustomInputProps) {
+    return <TextInput style={[styles.text, style]} placeholder={placeholder} {...props} />;
 }
 
 const styles = StyleSheet.create({
     text: {
         backgroundColor: "#FFF",
-        color: "#000000",
+        color: colors.quatnary,
         height: 60,
-        width: 330,
+        width: "100%",
         fontFamily: "Chillax-Regular",
         fontSize: 18,
         borderRadius: 15,
-        paddingLeft: 15,
-        marginVertical: 12
+        paddingLeft: 15
     }
 });
