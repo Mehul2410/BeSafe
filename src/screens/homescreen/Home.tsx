@@ -2,9 +2,9 @@ import React from "react";
 import { View, Image } from "react-native";
 import { Background, Text } from "@components";
 import { StyleSheet } from "react-native";
-import { LanguageNavigationProps } from "@types";
+import { NavigationProps } from "@types";
 
-export function Home({ navigation }: LanguageNavigationProps<"Home">) {
+export function Home({ navigation }: NavigationProps<"Home">) {
     return (
         <Background>
             <View style={styles.view}>

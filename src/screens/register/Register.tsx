@@ -1,44 +1,46 @@
 import React from "react";
-import { View, Image, TouchableOpacity } from "react-native";
-import { Background, Text } from "@components";
+import { ImageSourcePropType, View } from "react-native";
+import { Background, Text, CharRole } from "@components";
 import styles from "./register.styles";
-import { LanguageNavigationProps } from "@types";
+import { NavigationProps } from "@types";
 
-export default function Register({ navigation }: LanguageNavigationProps<"Register">) {
+interface rolesProps {
+    police: { uri: ImageSourcePropType; role: string; agree: string };
+    citizen: { uri: ImageSourcePropType; role: string };
+}
+
+export default function Register({ navigation }: NavigationProps<"Register">) {
+    const roles: rolesProps = {
+        police: {
+            uri: require("@assets/police.png"),
+            role: "Police",
+            agree: "Agree to go through police verification process"
+        },
+        citizen: {
+            uri: require("@assets/citizen.png"),
+            role: "Citizen"
+        }
+    };
     return (
         <Background>
             <View style={styles.view}>
-                <Text weight="700" style={styles.text}>
+                <Text weight="700" style={{ color: "#FFF" }}>
                     Select your role
                 </Text>
-                <View style={styles.char}>
-                    <Image source={require("@assets/police.png")}></Image>
-                    <Text weight="400" style={styles.text}>
-                        police
-                    </Text>
-                </View>
-                <View style={styles.char}>
-                    <Image source={require("@assets/citizen.png")}></Image>
-                    <Text weight="400" style={styles.text}>
-                        citizen
-                    </Text>
-                </View>
-                <TouchableOpacity
-                    style={{
-                        display: "flex",
-                        paddingVertical: 10,
-                        paddingHorizontal: 110,
-                        marginTop: 20,
-                        backgroundColor: "#1D0ECC",
-                        borderRadius: 13
+                <CharRole
+                    role="Police"
+                    uri={require("@assets/police.png")}
+                    onPress={() => {
+                        navigation.navigate("SignIn", roles.police);
                     }}
-                >
-                    <Text weight="400" style={styles.text}>
-                        {" "}
-                        Next
-                        <Image source={require("@assets/arrow.png")} />
-                    </Text>
-                </TouchableOpacity>
+                />
+                <CharRole
+                    role="Citizen"
+                    uri={require("@assets/citizen.png")}
+                    onPress={() => {
+                        navigation.navigate("SignIn", roles.citizen);
+                    }}
+                />
             </View>
         </Background>
     );

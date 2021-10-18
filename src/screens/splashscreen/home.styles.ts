@@ -1,28 +1,32 @@
 import { StyleSheet } from "react-native";
+import { colors } from "@utils";
 
 const styles = StyleSheet.create({
     screenview: {
-        display: "flex",
+        flex: 1,
         alignItems: "center",
-        justifyContent: "center",
-        width: "100%",
-        height: "100%"
+        justifyContent: "center"
     },
     landingtext: {
-        color: "#FFF",
+        color: colors.white,
         textAlign: "center"
     },
     besafe: {
         textAlign: "center",
-        color: "#1D0ECC",
+        color: colors.tertiary,
         marginBottom: 30
     },
     button: {
-        backgroundColor: "#1D0ECC",
-        color: "#fff",
+        backgroundColor: colors.tertiary,
+        color: colors.white,
         paddingVertical: 10,
         paddingHorizontal: 30,
         borderRadius: 10
+    },
+    img: {
+        height: 200,
+        width: "100%",
+        resizeMode: "contain"
     }
 });
 

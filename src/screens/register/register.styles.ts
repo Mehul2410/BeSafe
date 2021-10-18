@@ -7,15 +7,6 @@ const styles = StyleSheet.create({
         height: "100%",
         alignItems: "center",
         justifyContent: "center"
-    },
-    char: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 20
-    },
-    text: {
-        color: "#FFF"
     }
 });
 

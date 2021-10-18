@@ -1,7 +1,7 @@
 import { Background, Text } from "@components";
 import React from "react";
 import { View, Image, TouchableOpacity, Button } from "react-native";
-import { LanguageNavigationProps } from "@types";
+import { NavigationProps } from "@types";
 import styles from "./signin.styles";
 import { TextInput } from "react-native-gesture-handler";
 
