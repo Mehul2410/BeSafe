@@ -19,23 +19,17 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 </View>
                 <View style={styles.box2}>
                     <ScrollView style={{ width: "80%", height: "60%" }}>
-                        <CustomInput
-                            placeholder="User Id"
-                            style={{ width: "100%", marginVertical: 12 }}
-                        />
-                        <CustomInput
-                            placeholder="Email"
-                            style={{ width: "100%", marginVertical: 12 }}
-                        />
+                        <CustomInput placeholder="User Id" style={{ marginVertical: 12 }} />
+                        <CustomInput placeholder="Email" style={{ marginVertical: 12 }} />
                         <CustomInput
                             secureTextEntry={true}
                             placeholder="Password"
-                            style={{ width: "100%", marginVertical: 12 }}
+                            style={{ marginVertical: 12 }}
                         />
                         <CustomInput
                             secureTextEntry={true}
                             placeholder="Confirm Password"
-                            style={{ width: "100%", marginVertical: 12 }}
+                            style={{ marginVertical: 12 }}
                         />
                         {route.params.agree && (
                             <TextCheckBox
@@ -47,7 +41,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                         <Button
                             btnName="SignUp"
                             weight="400"
-                            style={{ width: "100%", marginVertical: 12 }}
+                            style={{ marginVertical: 12 }}
                             onPress={() => {
                                 route.params.role == "Police"
                                     ? toggleCheckBox == true

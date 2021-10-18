@@ -20,7 +20,7 @@ export function Getstarted({ navigation }: NavigationProps<"Getstarted">) {
                     weight="700"
                     btnName="Get Started"
                     onPress={() => navigation.navigate("Language")}
-                    style={{ backgroundColor: colors.tertiary }}
+                    style={{ backgroundColor: colors.tertiary, width: "80%" }}
                 />
             </View>
         </Background>
