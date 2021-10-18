@@ -24,7 +24,7 @@ export default function Navigator(): ReactElement {
         <>
             <NavigationContainer>
                 <Stack.Navigator
-                    initialRouteName="Home"
+                    initialRouteName="Language"
                     screenOptions={{
                         headerMode: "screen",
                         headerShown: false

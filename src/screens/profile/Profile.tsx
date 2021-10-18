@@ -2,6 +2,7 @@ import React from "react";
 import { Background, Text } from "@components";
 import { Image, View } from "react-native";
 import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function Profile() {
     return (
