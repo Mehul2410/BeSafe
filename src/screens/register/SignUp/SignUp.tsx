@@ -4,44 +4,52 @@ import React, { ReactElement } from "react";
 import { View, Image } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import styles from "./signup.styles";
-import { isValidEmail, isValidObjectField, updateError } from "@utils";
+import { Formik, FormikHelpers } from "formik";
+import { SignUpvalidationSchema } from "@utils";
+import { createUser } from "@contexts/api/client";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
-    const [signUpInfo, setSignUpInfo] = React.useState({
+    const signUpInfo = {
         name: "",
         email: "",
         password: "",
         confirmPassword: ""
-    });
-    const [error, setError] = React.useState("");
-
-    const { name, email, password, confirmPassword } = signUpInfo;
-
-    const handleOnChangeText = (value: string, fieldName: string) => {
-        return setSignUpInfo({ ...signUpInfo, [fieldName]: value });
+    };
+    const roleSignIn = {
+        uri: route.params.uri,
+        role: route.params.role,
+        agree: route.params.agree
     };
 
-    const isValidForm = () => {
-        if (!isValidObjectField(signUpInfo)) return updateError("Required all fields!", setError);
-        if (!name.trimEnd() || name.length < 3) return updateError("Invalid name!", setError);
-        if (!isValidEmail(email)) return updateError("Invalid Email!", setError);
-        if (!password.trim() || password.length < 8)
-            return updateError("Password is less then 8 characters!", setError);
-        if (confirmPassword !== password) return updateError("Password does not match!", setError);
-        if (toggleCheckBox !== true) return updateError("Kindly agree to continue", setError);
-        return true;
+    const SignUpUser = async (
+        values: {
+            name: string;
+            email: string;
+            password: string;
+            confirmPassword: string;
+        },
+        formikActions: FormikHelpers<{
+            name: string;
+            email: string;
+            password: string;
+            confirmPassword: string;
+        }>
+    ) => {
+        const res = await fetch(createUser, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ...values })
+        });
+        const result = await res.json();
+        console.log(result);
+        formikActions.resetForm();
+        formikActions.setSubmitting(false);
     };
-    const submitForm = () => {
-        if (isValidForm() === true) {
-            if (route.params.role == "Police") {
-                console.log(signUpInfo);
-                navigation.navigate("PoliceDetail", route.params);
-            } else {
-                navigation.navigate("SignIn", route.params);
-            }
-        }
-    };
+
     return (
         <Background>
             <View style={styles.view}>
@@ -52,55 +60,83 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                     </Text>
                 </View>
                 <View style={styles.box2}>
-                    {error ? (
-                        <Text
-                            weight="400"
-                            style={{ color: "red", fontSize: 18, textAlign: "center" }}
-                        >
-                            {error}
-                        </Text>
-                    ) : null}
-                    <ScrollView style={{ width: "80%", height: "60%" }}>
-                        <CustomInput
-                            value={name}
-                            onChangeText={value => handleOnChangeText(value, "name")}
-                            placeholder="Name"
-                            style={{ marginVertical: 12 }}
-                        />
-                        <CustomInput
-                            value={email}
-                            onChangeText={value => handleOnChangeText(value, "email")}
-                            placeholder="Email"
-                            style={{ marginVertical: 12 }}
-                        />
-                        <CustomInput
-                            value={password}
-                            onChangeText={value => handleOnChangeText(value, "password")}
-                            secureTextEntry={true}
-                            placeholder="Password"
-                            style={{ marginVertical: 12 }}
-                        />
-                        <CustomInput
-                            value={confirmPassword}
-                            onChangeText={value => handleOnChangeText(value, "confirmPassword")}
-                            secureTextEntry={true}
-                            placeholder="Confirm Password"
-                            style={{ marginVertical: 12 }}
-                        />
-                        {route.params.agree && (
-                            <TextCheckBox
-                                toggleCheckBox={toggleCheckBox}
-                                setToggleCheckBox={setToggleCheckBox}
-                                agree={route.params.agree}
-                            />
-                        )}
-                        <Button
-                            btnName="SignUp"
-                            weight="400"
-                            style={{ marginVertical: 12 }}
-                            onPress={submitForm}
-                        />
-                    </ScrollView>
+                    <Formik
+                        initialValues={signUpInfo}
+                        validationSchema={SignUpvalidationSchema}
+                        onSubmit={SignUpUser}
+                    >
+                        {({
+                            values,
+                            handleChange,
+                            errors,
+                            handleBlur,
+                            touched,
+                            isSubmitting,
+                            handleSubmit
+                        }) => {
+                            const { name, email, password, confirmPassword } = values;
+                            return (
+                                <>
+                                    <ScrollView style={{ width: "80%", height: "60%" }}>
+                                        <CustomInput
+                                            value={name}
+                                            error={touched.name && errors.name}
+                                            onChangeText={handleChange("name")}
+                                            onBlur={handleBlur("name")}
+                                            placeholder="Name"
+                                            style={{ marginVertical: 12 }}
+                                        />
+                                        <CustomInput
+                                            value={email}
+                                            error={touched.email && errors.email}
+                                            onChangeText={handleChange("email")}
+                                            onBlur={handleBlur("email")}
+                                            placeholder="Email"
+                                            style={{ marginVertical: 12 }}
+                                        />
+                                        <CustomInput
+                                            value={password}
+                                            error={touched.password && errors.password}
+                                            onChangeText={handleChange("password")}
+                                            onBlur={handleBlur("password")}
+                                            secureTextEntry={true}
+                                            placeholder="Password"
+                                            style={{ marginVertical: 12 }}
+                                        />
+                                        <CustomInput
+                                            value={confirmPassword}
+                                            error={
+                                                touched.confirmPassword && errors.confirmPassword
+                                            }
+                                            onChangeText={handleChange("confirmPassword")}
+                                            onBlur={handleBlur("confirmPassword")}
+                                            secureTextEntry={true}
+                                            placeholder="Confirm Password"
+                                            style={{ marginVertical: 12 }}
+                                        />
+                                        {route.params.agree && (
+                                            <TextCheckBox
+                                                toggleCheckBox={toggleCheckBox}
+                                                setToggleCheckBox={setToggleCheckBox}
+                                                agree={route.params.agree}
+                                            />
+                                        )}
+                                        <Button
+                                            btnName="SignUp"
+                                            weight="400"
+                                            style={{ marginVertical: 12 }}
+                                            onPress={() => {
+                                                handleSubmit(),
+                                                    isSubmitting
+                                                        ? navigation.navigate("SignIn", roleSignIn)
+                                                        : null;
+                                            }}
+                                        />
+                                    </ScrollView>
+                                </>
+                            );
+                        }}
+                    </Formik>
                 </View>
             </View>
         </Background>

@@ -1,6 +1,6 @@
 import { Text } from "@components";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { TextProps } from "react-native-elements";
 
 type btnProps = {

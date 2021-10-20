@@ -1,2 +1,8 @@
 export { colors } from "./colors/colors";
-export { isValidEmail, isValidObjectField, updateError } from "./formValidation/index";
+export {
+    isValidEmail,
+    isValidObjectField,
+    updateError,
+    SignUpvalidationSchema,
+    SignInvalidationSchema
+} from "./formValidation/index";
