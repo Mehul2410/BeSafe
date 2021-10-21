@@ -6,12 +6,8 @@ import {
     Getstarted,
     Language,
     Register,
-    PoliceSignin,
-    PoliceSignup,
     PoliceDetail,
     DetailFilled,
-    CitizenSignin,
-    CitizenSignup,
     Profile,
     SignIn,
     SignUp
@@ -36,10 +32,6 @@ export default function Navigator(): ReactElement {
                 <Stack.Screen name="Getstarted" component={Getstarted} />
                 <Stack.Screen name="Language" component={Language} />
                 <Stack.Screen name="Register" component={Register} />
-                <Stack.Screen name="PoliceSignin" component={PoliceSignin} />
-                <Stack.Screen name="PoliceSignup" component={PoliceSignup} />
-                <Stack.Screen name="CitizenSignin" component={CitizenSignin} />
-                <Stack.Screen name="CitizenSignup" component={CitizenSignup} />
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="PoliceDetail" component={PoliceDetail} />
