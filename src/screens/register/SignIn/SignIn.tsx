@@ -5,12 +5,46 @@ import React, { ReactElement } from "react";
 import { View, Image } from "react-native";
 import styles from "./signin.styles";
 import { SignInvalidationSchema } from "@utils";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
+import { signInUser } from "@contexts/api/client";
 
 export default function SignIn({ navigation, route }: NavigationProps<"SignIn">): ReactElement {
     const signInInfo = {
         email: "",
         password: ""
+    };
+
+    const [signInError, setSignInError] = React.useState("");
+    const SignInUser = async (
+        values: {
+            email: string;
+            password: string;
+        },
+        formikActions: FormikHelpers<{
+            email: string;
+            password: string;
+        }>
+    ) => {
+        const res = await fetch(signInUser, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ ...values })
+        });
+        const result = await res.json();
+        if (result.success) {
+            navigation.navigate("Home");
+            formikActions.resetForm();
+            formikActions.setSubmitting(false);
+            return true;
+        } else {
+            setSignInError(result.message);
+            setTimeout(() => {
+                setSignInError("");
+            }, 3000);
+        }
     };
 
     return (
@@ -24,26 +58,15 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                     <Formik
                         initialValues={signInInfo}
                         validationSchema={SignInvalidationSchema}
-                        onSubmit={(values, formikActions) => {
-                            setTimeout(() => {
-                                formikActions.resetForm();
-                                formikActions.setSubmitting(false);
-                            }, 3000);
-                        }}
+                        onSubmit={SignInUser}
                     >
-                        {({
-                            values,
-                            handleChange,
-                            errors,
-                            handleBlur,
-                            touched,
-                            isSubmitting,
-                            handleSubmit
-                        }) => {
+                        {({ values, handleChange, errors, handleBlur, touched, handleSubmit }) => {
                             const { email, password } = values;
-                            console.log(isSubmitting);
                             return (
                                 <>
+                                    <Text weight="700" style={{ color: "red", fontSize: 14 }}>
+                                        {signInError}
+                                    </Text>
                                     <CustomInput
                                         value={email}
                                         error={touched.email && errors.email}
@@ -71,12 +94,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         btnName="SignIn"
                                         weight="400"
                                         style={{ width: "80%", marginVertical: 12 }}
-                                        onPress={() => {
-                                            handleSubmit(),
-                                                isSubmitting === true
-                                                    ? navigation.navigate("Home")
-                                                    : null;
-                                        }}
+                                        onPress={() => handleSubmit()}
                                     />
                                 </>
                             );

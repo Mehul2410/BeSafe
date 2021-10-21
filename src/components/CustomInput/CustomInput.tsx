@@ -12,11 +12,12 @@ type CustomInputProps = {
 export default function CustomInput({ placeholder, style, error, ...props }: CustomInputProps) {
     return (
         <>
-            <View>
-                <Text weight="200" style={{ color: colors.white, fontSize: 14 }}>
+            {error && (
+                <Text weight="700" style={{ color: "red", fontSize: 14 }}>
                     {error}
                 </Text>
-            </View>
+            )}
+
             <TextInput style={[styles.text, style]} placeholder={placeholder} {...props} />
         </>
     );

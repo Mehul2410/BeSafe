@@ -16,6 +16,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         password: "",
         confirmPassword: ""
     };
+    const [signUpError, setSignUpError] = React.useState("");
     const roleSignIn = {
         uri: route.params.uri,
         role: route.params.role,
@@ -45,9 +46,17 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
-        console.log(result);
-        formikActions.resetForm();
-        formikActions.setSubmitting(false);
+        if (result.success) {
+            navigation.navigate("SignIn", roleSignIn);
+            formikActions.resetForm();
+            formikActions.setSubmitting(false);
+            return true;
+        } else {
+            setSignUpError(result.message);
+            setTimeout(() => {
+                setSignUpError("");
+            }, 3000);
+        }
     };
 
     return (
@@ -65,18 +74,13 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                         validationSchema={SignUpvalidationSchema}
                         onSubmit={SignUpUser}
                     >
-                        {({
-                            values,
-                            handleChange,
-                            errors,
-                            handleBlur,
-                            touched,
-                            isSubmitting,
-                            handleSubmit
-                        }) => {
+                        {({ values, handleChange, errors, handleBlur, touched, handleSubmit }) => {
                             const { name, email, password, confirmPassword } = values;
                             return (
                                 <>
+                                    <Text weight="700" style={{ color: "red", fontSize: 14 }}>
+                                        {signUpError}
+                                    </Text>
                                     <ScrollView style={{ width: "80%", height: "60%" }}>
                                         <CustomInput
                                             value={name}
@@ -125,12 +129,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             btnName="SignUp"
                                             weight="400"
                                             style={{ marginVertical: 12 }}
-                                            onPress={() => {
-                                                handleSubmit(),
-                                                    isSubmitting
-                                                        ? navigation.navigate("SignIn", roleSignIn)
-                                                        : null;
-                                            }}
+                                            onPress={() => handleSubmit()}
                                         />
                                     </ScrollView>
                                 </>
