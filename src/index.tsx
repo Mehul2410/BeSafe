@@ -4,7 +4,6 @@ import Navigator from "@config/Navigator";
 import Tabs from "@config/tabnavigator/Tab";
 import { NavigationContainer } from "@react-navigation/native";
 import { useState } from "react";
-
 export default function App(): ReactElement {
     const [login, setLogin] = useState(true);
 

@@ -1,4 +1,4 @@
-import { Text } from "@components";
+import Text from "../text/Text";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { TextProps } from "react-native-elements";

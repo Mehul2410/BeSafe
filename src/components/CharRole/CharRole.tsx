@@ -1,4 +1,4 @@
-import { Text } from "@components";
+import Text from "../text/Text";
 import React, { ReactElement } from "react";
 import {
     View,

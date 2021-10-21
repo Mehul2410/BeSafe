@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import CheckBox from "@react-native-community/checkbox";
-import { Text } from "@components";
+import Text from "../text/Text";
 
 type textCheckBoxProps = {
     toggleCheckBox: boolean;

@@ -9,7 +9,6 @@ export function Home({ navigation }: NavigationProps<"Home">) {
         <Background>
             <View style={styles.view}>
                 <Text style={styles.text} onPress={() => navigation.navigate("Profile")}>
-                    {" "}
                     Complaints
                 </Text>
                 <Image source={require("@assets/home.png")} />

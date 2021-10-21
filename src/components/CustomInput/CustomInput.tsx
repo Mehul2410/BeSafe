@@ -1,8 +1,7 @@
-import { Text } from "@components";
+import Text from "../text/Text";
 import { colors } from "@utils";
 import React from "react";
-import { StyleSheet, TextInputProps, View } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { StyleSheet, TextInputProps, TextInput } from "react-native";
 
 type CustomInputProps = {
     placeholder: string;
