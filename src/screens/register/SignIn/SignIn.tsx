@@ -19,15 +19,12 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                     <Text style={{ color: colors.white }}>Sign-in as {route.params.role}</Text>
                 </View>
                 <View style={styles.box2}>
-                    <CustomInput
-                        placeholder="User Id"
-                        style={{ width: "80%", marginVertical: 12 }}
-                    />
+                    <CustomInput placeholder="User Id" style={{ width: "80%" }} />
                     <CustomInput
                         textContentType={"password"}
                         secureTextEntry={true}
                         placeholder="Password"
-                        style={{ width: "80%", marginVertical: 12 }}
+                        style={{ width: "80%" }}
                     />
                     <Text weight="200" style={{ color: "#FFF" }}>
                         Forget Password ?

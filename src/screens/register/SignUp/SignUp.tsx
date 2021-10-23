@@ -19,18 +19,10 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 </View>
                 <View style={styles.box2}>
                     <ScrollView style={{ width: "80%", height: "60%" }}>
-                        <CustomInput placeholder="User Id" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Email" style={{ marginVertical: 12 }} />
-                        <CustomInput
-                            secureTextEntry={true}
-                            placeholder="Password"
-                            style={{ marginVertical: 12 }}
-                        />
-                        <CustomInput
-                            secureTextEntry={true}
-                            placeholder="Confirm Password"
-                            style={{ marginVertical: 12 }}
-                        />
+                        <CustomInput placeholder="User Id" />
+                        <CustomInput placeholder="Email" />
+                        <CustomInput secureTextEntry={true} placeholder="Password" />
+                        <CustomInput secureTextEntry={true} placeholder="Confirm Password" />
                         {route.params.agree && (
                             <TextCheckBox
                                 toggleCheckBox={toggleCheckBox}

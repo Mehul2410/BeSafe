@@ -13,8 +13,13 @@ import {
     CitizenSignin,
     CitizenSignup,
     Profile,
+    Post,
     SignIn,
-    SignUp
+    SignUp,
+    Complaints,
+    ComplaintGroup,
+    EditProfile,
+    Setting
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -25,7 +30,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Getstarted"
+                initialRouteName="Profile"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false
@@ -33,6 +38,9 @@ export default function Navigator(): ReactElement {
             >
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Profile" component={Profile} />
+                <Stack.Screen name="Post" component={Post} />
+                <Stack.Screen name="Complaints" component={Complaints} />
+                <Stack.Screen name="ComplaintGroup" component={ComplaintGroup} />
                 <Stack.Screen name="Getstarted" component={Getstarted} />
                 <Stack.Screen name="Language" component={Language} />
                 <Stack.Screen name="Register" component={Register} />
@@ -44,6 +52,8 @@ export default function Navigator(): ReactElement {
                 <Stack.Screen name="SignUp" component={SignUp} />
                 <Stack.Screen name="PoliceDetail" component={PoliceDetail} />
                 <Stack.Screen name="DetailFilled" component={DetailFilled} />
+                <Stack.Screen name="EditProfile" component={EditProfile} />
+                <Stack.Screen name="Setting" component={Setting} />
             </Stack.Navigator>
         </NavigationContainer>
     );

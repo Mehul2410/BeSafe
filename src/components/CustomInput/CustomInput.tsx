@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
         fontFamily: "Chillax-Regular",
         fontSize: 18,
         borderRadius: 15,
-        paddingLeft: 15
+        paddingLeft: 15,
+        marginVertical: 12
     }
 });
