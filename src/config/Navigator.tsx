@@ -30,7 +30,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Profile"
+                initialRouteName="Home"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false

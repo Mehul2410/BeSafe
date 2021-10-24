@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Background, CustomInput, Text } from "@components";
-import { Image, Keyboard, KeyboardAvoidingView, View } from "react-native";
-import { StyleSheet } from "react-native";
+import { View } from "react-native";
 
 export function Post() {
     return (

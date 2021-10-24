@@ -22,9 +22,14 @@ const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
                 width: 70,
                 height: 70,
                 borderRadius: 35,
-                borderColor: colors.primary,
-                borderWidth: 4,
-                backgroundColor: colors.tertiary
+                // borderColor: colors.primary,
+                // borderWidth: 4,
+                backgroundColor: colors.tertiary,
+                shadowColor: colors.black,
+                shadowOffset: { width: 6, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 4
             }}
         >
             {children}

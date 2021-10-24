@@ -1,11 +1,29 @@
-import React from "react";
-import { Background, CustomInput, Text } from "@components";
+import React, { useState } from "react";
+import { Background, CustomInput, Text, Button } from "@components";
 import { Image, View } from "react-native";
 import { colors } from "@utils";
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { StyleSheet } from "react-native";
 
 export function EditProfile() {
+    const [date, setDate] = useState("Date");
+
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date: any) => {
+        console.warn("Date of Birth (00-00-0000) ", date);
+        setDate(date.toLocaleDateString("en-IN"));
+        hideDatePicker();
+    };
+
     return (
         <Background>
             <View style={{ height: "100%", alignItems: "center" }}>
@@ -25,9 +43,20 @@ export function EditProfile() {
                     Edit Profile
                 </Text>
                 <View style={{ marginTop: 25 }}>
-                    <CustomInput
-                        placeholder="Date of Birth (00-00-0000)"
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
+                    <Button
+                        btnName={date}
+                        weight="400"
+                        numberOfLines={1}
+                        onPress={showDatePicker}
+                        style={{
+                            backgroundColor: "#FFF",
+                            color: colors.quatnary,
+                            height: 53,
+                            width: 350,
+                            borderRadius: 10,
+                            fontSize: 18,
+                            marginVertical: 12
+                        }}
                     />
 
                     <CustomInput
@@ -43,6 +72,13 @@ export function EditProfile() {
                         style={{ height: 53, width: 350, borderRadius: 10 }}
                     />
                 </View>
+
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                />
             </View>
         </Background>
     );
