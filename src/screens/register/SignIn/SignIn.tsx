@@ -34,17 +34,17 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
-        if (result.success) {
-            navigation.navigate("Home");
-            formikActions.resetForm();
-            formikActions.setSubmitting(false);
-            return true;
-        } else {
-            setSignInError(result.message);
-            setTimeout(() => {
-                setSignInError("");
-            }, 3000);
-        }
+        // if (result.success) {
+        navigation.navigate("Home");
+        formikActions.resetForm();
+        formikActions.setSubmitting(false);
+        return true;
+        // } else {
+        //     setSignInError(result.message);
+        //     setTimeout(() => {
+        //         setSignInError("");
+        //     }, 3000);
+        // }
     };
 
     return (
