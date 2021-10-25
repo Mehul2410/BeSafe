@@ -6,7 +6,7 @@ import { useState } from "react";
 import AuthNavigator from "@config/navigations/AuthNavigator";
 import Navigator from "@config/Navigator";
 export default function App(): ReactElement {
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(true);
 
     return (
         <AppBootstrap>

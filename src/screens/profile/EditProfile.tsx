@@ -19,7 +19,6 @@ export function EditProfile() {
     };
 
     const handleConfirm = (date: any) => {
-        console.warn("Date of Birth (00-00-0000) ", date);
         setDate(date.toLocaleDateString("en-IN"));
         hideDatePicker();
     };

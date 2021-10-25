@@ -16,3 +16,4 @@ export { Post } from "./postscreen/Post";
 export { Complaints } from "./homescreen/Complaints";
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";
 export { Setting } from "./profile/Setting";
+export { Help } from "./profile/Help";

@@ -4,6 +4,8 @@ import { Home, Profile, Post } from "@screens";
 import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "react-native";
 import { Text } from "@components";
 import { colors } from "@utils";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabAuthNavigator from "./TabAuthNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -12,10 +14,11 @@ type CustomTabBarButtonprops = {
 // const [color, setColor] = useState(false);
 
 const Tab = createBottomTabNavigator();
+
 const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
     <TouchableOpacity
         onPress={onPress}
-        style={{ top: -30, justifyContent: "center", alignItems: "center" }}
+        style={{ top: -40, justifyContent: "center", alignItems: "center" }}
     >
         <View
             style={{
@@ -119,7 +122,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={Profile}
+                component={TabAuthNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: "center", justifyContent: "center" }}>
