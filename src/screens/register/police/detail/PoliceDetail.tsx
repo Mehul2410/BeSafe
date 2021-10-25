@@ -24,18 +24,15 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                 </View>
                 <View style={styles.box2}>
                     <ScrollView style={{ width: "80%", height: "80%" }}>
-                        <CustomInput placeholder="Adhaar Card No." style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Pan Card No." style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Email Id" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Police Id" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Posting Area" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Station Name" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="Police Post" style={{ marginVertical: 12 }} />
-                        <CustomInput placeholder="City" style={{ marginVertical: 12 }} />
-                        <CustomInput
-                            placeholder="Nearest Location"
-                            style={{ marginVertical: 12 }}
-                        />
+                        <CustomInput placeholder="Adhaar Card No." />
+                        <CustomInput placeholder="Pan Card No." />
+                        <CustomInput placeholder="Email Id" />
+                        <CustomInput placeholder="Police Id" />
+                        <CustomInput placeholder="Posting Area" />
+                        <CustomInput placeholder="Station Name" />
+                        <CustomInput placeholder="Police Post" />
+                        <CustomInput placeholder="City" />
+                        <CustomInput placeholder="Nearest Location" />
                         <Button
                             btnName="verify"
                             weight="400"

@@ -29,6 +29,11 @@ export type StackNavigatorParams = {
         agree?: string;
     };
     Profile: undefined;
+    EditProfile: undefined;
+    Setting: undefined;
+    Post: undefined;
+    Complaints: undefined;
+    ComplaintGroup: undefined;
 };
 
 export type NavigationProps<T extends keyof StackNavigatorParams> = {

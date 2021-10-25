@@ -11,3 +11,8 @@ export { PoliceDetail } from "./register/police/detail/PoliceDetail";
 export { DetailFilled } from "./register/police/detailfilled/DetailFilled";
 export { Home } from "./homescreen/Home";
 export { Profile } from "./profile/Profile";
+export { EditProfile } from "./profile/EditProfile";
+export { Post } from "./postscreen/Post";
+export { Complaints } from "./homescreen/Complaints";
+export { ComplaintGroup } from "./homescreen/ComplaintGroup";
+export { Setting } from "./profile/Setting";

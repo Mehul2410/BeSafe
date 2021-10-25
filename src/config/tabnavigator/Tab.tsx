@@ -1,12 +1,58 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React from "react";
-import { Home, Profile } from "@screens";
-import { View, Image } from "react-native";
+import React, { ReactNode, useEffect, useState } from "react";
+import { Home, Profile, Post } from "@screens";
+import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "react-native";
 import { Text } from "@components";
+import { colors } from "@utils";
+
+type CustomTabBarButtonprops = {
+    children: ReactNode;
+} & TouchableOpacityProps;
+
+// const [color, setColor] = useState(false);
 
 const Tab = createBottomTabNavigator();
+const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
+    <TouchableOpacity
+        onPress={onPress}
+        style={{ top: -30, justifyContent: "center", alignItems: "center" }}
+    >
+        <View
+            style={{
+                width: 70,
+                height: 70,
+                borderRadius: 35,
+                // borderColor: colors.primary,
+                // borderWidth: 4,
+                backgroundColor: colors.tertiary,
+                shadowColor: colors.black,
+                shadowOffset: { width: 6, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 4
+            }}
+        >
+            {children}
+        </View>
+    </TouchableOpacity>
+);
 
 const Tabs = () => {
+    const [margin, setMargin] = useState(25);
+
+    useEffect(() => {
+        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+            setMargin(-120);
+        });
+        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+            setMargin(25);
+        });
+
+        return () => {
+            showSubscription.remove();
+            hideSubscription.remove();
+        };
+    }, []);
     return (
         <Tab.Navigator
             screenOptions={{
@@ -14,7 +60,7 @@ const Tabs = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: "absolute",
-                    bottom: 25,
+                    bottom: margin,
                     left: 20,
                     right: 20,
                     elevation: 0,
@@ -51,6 +97,24 @@ const Tabs = () => {
                             </Text>
                         </View>
                     )
+                }}
+            />
+            <Tab.Screen
+                name="Post"
+                component={Post}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <Image
+                            source={require("@assets/plus.png")}
+                            resizeMode="contain"
+                            style={{
+                                height: 25,
+                                width: 25,
+                                tintColor: focused ? "#FFF" : "#1C32F3"
+                            }}
+                        />
+                    ),
+                    tabBarButton: props => <CustomTabBarButton {...props} />
                 }}
             />
             <Tab.Screen

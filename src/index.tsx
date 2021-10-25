@@ -10,8 +10,14 @@ export default function App(): ReactElement {
 
     return (
         <AppBootstrap>
-            {/* <NavigationContainer>{login ? <Tabs /> : <AuthNavigator />}</NavigationContainer> */}
-            <Navigator />
+            {login ? (
+                <NavigationContainer>
+                    <Tabs />
+                </NavigationContainer>
+            ) : (
+                <Navigator />
+            )}
+            {/* <Navigator /> */}
         </AppBootstrap>
     );
 }
