@@ -26,7 +26,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="EditProfile"
+                initialRouteName="Getstarted"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false

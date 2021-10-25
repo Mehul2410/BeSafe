@@ -3,8 +3,10 @@ import { Background, CustomInput, Text, Button, ImageUpload } from "@components"
 import { View } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { NavigationProps } from "@types";
 
-export function EditProfile() {
+export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
+    console.log("aaa  ", route.params.token);
     const [date, setDate] = useState("Date");
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -42,7 +44,7 @@ export function EditProfile() {
                     Edit Profile
                 </Text>
                 <View style={{ marginTop: 25, alignItems: "center" }}>
-                    <ImageUpload />
+                    <ImageUpload navigation={navigation} token={route.params.token} />
                     <Button
                         btnName={date}
                         weight="400"

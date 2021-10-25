@@ -4,11 +4,18 @@ import { Background, Text } from "@components";
 import { StyleSheet } from "react-native";
 import { NavigationProps } from "@types";
 
-export function Home({ navigation }: NavigationProps<"Home">) {
+export function Home({ navigation, route }: NavigationProps<"Home">) {
+    const data = {
+        token: route.params.token
+    };
+    console.log(data);
     return (
         <Background>
             <View style={styles.view}>
-                <Text style={styles.text} onPress={() => navigation.navigate("Profile")}>
+                <Text
+                    style={styles.text}
+                    onPress={() => navigation.navigate("Profile", { ...data })}
+                >
                     Complaints
                 </Text>
                 <Image source={require("@assets/home.png")} />

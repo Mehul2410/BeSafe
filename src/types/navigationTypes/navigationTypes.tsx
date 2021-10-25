@@ -3,13 +3,14 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ImageSourcePropType } from "react-native";
 
 export type StackNavigatorParams = {
-    Home?: {
+    Home: {
         user: {
             _id: string;
             name: string;
             email: string;
             password: string;
             __v: number;
+            avatar: string;
         };
         success: boolean;
         token: string;
@@ -38,8 +39,12 @@ export type StackNavigatorParams = {
         role: string;
         agree?: string;
     };
-    Profile: undefined;
-    EditProfile: undefined;
+    Profile: {
+        token: string;
+    };
+    EditProfile: {
+        token: string;
+    };
     Setting: undefined;
     Post: undefined;
     Complaints: undefined;

@@ -5,8 +5,9 @@ import { View, StyleSheet, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import Button from "../Button/Button";
+import { uploadImage } from "../../contexts/api/client";
 
-const ImageUpload = () => {
+const ImageUpload = ({ navigation, token }) => {
     const [profileImage, setProfileImage] = React.useState("");
 
     const openImageLibrary = async () => {
@@ -24,19 +25,48 @@ const ImageUpload = () => {
             }
         }
     };
+    const uploadProfileImage = async () => {
+        const formData = new FormData();
+        formData.append("profile", {
+            name: "image",
+            uri: profileImage,
+            type: "image/jpg"
+        });
 
-    const uploadProfileImage = () => {
-        return true;
+        try {
+            const res = await fetch(uploadImage, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "multipart/form-data",
+                    authorization: `JWT ${token}`
+                }
+            });
+            const data = await res.json();
+            console.log(data);
+            if (data.success) {
+                navigation.navigate("Profile", { token });
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
     return (
         <View style={{ alignItems: "center" }}>
             <View style={styles.circle}>
                 <TouchableOpacity onPress={openImageLibrary}>
-                    <Image style={styles.image} source={require("@assets/smiley.png")} />
+                    <Image
+                        style={styles.image}
+                        source={
+                            profileImage ? { uri: profileImage } : require("@assets/smiley.png")
+                        }
+                    />
                 </TouchableOpacity>
             </View>
             <Text style={{ color: colors.tertiary, fontSize: 20 }}>Change Profile Pic</Text>
+
             {profileImage ? (
                 <Button
                     onPress={uploadProfileImage}
