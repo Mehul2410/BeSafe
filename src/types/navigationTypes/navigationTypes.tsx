@@ -46,6 +46,7 @@ export type StackNavigatorParams = {
         token: string;
     };
     Setting: undefined;
+    Help: undefined;
     Post: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;

@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Image, ScrollView, Modal, TouchableOpacityProps } from "react-native";
+import {
+    View,
+    Image,
+    ScrollView,
+    Modal,
+    TouchableOpacityProps,
+    Pressable,
+    PressableProps
+} from "react-native";
 import { Text } from "@components";
 import { colors } from "@utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -12,8 +20,7 @@ type ComplaintsProps = {
     time: string | undefined;
     reason: string | undefined;
     text: string | undefined;
-} & TouchableOpacityProps &
-    GenericTouchableProps;
+} & PressableProps;
 export function Complaints({ id, status, date, time, reason, text, ...props }: ComplaintsProps) {
     return (
         <View
@@ -23,8 +30,7 @@ export function Complaints({ id, status, date, time, reason, text, ...props }: C
                 top: 0,
                 width: "100%",
                 height: "100%",
-                justifyContent: "center",
-                backgroundColor: "#FFF"
+                justifyContent: "center"
             }}
             key={id}
         >
@@ -72,7 +78,7 @@ export function Complaints({ id, status, date, time, reason, text, ...props }: C
                                 right: 50
                             }}
                         />
-                        <TouchableOpacity {...props}>
+                        <Pressable {...props}>
                             <View>
                                 <Image
                                     source={require("@assets/close.png")}
@@ -86,7 +92,7 @@ export function Complaints({ id, status, date, time, reason, text, ...props }: C
                                     }}
                                 />
                             </View>
-                        </TouchableOpacity>
+                        </Pressable>
                     </View>
                     <View
                         style={{

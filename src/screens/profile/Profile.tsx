@@ -79,7 +79,14 @@ export function Profile({ navigation, route }: NavigationProps<"Profile">) {
                                 navigation.navigate("EditProfile", { token: token });
                             }}
                         />
-                        <Button btnName="Complaints" weight="400" style={styles.btn} />
+                        <Button
+                            btnName="Complaints"
+                            weight="400"
+                            style={styles.btn}
+                            onPress={() => {
+                                navigation.navigate("ComplaintGroup");
+                            }}
+                        />
                         <Button
                             btnName="Setting"
                             weight="400"
@@ -88,8 +95,22 @@ export function Profile({ navigation, route }: NavigationProps<"Profile">) {
                                 navigation.navigate("Setting");
                             }}
                         />
-                        <Button btnName="Help" weight="400" style={styles.btn} />
-                        <Button btnName="Logout" weight="400" style={styles.btn} />
+                        <Button
+                            btnName="Help"
+                            weight="400"
+                            onPress={() => {
+                                navigation.navigate("Help");
+                            }}
+                            style={styles.btn}
+                        />
+                        <Button
+                            btnName="Logout"
+                            weight="400"
+                            style={styles.btn}
+                            onPress={() => {
+                                navigation.navigate("Getstarted");
+                            }}
+                        />
                     </View>
                 </ScrollView>
             </View>

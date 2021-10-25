@@ -234,6 +234,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                 time={a?.time}
                                                 reason={a?.reason}
                                                 text={a?.text}
+                                                style={{}}
                                             />
                                         </Modal>
                                     )}

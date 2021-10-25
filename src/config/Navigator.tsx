@@ -15,7 +15,8 @@ import {
     Complaints,
     ComplaintGroup,
     EditProfile,
-    Setting
+    Setting,
+    Help
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -26,7 +27,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Getstarted"
+                initialRouteName="Home"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false
@@ -46,6 +47,7 @@ export default function Navigator(): ReactElement {
                 <Stack.Screen name="DetailFilled" component={DetailFilled} />
                 <Stack.Screen name="EditProfile" component={EditProfile} />
                 <Stack.Screen name="Setting" component={Setting} />
+                <Stack.Screen name="Help" component={Help} />
             </Stack.Navigator>
         </NavigationContainer>
     );
