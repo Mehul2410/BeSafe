@@ -35,11 +35,17 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         });
         const result = await res.json();
         if (result.success) {
-            console.log(result);
-            navigation.navigate("Home");
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: "Home",
+                        params: result
+                    }
+                ]
+            });
             formikActions.resetForm();
             formikActions.setSubmitting(false);
-            return true;
         } else {
             setSignInError(result.message);
             setTimeout(() => {

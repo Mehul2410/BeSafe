@@ -3,7 +3,17 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ImageSourcePropType } from "react-native";
 
 export type StackNavigatorParams = {
-    Home: undefined;
+    Home?: {
+        user: {
+            _id: string;
+            name: string;
+            email: string;
+            password: string;
+            __v: number;
+        };
+        success: boolean;
+        token: string;
+    };
     Getstarted: undefined;
     Language: undefined;
     Register: {

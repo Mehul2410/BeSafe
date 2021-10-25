@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Background, CustomInput, Text, Button } from "@components";
-import { Image, View } from "react-native";
+import { Background, CustomInput, Text, Button, ImageUpload } from "@components";
+import { View } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { StyleSheet } from "react-native";
 
 export function EditProfile() {
     const [date, setDate] = useState("Date");
@@ -42,7 +41,8 @@ export function EditProfile() {
                 >
                     Edit Profile
                 </Text>
-                <View style={{ marginTop: 25 }}>
+                <View style={{ marginTop: 25, alignItems: "center" }}>
+                    <ImageUpload />
                     <Button
                         btnName={date}
                         weight="400"

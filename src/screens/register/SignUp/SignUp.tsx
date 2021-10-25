@@ -6,7 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import styles from "./signup.styles";
 import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
-import { createUser } from "@contexts/api/client";
+import { createUser, signInUser } from "@contexts/api/client";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
@@ -37,6 +37,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             confirmPassword: string;
         }>
     ) => {
+        const { email, password } = values;
         const res = await fetch(createUser, {
             method: "POST",
             headers: {
@@ -47,10 +48,28 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         });
         const result = await res.json();
         if (result.success) {
-            navigation.navigate("SignIn", roleSignIn);
+            const signInReq = await fetch(signInUser, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const signInRes = await signInReq.json();
+            if (signInRes.success) {
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: "Home",
+                            params: signInRes
+                        }
+                    ]
+                });
+            }
             formikActions.resetForm();
             formikActions.setSubmitting(false);
-            return true;
         } else {
             setSignUpError(result.message);
             setTimeout(() => {
