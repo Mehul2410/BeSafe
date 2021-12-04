@@ -1,4 +1,4 @@
-export { default as ImageUpload } from "./ImageUpload/ImageUpload";
+export { default as ImageUpload } from "./ImageUpload/ImageUpload.jsx";
 export { default as AppBootstrap } from "./AppBootstrap/app-bootstrap";
 export { default as Text } from "./text/Text";
 export { default as Background } from "./background/Background";

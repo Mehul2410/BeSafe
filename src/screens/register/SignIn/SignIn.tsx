@@ -7,13 +7,15 @@ import styles from "./signin.styles";
 import { SignInvalidationSchema } from "@utils";
 import { Formik, FormikHelpers } from "formik";
 import { signInUser } from "@contexts/api/client";
+import { useDispatch } from "react-redux";
+import { signIn } from "@contexts/slice/authSlice";
 
 export default function SignIn({ navigation, route }: NavigationProps<"SignIn">): ReactElement {
     const signInInfo = {
         email: "",
         password: ""
     };
-
+    const dispatch = useDispatch();
     const [signInError, setSignInError] = React.useState("");
     const SignInUser = async (
         values: {
@@ -34,24 +36,25 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
-        if (result.success) {
-            navigation.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: "Home",
-                        params: result
-                    }
-                ]
-            });
-            formikActions.resetForm();
-            formikActions.setSubmitting(false);
-        } else {
-            setSignInError(result.message);
-            setTimeout(() => {
-                setSignInError("");
-            }, 3000);
-        }
+        dispatch(signIn(result));
+        // if (result.success) {
+        //     navigation.reset({
+        //         index: 0,
+        //         routes: [
+        //             {
+        //                 name: "Home",
+        //                 params: result
+        //             }
+        //         ]
+        //     });
+        //     formikActions.resetForm();
+        //     formikActions.setSubmitting(false);
+        // } else {
+        //     setSignInError(result.message);
+        //     setTimeout(() => {
+        //         setSignInError("");
+        //     }, 3000);
+        // }
     };
 
     return (

@@ -27,7 +27,7 @@ export default function Navigator(): ReactElement {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="Home"
+                initialRouteName="Getstarted"
                 screenOptions={{
                     headerMode: "screen",
                     headerShown: false

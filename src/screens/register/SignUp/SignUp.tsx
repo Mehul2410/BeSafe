@@ -7,34 +7,34 @@ import styles from "./signup.styles";
 import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
 import { createUser, signInUser } from "@contexts/api/client";
+import { useDispatch } from "react-redux";
+import { signIn, signUp } from "@contexts/slice/authSlice";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
+    const dispatch = useDispatch();
     const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
     const signUpInfo = {
         name: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        role: route.params.role
     };
     const [signUpError, setSignUpError] = React.useState("");
-    const roleSignIn = {
-        uri: route.params.uri,
-        role: route.params.role,
-        agree: route.params.agree
-    };
-
     const SignUpUser = async (
         values: {
             name: string;
             email: string;
             password: string;
             confirmPassword: string;
+            role: string;
         },
         formikActions: FormikHelpers<{
             name: string;
             email: string;
             password: string;
             confirmPassword: string;
+            role: string;
         }>
     ) => {
         const { email, password } = values;
@@ -47,6 +47,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
+        dispatch(signUp(result));
         if (result.success) {
             const signInReq = await fetch(signInUser, {
                 method: "POST",
@@ -57,17 +58,19 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 body: JSON.stringify({ email, password })
             });
             const signInRes = await signInReq.json();
-            if (signInRes.success) {
-                navigation.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: "Home",
-                            params: signInRes
-                        }
-                    ]
-                });
-            }
+            dispatch(signIn(signInRes));
+
+            // if (signInRes.success) {
+            //     navigation.reset({
+            //         index: 0,
+            //         routes: [
+            //             {
+            //                 name: "Home",
+            //                 params: signInRes
+            //             }
+            //         ]
+            //     });
+            // }
             formikActions.resetForm();
             formikActions.setSubmitting(false);
         } else {
@@ -94,7 +97,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                         onSubmit={SignUpUser}
                     >
                         {({ values, handleChange, errors, handleBlur, touched, handleSubmit }) => {
-                            const { name, email, password, confirmPassword } = values;
+                            const { name, email, password, confirmPassword, role } = values;
                             return (
                                 <>
                                     <Text weight="700" style={{ color: "red", fontSize: 14 }}>
