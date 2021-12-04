@@ -2,48 +2,30 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     screenview: {
-        width: "100%",
-        height: "100%",
-        display: "flex",
+        flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
-    scroll: {
-        width: "100%"
-    },
-    text: {
-        color: "#FFF",
-        textAlign: "justify"
-    },
-    button: {
-        width: 350,
-        maxWidth: "80%",
-        textAlign: "center",
-        backgroundColor: "#FFF",
-        color: "#362C87",
-        marginVertical: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 30,
-        borderRadius: 10
-    },
     container1: {
-        display: "flex",
-        width: "100%",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        paddingBottom: 30,
-        flex: 1
-    },
-    container2: {
-        display: "flex",
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        height: 300,
-        padding: 20,
+        flex: 1.6,
+        marginBottom: 20
+    },
+    container2: {
+        flex: 1.4,
+        width: "100%",
+        paddingHorizontal: 20,
+        paddingTop: 50,
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: "#1D0ECC",
         borderTopRightRadius: 50,
         borderTopLeftRadius: 50
+    },
+    list: {
+        width: "80%"
     },
     img: {
         height: 250,
