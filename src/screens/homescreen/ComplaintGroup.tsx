@@ -103,9 +103,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     <ScrollView style={{}}>
                         {group.map(item => {
                             return (
-                                <>
+                                <View key={item.id}>
                                     <View
-                                        key={item.id}
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
@@ -238,7 +237,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                             />
                                         </Modal>
                                     )}
-                                </>
+                                </View>
                             );
                         })}
                     </ScrollView>

@@ -5,7 +5,7 @@ import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "
 import { Text } from "@components";
 import { colors } from "@utils";
 import { createStackNavigator } from "@react-navigation/stack";
-import TabAuthNavigator from "./TabAuthNavigator";
+import AuthNavigator from "./AuthNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -41,14 +41,14 @@ const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
 );
 
 const Tabs = () => {
-    const [margin, setMargin] = useState(25);
+    const [margin, setMargin] = useState(10);
 
     useEffect(() => {
         const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
             setMargin(-120);
         });
         const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setMargin(25);
+            setMargin(10);
         });
 
         return () => {
@@ -122,7 +122,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={TabAuthNavigator}
+                component={AuthNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: "center", justifyContent: "center" }}>

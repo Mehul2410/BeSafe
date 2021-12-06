@@ -43,9 +43,9 @@ export function Help({ navigation }: NavigationProps<"Help">) {
                     />
                     <Button
                         btnName="Submit"
-                        onPress={() => {
-                            navigation.navigate("Profile");
-                        }}
+                        // onPress={() => {
+                        //     navigation.navigate("Profile");
+                        // }}
                         style={{
                             width: 340,
                             height: 50,

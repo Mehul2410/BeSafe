@@ -5,9 +5,7 @@ import { StyleSheet } from "react-native";
 import { Button } from "@components";
 import { NavigationProps } from "@types";
 
-export function Profile({ navigation, route }: NavigationProps<"Profile">) {
-    const [token, setToken] = React.useState(route.params.token);
-    console.log(route.params.token);
+export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
     return (
         <Background>
             <View style={styles.view}>
@@ -76,7 +74,7 @@ export function Profile({ navigation, route }: NavigationProps<"Profile">) {
                             weight="400"
                             style={styles.btn}
                             onPress={() => {
-                                navigation.navigate("EditProfile", { token: token });
+                                navigation.navigate("EditProfile");
                             }}
                         />
                         <Button

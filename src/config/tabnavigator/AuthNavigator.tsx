@@ -1,20 +1,12 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import {
-    Profile,
-    EditProfile,
-    Help,
-    Setting,
-    Complaints,
-    ComplaintGroup,
-    Getstarted
-} from "@screens";
+import { Profile, EditProfile, Help, Setting, Complaints, ComplaintGroup } from "@screens";
 
 import { StackNavigatorParams } from "@types";
 
 const Stack = createStackNavigator<StackNavigatorParams>();
 
-export default function TabAuthNavigator(): ReactElement {
+export default function AuthNavigator(): ReactElement {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -22,7 +14,7 @@ export default function TabAuthNavigator(): ReactElement {
                 headerShown: false
             }}
         >
-            <Stack.Screen name="Profile" component={Profile} />
+            <Stack.Screen name="UserProfile" component={Profile} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="Complaints" component={Complaints} />
             <Stack.Screen name="ComplaintGroup" component={ComplaintGroup} />
