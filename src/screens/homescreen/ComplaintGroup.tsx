@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView, Modal } from "react-native";
+import { View, Image, ScrollView, Modal, ImageBackgroundBase } from "react-native";
 import { Background, Text } from "@components";
 import { StyleSheet } from "react-native";
 import { NavigationProps } from "@types";
@@ -78,29 +78,19 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
 
     return (
         <Background>
-            <View style={{ flex: 1, height: "100%", width: "100%" }}>
-                <View style={{ alignItems: "center", width: "100%" }}>
-                    <Text style={{ color: "#FFF", marginBottom: 18 }}>Complaints</Text>
-                    <Text
-                        weight="700"
-                        style={{
-                            backgroundColor: "#A6B1E1",
-                            height: 36,
-                            width: 90,
-                            textAlign: "center",
-                            alignItems: "center",
-                            textAlignVertical: "center",
-                            borderRadius: 10,
-                            fontSize: 20,
-                            right: 140,
-                            marginBottom: 10
-                        }}
-                    >
-                        2021
-                    </Text>
-                </View>
-                <View style={{ height: "80%", alignItems: "center", width: "100%" }}>
-                    <ScrollView style={{}}>
+            {/* style={{ flex: 1, height: "100%", width: "100%" }}
+             style={{ alignItems: "center", width: "100%" }}
+             */}
+            <View>
+                <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
+                    Complaints
+                </Text>
+                <View
+                    style={{
+                        paddingHorizontal: 20
+                    }}
+                >
+                    <ScrollView>
                         {group.map(item => {
                             return (
                                 <View key={item.id}>
@@ -108,12 +98,13 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                         style={{
                                             display: "flex",
                                             flexDirection: "row",
-                                            marginVertical: 10
+                                            marginVertical: 10,
+                                            width: "100%"
                                         }}
                                     >
                                         <View
                                             style={{
-                                                flexDirection: "column",
+                                                width: "20%",
                                                 paddingTop: 10,
                                                 paddingEnd: 10
                                             }}
@@ -142,51 +133,50 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                         <View
                                             style={{
                                                 backgroundColor: "#434974",
-                                                height: 140,
-                                                width: 290,
                                                 borderRadius: 10,
-                                                padding: 10
+                                                padding: 10,
+                                                width: "80%"
                                             }}
                                         >
                                             <View
                                                 style={{
                                                     flexDirection: "row",
-                                                    alignItems: "center",
                                                     justifyContent: "space-between"
                                                 }}
                                             >
-                                                <Text
-                                                    weight="700"
+                                                <View
                                                     style={{
-                                                        backgroundColor: "#A6B1E1",
-                                                        height: 35,
-                                                        width: 100,
-                                                        textAlign: "center",
-                                                        alignItems: "center",
-                                                        textAlignVertical: "center",
-                                                        borderRadius: 10,
-                                                        fontSize: 20
+                                                        flexDirection: "row",
+                                                        alignItems: "center"
                                                     }}
                                                 >
-                                                    {item.status}
-                                                </Text>
-                                                <Image
-                                                    resizeMode="contain"
-                                                    style={{
-                                                        height: 22,
-                                                        width: 22,
-                                                        position: "relative",
-                                                        right: 40
-                                                    }}
-                                                    source={require("@assets/remainder.png")}
-                                                />
+                                                    <Text
+                                                        weight="700"
+                                                        style={{
+                                                            backgroundColor: "#A6B1E1",
+                                                            borderRadius: 10,
+                                                            fontSize: 14,
+                                                            paddingHorizontal: 8,
+                                                            paddingVertical: 4
+                                                        }}
+                                                    >
+                                                        {item.status}
+                                                    </Text>
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        style={{
+                                                            height: 22,
+                                                            width: 22,
+                                                            marginLeft: 4
+                                                        }}
+                                                        source={require("@assets/remainder.png")}
+                                                    />
+                                                </View>
                                                 <Text
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,
-                                                        fontSize: 18,
-                                                        position: "relative",
-                                                        right: 10
+                                                        fontSize: 15
                                                     }}
                                                     onPress={() => {
                                                         seta(item);
@@ -201,21 +191,19 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                 weight="400"
                                                 style={{
                                                     color: colors.white,
-                                                    fontSize: 20,
-                                                    paddingTop: 25,
-                                                    paddingStart: 5
+                                                    fontSize: 15,
+                                                    marginTop: 5
                                                 }}
                                             >
                                                 {item.reason}
                                             </Text>
                                             <Text
-                                                numberOfLines={1}
+                                                numberOfLines={3}
                                                 weight="400"
                                                 style={{
                                                     color: colors.white,
-                                                    fontSize: 18,
-                                                    paddingTop: 5,
-                                                    paddingStart: 5
+                                                    fontSize: 12,
+                                                    paddingTop: 5
                                                 }}
                                             >
                                                 {item.text}

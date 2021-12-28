@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     lang: "en",
     role: "citizen",
-    token: undefined,
+    token: "sdvb",
     name: "",
     email: "",
     user: "",

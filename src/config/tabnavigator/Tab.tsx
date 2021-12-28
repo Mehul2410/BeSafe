@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { ReactNode, useEffect, useState } from "react";
-import { Home, Profile, Post } from "@screens";
+import { Home, Profile, Post, ComplaintGroup } from "@screens";
 import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "react-native";
 import { Text } from "@components";
 import { colors } from "@utils";
-import { createStackNavigator } from "@react-navigation/stack";
 import AuthNavigator from "./AuthNavigator";
 
 type CustomTabBarButtonprops = {
@@ -75,7 +74,7 @@ const Tabs = () => {
         >
             <Tab.Screen
                 name="Home"
-                component={Home}
+                component={ComplaintGroup}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: "center", justifyContent: "center" }}>
