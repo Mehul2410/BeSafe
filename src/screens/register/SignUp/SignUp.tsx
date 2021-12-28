@@ -58,19 +58,12 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 body: JSON.stringify({ email, password })
             });
             const signInRes = await signInReq.json();
-            dispatch(signIn(signInRes));
 
-            // if (signInRes.success) {
-            //     navigation.reset({
-            //         index: 0,
-            //         routes: [
-            //             {
-            //                 name: "Home",
-            //                 params: signInRes
-            //             }
-            //         ]
-            //     });
-            // }
+            if (signInRes.success) {
+                formikActions.resetForm();
+                formikActions.setSubmitting(false);
+                dispatch(signIn(signInRes));
+            }
             formikActions.resetForm();
             formikActions.setSubmitting(false);
         } else {

@@ -36,25 +36,16 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
-        dispatch(signIn(result));
-        // if (result.success) {
-        //     navigation.reset({
-        //         index: 0,
-        //         routes: [
-        //             {
-        //                 name: "Home",
-        //                 params: result
-        //             }
-        //         ]
-        //     });
-        //     formikActions.resetForm();
-        //     formikActions.setSubmitting(false);
-        // } else {
-        //     setSignInError(result.message);
-        //     setTimeout(() => {
-        //         setSignInError("");
-        //     }, 3000);
-        // }
+        if (result.success) {
+            formikActions.resetForm();
+            formikActions.setSubmitting(false);
+            dispatch(signIn(result));
+        } else {
+            setSignInError(result.message);
+            setTimeout(() => {
+                setSignInError("");
+            }, 3000);
+        }
     };
 
     return (

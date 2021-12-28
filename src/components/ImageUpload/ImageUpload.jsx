@@ -46,7 +46,7 @@ const ImageUpload = ({ navigation, token }) => {
             const data = await res.json();
             console.log(data);
             if (data.success) {
-                navigation.navigate("Profile", { token });
+                // navigation.navigate("Profile", { token });
             }
         } catch (error) {
             console.log(error.message);

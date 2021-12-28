@@ -17,5 +17,11 @@ module.exports = {
         sourceType: "module"
     },
     plugins: ["react", "@typescript-eslint"],
-    rules: {}
+    rules: {},
+    settings: {
+        react: {
+            // Fragment to use (may be a property of <pragma>), default to "Fragment"
+            version: "detect"
+        }
+    }
 };

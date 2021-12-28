@@ -4,9 +4,11 @@ import { View } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
+import { useSelector, RootStateOrAny } from "react-redux";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
-    console.log("aaa  ", route.params.token);
+    const token = useSelector((state: RootStateOrAny) => state.auth.token);
+    console.log(token);
     const [date, setDate] = useState("Date");
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -43,7 +45,7 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                     Edit Profile
                 </Text>
                 <View style={{ marginTop: 25, alignItems: "center" }}>
-                    <ImageUpload navigation={navigation} token={route.params.token} />
+                    <ImageUpload navigation={navigation} token={token} />
                     <Button
                         btnName={date}
                         weight="400"
