@@ -1,9 +1,8 @@
 import React from "react";
-import { Background, Text } from "@components";
+import { Background, Text, BtnText } from "@components";
 import { Image, ScrollView, View } from "react-native";
-import { StyleSheet } from "react-native";
-import { Button } from "@components";
 import { NavigationProps } from "@types";
+import styles from "./Profile.styles";
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
     return (
@@ -11,144 +10,77 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
             <View style={styles.view}>
                 <ScrollView style={{ height: "100%" }}>
                     <View style={{ alignItems: "center" }}>
-                        <Image style={styles.img} source={require("@assets/prachit.png")} />
+                        <View style={{ position: "relative" }}>
+                            <Image style={styles.img} source={require("@assets/img.png")} />
+
+                            <View style={styles.edit}>
+                                <Image source={require("@assets/edit.png")} />
+                            </View>
+                        </View>
                     </View>
-                    <View style={{ paddingBottom: 10 }}>
-                        <Text
-                            weight="400"
-                            style={{
-                                color: "#FFF",
-                                textAlign: "center",
-                                backgroundColor: "#1D0ECC",
-                                height: 50,
-                                width: 320,
-                                borderTopLeftRadius: 10,
-                                borderTopRightRadius: 10,
-                                paddingVertical: 9
-                            }}
-                        >
-                            prachit bipin gharat
+                    <View style={styles.name}>
+                        <Text weight="400" color="#FFF">
+                            John K. Wick
                         </Text>
+
                         <View
-                            style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                borderTopColor: "#FFF",
-                                borderTopWidth: 1
-                            }}
+                            style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
                         >
-                            <Text
-                                weight="400"
-                                style={{
-                                    color: "#FFF",
-                                    textAlign: "center",
-                                    backgroundColor: "#1D0ECC",
-                                    height: 50,
-                                    width: 160,
-                                    borderBottomLeftRadius: 10,
-                                    paddingVertical: 9
-                                }}
-                            >
-                                citizen
-                            </Text>
-                            <Text
-                                weight="400"
-                                style={{
-                                    color: "#FFF",
-                                    textAlign: "center",
-                                    backgroundColor: "#1D0ECC",
-                                    height: 50,
-                                    width: 160,
-                                    borderBottomRightRadius: 10,
-                                    paddingVertical: 9
-                                }}
-                            >
-                                <Image source={require("@assets/percent.png")} />
+                            <Image source={require("@assets/percent.png")} />
+                            <Text weight="400" color="#FFF">
                                 90%
                             </Text>
                         </View>
                     </View>
-                    <View>
-                        <Button
-                            btnName="Edit Profile"
+                    <View style={styles.probtn}>
+                        <Text
                             weight="400"
-                            style={styles.btn}
+                            color="#FFF"
                             onPress={() => {
                                 navigation.navigate("EditProfile");
                             }}
-                        />
-                        <Button
-                            btnName="Complaints"
+                        >
+                            Edit Profile
+                        </Text>
+                        <Text
                             weight="400"
-                            style={styles.btn}
+                            color="#FFF"
                             onPress={() => {
                                 navigation.navigate("ComplaintGroup");
                             }}
-                        />
-                        <Button
-                            btnName="Setting"
+                        >
+                            ComplaintGroup
+                        </Text>
+                        <Text
                             weight="400"
-                            style={styles.btn}
+                            color="#FFF"
                             onPress={() => {
                                 navigation.navigate("Setting");
                             }}
-                        />
-                        <Button
-                            btnName="Help"
+                        >
+                            Setting
+                        </Text>
+                        <Text
                             weight="400"
+                            color="#FFF"
                             onPress={() => {
                                 navigation.navigate("Help");
                             }}
-                            style={styles.btn}
-                        />
-                        <Button
-                            btnName="Logout"
+                        >
+                            Help
+                        </Text>
+                        <Text
                             weight="400"
-                            style={styles.btn}
+                            color="#FFF"
                             onPress={() => {
                                 navigation.navigate("Getstarted");
                             }}
-                        />
+                        >
+                            Getstarted
+                        </Text>
                     </View>
                 </ScrollView>
             </View>
         </Background>
     );
 }
-const styles = StyleSheet.create({
-    view: {
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100%"
-    },
-    img: {
-        height: 170,
-        width: 170,
-        borderRadius: 95,
-        marginBottom: 30,
-        alignItems: "center",
-        justifyContent: "center"
-    },
-    // protext: {
-    //     color: "#FFF",
-    //     textAlign: "center",
-    //     backgroundColor: "#1D0ECC",
-    //     height: 50,
-    //     width: 320,
-    //     borderTopLeftRadius: 10,
-    //     borderTopRightRadius: 10,
-
-    //     paddingVertical: 9
-    // },
-    btn: {
-        color: "#FFF",
-        textAlign: "center",
-        backgroundColor: "#1D0ECC",
-        height: 50,
-        width: 320,
-        borderRadius: 10,
-        marginVertical: 10,
-        paddingVertical: 9
-    }
-});

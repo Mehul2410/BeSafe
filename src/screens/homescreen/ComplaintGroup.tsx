@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Image, ScrollView, Modal, ImageBackgroundBase } from "react-native";
-import { Background, Text } from "@components";
+import { Background, Button, Text } from "@components";
 import { StyleSheet } from "react-native";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
@@ -73,6 +73,15 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
             view: "View",
             reason: "Reason",
             text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
+        },
+        {
+            id: 7,
+            date: "29-Aug",
+            time: "06:00 am",
+            status: "status",
+            view: "View",
+            reason: "Reason",
+            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
         }
     ];
 
@@ -104,38 +113,10 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                     >
                                         <View
                                             style={{
-                                                width: "20%",
-                                                paddingTop: 10,
-                                                paddingEnd: 10
-                                            }}
-                                        >
-                                            <Text
-                                                weight="400"
-                                                style={{
-                                                    color: colors.white,
-                                                    textAlign: "left",
-                                                    fontSize: 14
-                                                }}
-                                            >
-                                                {item.date}
-                                            </Text>
-                                            <Text
-                                                weight="400"
-                                                style={{
-                                                    color: colors.white,
-                                                    textAlign: "left",
-                                                    fontSize: 14
-                                                }}
-                                            >
-                                                {item.time}
-                                            </Text>
-                                        </View>
-                                        <View
-                                            style={{
-                                                backgroundColor: "#434974",
+                                                backgroundColor: "#281B89",
                                                 borderRadius: 10,
                                                 padding: 10,
-                                                width: "80%"
+                                                width: "100%"
                                             }}
                                         >
                                             <View
@@ -153,7 +134,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     <Text
                                                         weight="700"
                                                         style={{
-                                                            backgroundColor: "#A6B1E1",
+                                                            backgroundColor: "#fff",
                                                             borderRadius: 10,
                                                             fontSize: 14,
                                                             paddingHorizontal: 8,
@@ -210,7 +191,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                             </Text>
                                         </View>
                                     </View>
-
                                     {show && (
                                         <Modal transparent={true}>
                                             <Complaints

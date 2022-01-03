@@ -3,7 +3,6 @@ import { Text as DefaultText, TextProps as NativeTextProps } from "react-native"
 
 type TextProps = {
     weight: "900" | "700" | "400" | "200";
-    color?: "#FFF";
 
     children: ReactNode;
 } & NativeTextProps;
@@ -16,7 +15,6 @@ export default function Text({
     children,
     style,
     weight,
-    color,
 
     ...props
 }: TextProps): ReactElement {
@@ -37,7 +35,7 @@ export default function Text({
     }
 
     return (
-        <DefaultText {...props} style={[{ fontSize, fontFamily, color }, style]}>
+        <DefaultText {...props} style={[{ fontSize, fontFamily, color: "#fff" }, style]}>
             {children}
         </DefaultText>
     );
