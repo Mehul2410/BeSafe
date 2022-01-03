@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView, Modal, ImageBackgroundBase } from "react-native";
-import { Background, Button, Text } from "@components";
-import { StyleSheet } from "react-native";
+import { View, Image, ScrollView, Modal } from "react-native";
+import { Background, StatusDetail, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { Complaints } from "./Complaints";
@@ -131,19 +130,9 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                         alignItems: "center"
                                                     }}
                                                 >
-                                                    <Text
-                                                        weight="700"
-                                                        style={{
-                                                            backgroundColor: "#fff",
-                                                            borderRadius: 10,
-                                                            fontSize: 14,
-                                                            paddingHorizontal: 8,
-                                                            paddingVertical: 4
-                                                        }}
-                                                    >
-                                                        {item.status}
-                                                    </Text>
-                                                    <Image
+                                                    <StatusDetail string={item.status} />
+
+                                                    {/* <Image
                                                         resizeMode="contain"
                                                         style={{
                                                             height: 22,
@@ -151,7 +140,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                             marginLeft: 4
                                                         }}
                                                         source={require("@assets/remainder.png")}
-                                                    />
+                                                    /> */}
                                                 </View>
                                                 <Text
                                                     weight="400"

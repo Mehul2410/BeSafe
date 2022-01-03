@@ -1,20 +1,23 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    profile: {
+        height: "20%",
+        marginBottom: 20
+    },
     view: {
         display: "flex",
+        width: "100%",
+        height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",
-        paddingTop: 50
+        paddingHorizontal: 20,
+        paddingBottom: 40
     },
     img: {
-        height: 170,
-        width: 170,
+        height: 150,
+        width: 150,
         borderRadius: 95,
-        marginBottom: 30,
-        alignItems: "center",
-        justifyContent: "center",
         borderColor: "#1D0ECC",
         borderWidth: 5
     },
@@ -24,8 +27,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
         borderRadius: 50,
         position: "absolute",
-        top: 145,
-        right: 35,
+        right: 0,
+        bottom: 0,
         alignItems: "center",
         justifyContent: "center"
     },
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#1D0ECC",
         borderRadius: 10,
         paddingVertical: 18,
-        width: 330
+        width: "100%"
     },
 
     // protext: {
@@ -52,18 +55,12 @@ const styles = StyleSheet.create({
     //     paddingVertical: 9
     // },
     btn: {
-        color: "#FFF",
         textAlign: "center",
-        backgroundColor: "#1D0ECC",
-        height: 50,
-        width: 320,
-        borderRadius: 10,
-        marginVertical: 10,
-        paddingVertical: 9
+        width: "100%"
     },
     probtn: {
-        height: 300,
-        width: 330,
+        width: "100%",
+        height: "40%",
         backgroundColor: "#1D0ECC",
         marginTop: 30,
         borderRadius: 10,
