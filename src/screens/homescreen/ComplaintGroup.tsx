@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Image, ScrollView, Modal } from "react-native";
-import { Background, StatusDetail, Text } from "@components";
+import { Background, StatusDetail, Date, Time, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { Complaints } from "./Complaints";
@@ -95,7 +95,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 </Text>
                 <View
                     style={{
-                        paddingHorizontal: 20
+                        paddingHorizontal: 20,
+                        paddingBottom: 215
                     }}
                 >
                     <ScrollView>
@@ -121,7 +122,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                             <View
                                                 style={{
                                                     flexDirection: "row",
-                                                    justifyContent: "space-between"
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center"
                                                 }}
                                             >
                                                 <View
@@ -131,7 +133,16 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     }}
                                                 >
                                                     <StatusDetail string={item.status} />
-
+                                                    <View
+                                                        style={{
+                                                            flexDirection: "column",
+                                                            alignItems: "flex-start",
+                                                            marginLeft: 10
+                                                        }}
+                                                    >
+                                                        <Date string={item.date} />
+                                                        <Time string={item.time} />
+                                                    </View>
                                                     {/* <Image
                                                         resizeMode="contain"
                                                         style={{
@@ -146,7 +157,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,
-                                                        fontSize: 15
+                                                        fontSize: 18
                                                     }}
                                                     onPress={() => {
                                                         seta(item);
@@ -168,7 +179,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                 {item.reason}
                                             </Text>
                                             <Text
-                                                numberOfLines={3}
+                                                numberOfLines={4}
                                                 weight="400"
                                                 style={{
                                                     color: colors.white,
