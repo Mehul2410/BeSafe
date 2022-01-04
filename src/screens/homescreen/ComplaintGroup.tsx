@@ -1,6 +1,13 @@
 import React, { useState } from "react";
-import { View, Image, ScrollView, Modal } from "react-native";
-import { Background, StatusDetail, Date, Time, Text } from "@components";
+import {
+    View,
+    Image,
+    ScrollView,
+    Modal,
+    TouchableOpacity,
+    TouchableWithoutFeedback
+} from "react-native";
+import { Background, StatusDetail, Text, DateAndTime } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { Complaints } from "./Complaints";
@@ -102,27 +109,28 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     <ScrollView>
                         {group.map(item => {
                             return (
-                                <View key={item.id}>
-                                    <View
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            marginVertical: 10,
-                                            width: "100%"
-                                        }}
-                                    >
+                                <TouchableWithoutFeedback
+                                    key={item.id}
+                                    onPress={() => {
+                                        seta(item);
+                                        setShow(true);
+                                    }}
+                                >
+                                    <View>
                                         <View
                                             style={{
+                                                marginVertical: 10,
+                                                width: "100%",
                                                 backgroundColor: "#281B89",
                                                 borderRadius: 10,
                                                 padding: 10,
-                                                width: "100%"
+                                                maxWidth: 350,
+                                                margin: "auto"
                                             }}
                                         >
                                             <View
                                                 style={{
                                                     flexDirection: "row",
-                                                    justifyContent: "space-between",
                                                     alignItems: "center"
                                                 }}
                                             >
@@ -140,8 +148,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                             marginLeft: 10
                                                         }}
                                                     >
-                                                        <Date string={item.date} />
-                                                        <Time string={item.time} />
+                                                        <DateAndTime string={item.date} />
+                                                        <DateAndTime string={item.time} />
                                                     </View>
                                                     {/* <Image
                                                         resizeMode="contain"
@@ -153,19 +161,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                         source={require("@assets/remainder.png")}
                                                     /> */}
                                                 </View>
-                                                <Text
-                                                    weight="400"
-                                                    style={{
-                                                        color: colors.white,
-                                                        fontSize: 18
-                                                    }}
-                                                    onPress={() => {
-                                                        seta(item);
-                                                        setShow(true);
-                                                    }}
-                                                >
-                                                    {item.view}
-                                                </Text>
                                             </View>
 
                                             <Text
@@ -190,22 +185,22 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                 {item.text}
                                             </Text>
                                         </View>
+                                        {show && (
+                                            <Modal transparent={true}>
+                                                <Complaints
+                                                    onPress={() => setShow(!show)}
+                                                    id={a?.id}
+                                                    status={a?.status}
+                                                    date={a?.date}
+                                                    time={a?.time}
+                                                    reason={a?.reason}
+                                                    text={a?.text}
+                                                    style={{}}
+                                                />
+                                            </Modal>
+                                        )}
                                     </View>
-                                    {show && (
-                                        <Modal transparent={true}>
-                                            <Complaints
-                                                onPress={() => setShow(!show)}
-                                                id={a?.id}
-                                                status={a?.status}
-                                                date={a?.date}
-                                                time={a?.time}
-                                                reason={a?.reason}
-                                                text={a?.text}
-                                                style={{}}
-                                            />
-                                        </Modal>
-                                    )}
-                                </View>
+                                </TouchableWithoutFeedback>
                             );
                         })}
                     </ScrollView>

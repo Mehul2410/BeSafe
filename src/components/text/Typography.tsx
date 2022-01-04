@@ -52,7 +52,7 @@ export const StatusDetail = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const Date = ({ string, color }: Props) => {
+export const DateAndTime = ({ string, color }: Props) => {
     return (
         <Text
             weight="400"
@@ -63,19 +63,5 @@ export const Date = ({ string, color }: Props) => {
         >
             {string}
         </Text>
-    );
-};
-export const Time = ({ string, color }: Props) => {
-    return (
-        <Text
-            weight="400"
-            color="#FFF"
-            style={{
-                fontSize: 12
-            }}
-        >
-            {string}
-        </Text>
-        // <View
     );
 };
