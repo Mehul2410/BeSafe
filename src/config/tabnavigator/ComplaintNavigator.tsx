@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Profile, EditProfile, Help, Setting, ComplaintGroup } from "@screens";
+import { ComplaintGroup, ComplaintsLayout } from "@screens";
 
 import { StackNavigatorParams } from "@types";
 
 const Stack = createStackNavigator<StackNavigatorParams>();
 
-export default function AuthNavigator(): ReactElement {
+export default function ComplaintNavigator(): ReactElement {
     return (
         <Stack.Navigator
             screenOptions={{
@@ -14,11 +14,8 @@ export default function AuthNavigator(): ReactElement {
                 headerShown: false
             }}
         >
-            <Stack.Screen name="UserProfile" component={Profile} />
-            <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="ComplaintGroup" component={ComplaintGroup} />
-            <Stack.Screen name="Setting" component={Setting} />
-            <Stack.Screen name="Help" component={Help} />
+            <Stack.Screen name="ComplaintsLayout" component={ComplaintsLayout} />
         </Stack.Navigator>
     );
 }

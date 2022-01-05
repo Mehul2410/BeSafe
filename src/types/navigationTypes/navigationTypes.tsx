@@ -35,6 +35,13 @@ export type StackNavigatorParams = {
     Post: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
+    ComplaintsLayout: {
+        id?: number;
+        date?: string;
+        time?: string;
+        status?: string;
+        text?: string;
+    };
 };
 
 export type NavigationProps<T extends keyof StackNavigatorParams> = {

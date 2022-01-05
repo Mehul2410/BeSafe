@@ -3,11 +3,14 @@ import { SafeAreaView, StyleSheet, StatusBar, Platform } from "react-native";
 
 type background = {
     children: ReactNode;
+    bgColor?: "#281B89";
 };
 
-export default function Background({ children }: background): ReactElement {
+export default function Background({ children, bgColor }: background): ReactElement {
     return (
-        <SafeAreaView style={styles.screenview}>
+        <SafeAreaView
+            style={[{ backgroundColor: bgColor ? bgColor : "#0085FF" }, styles.screenview]}
+        >
             <StatusBar barStyle="default" />
             {children}
         </SafeAreaView>
@@ -17,7 +20,6 @@ export default function Background({ children }: background): ReactElement {
 const styles = StyleSheet.create({
     screenview: {
         flex: 1,
-        backgroundColor: "#0085FF",
         paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
     }
 });

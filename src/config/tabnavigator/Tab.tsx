@@ -5,6 +5,7 @@ import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "
 import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
+import ComplaintNavigator from "./ComplaintNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -17,15 +18,13 @@ const Tab = createBottomTabNavigator();
 const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
     <TouchableOpacity
         onPress={onPress}
-        style={{ top: -40, justifyContent: "center", alignItems: "center" }}
+        style={{ top: -10, justifyContent: "center", alignItems: "center" }}
     >
         <View
             style={{
-                width: 70,
-                height: 70,
+                width: 60,
+                height: 60,
                 borderRadius: 35,
-                // borderColor: colors.primary,
-                // borderWidth: 4,
                 backgroundColor: colors.tertiary,
                 shadowColor: colors.black,
                 shadowOffset: { width: 6, height: 2 },
@@ -40,41 +39,20 @@ const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
 );
 
 const Tabs = () => {
-    const [margin, setMargin] = useState(10);
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-            setMargin(-120);
-        });
-        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setMargin(10);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    position: "absolute",
-                    bottom: margin,
-                    left: 20,
-                    right: 20,
-                    elevation: 0,
-                    borderRadius: 10,
-                    height: 80,
+                    height: 60,
                     backgroundColor: "#389FFE"
                 }
             }}
         >
             <Tab.Screen
                 name="Home"
-                component={ComplaintGroup}
+                component={ComplaintNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -88,15 +66,6 @@ const Tabs = () => {
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}
                             />
-                            <Text
-                                weight="200"
-                                style={{
-                                    color: focused ? "#1C32F3" : "#FFF",
-                                    fontFamily: "Chillax-Medium"
-                                }}
-                            >
-                                HOME
-                            </Text>
                         </View>
                     )
                 }}
@@ -135,15 +104,6 @@ const Tabs = () => {
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}
                             />
-                            <Text
-                                weight="200"
-                                style={{
-                                    color: focused ? "#1C32F3" : "#FFF",
-                                    fontFamily: "Chillax-Medium"
-                                }}
-                            >
-                                PROFILE
-                            </Text>
                         </View>
                     )
                 }}

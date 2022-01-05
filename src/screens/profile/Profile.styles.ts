@@ -2,8 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     profile: {
-        height: "20%",
-        marginBottom: 20
+        height: "25%"
     },
     view: {
         display: "flex",
@@ -11,8 +10,7 @@ const styles = StyleSheet.create({
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 20,
-        paddingBottom: 40
+        paddingHorizontal: 20
     },
     img: {
         height: 150,
