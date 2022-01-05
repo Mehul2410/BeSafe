@@ -186,7 +186,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                             </Text>
                                         </View>
                                         {show && (
-                                            <Modal transparent={true}>
+                                            <Modal transparent>
                                                 <Complaints
                                                     onPress={() => setShow(!show)}
                                                     id={a?.id}

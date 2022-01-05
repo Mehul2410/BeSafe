@@ -39,13 +39,14 @@ export const LightText = ({ string, color }: Props) => {
 export const StatusDetail = ({ string, color }: Props) => {
     return (
         <Text
-            weight="400"
+            weight="700"
             color="#1D0ECC"
             style={{
                 backgroundColor: "#fff",
                 borderRadius: 10,
                 paddingHorizontal: 15,
-                paddingVertical: 8
+                paddingVertical: 8,
+                fontSize: 17
             }}
         >
             {string}
@@ -59,6 +60,22 @@ export const DateAndTime = ({ string, color }: Props) => {
             color="#FFF"
             style={{
                 fontSize: 12
+            }}
+        >
+            {string}
+        </Text>
+    );
+};
+export const Reason = ({ string, color }: Props) => {
+    return (
+        <Text
+            weight="700"
+            style={{
+                color: "#FFF",
+                marginTop: 5,
+                marginBottom: 10,
+                fontSize: 18,
+                marginStart: 3
             }}
         >
             {string}

@@ -7,7 +7,8 @@ export {
     LightText,
     MediumText,
     StatusDetail,
-    DateAndTime
+    DateAndTime,
+    Reason
 } from "./text/Typography";
 export { default as Background } from "./background/Background";
 export { default as Button } from "./Button/Button";
