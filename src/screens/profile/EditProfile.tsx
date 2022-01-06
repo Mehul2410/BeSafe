@@ -8,7 +8,6 @@ import { useSelector, RootStateOrAny } from "react-redux";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
     const token = useSelector((state: RootStateOrAny) => state.auth.token);
-    console.log(token);
     const [date, setDate] = useState("Date");
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);

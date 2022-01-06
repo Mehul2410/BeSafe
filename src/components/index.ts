@@ -15,3 +15,5 @@ export { default as Button } from "./Button/Button";
 export { CharRole } from "./CharRole/CharRole";
 export { default as TextCheckBox } from "./TextCheckbox/TextCheckBox";
 export { default as CustomInput } from "./CustomInput/CustomInput";
+export { default as ImageInput } from "./ImagePicker/ImageInput";
+export { default as ImageInputList } from "./ImagePicker/ImageInputList";
