@@ -6,11 +6,24 @@ import { TextProps } from "react-native-elements";
 type btnProps = {
     weight?: "200" | "400" | "700" | "900" | undefined;
     btnName: string;
+    bgColor?: string;
+    textColor?: string;
 } & TextProps;
 
-export default function Button({ weight, btnName, style, ...props }: btnProps) {
+export default function Button({ weight, btnName, bgColor, textColor, style, ...props }: btnProps) {
     return (
-        <Text weight={weight} style={[styles.button, style]} {...props}>
+        <Text
+            weight={weight}
+            style={[
+                styles.button,
+                {
+                    backgroundColor: bgColor ? bgColor : "#1D0ECC",
+                    color: textColor ? textColor : "#FFF"
+                },
+                style
+            ]}
+            {...props}
+        >
             {btnName}
         </Text>
     );
@@ -20,9 +33,10 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 13,
         textAlign: "center",
-        backgroundColor: "#0085FF",
-        color: "#FFF",
         width: "100%",
-        borderRadius: 15
+        borderRadius: 10,
+        marginVertical: 8
     }
 });
+
+// backgroundColor: bgColor ? bgColor : "#0085FF",

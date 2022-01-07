@@ -26,12 +26,12 @@ const styles = StyleSheet.create({
     text: {
         backgroundColor: "#FFF",
         color: colors.quatnary,
-        height: 60,
+        height: 50,
         width: "100%",
         fontFamily: "Chillax-Regular",
-        fontSize: 18,
-        borderRadius: 15,
+        fontSize: 15,
+        borderRadius: 10,
         paddingLeft: 15,
-        marginVertical: 12
+        marginVertical: 8
     }
 });

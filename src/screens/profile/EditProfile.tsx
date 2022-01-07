@@ -27,52 +27,37 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
 
     return (
         <Background>
-            <View style={{ height: "100%", alignItems: "center" }}>
-                <Text
-                    weight="400"
+            <View
+                style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                    padding: 20,
+                    justifyContent: "center"
+                }}
+            >
+                <Button weight="400" btnName="Edit Profile" />
+                <View
                     style={{
-                        color: colors.white,
-                        fontSize: 24,
-                        height: 60,
-                        width: 350,
-                        backgroundColor: colors.tertiary,
-                        textAlign: "center",
-                        textAlignVertical: "center",
-                        borderRadius: 10
+                        marginTop: 25,
+                        alignItems: "center",
+                        width: "100%",
+                        height: "80%",
+                        justifyContent: "space-evenly"
                     }}
                 >
-                    Edit Profile
-                </Text>
-                <View style={{ marginTop: 25, alignItems: "center" }}>
                     <ImageUpload navigation={navigation} token={token} />
                     <Button
                         btnName={date}
                         weight="400"
                         numberOfLines={1}
                         onPress={showDatePicker}
-                        style={{
-                            backgroundColor: "#FFF",
-                            color: colors.quatnary,
-                            height: 53,
-                            width: 350,
-                            borderRadius: 10,
-                            fontSize: 18,
-                            marginVertical: 12
-                        }}
+                        bgColor="#FFF"
+                        textColor={colors.quatnary}
                     />
-
-                    <CustomInput
-                        placeholder="Adharcard or Pancard"
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
-                    <CustomInput
-                        placeholder="Address "
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
-                    <CustomInput
-                        placeholder="Occupation"
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
+                    <CustomInput placeholder="Adharcard or Pancard" />
+                    <CustomInput placeholder="Address" />
+                    <CustomInput placeholder="Occupation" />
                 </View>
 
                 <DateTimePickerModal

@@ -21,13 +21,13 @@ export default function Text({
     let fontFamily;
     if (weight === "900") {
         fontFamily = "Chillax-Bold";
-        fontSize = 45;
+        fontSize = 30;
     } else if (weight === "700") {
         fontFamily = "Chillax-Medium";
-        fontSize = 30;
+        fontSize = 24;
     } else if (weight === "400") {
         fontFamily = "Chillax-Regular";
-        fontSize = 20;
+        fontSize = 18;
     } else if (weight === "200") {
         fontFamily = "Chillax-Light";
         fontSize = 15;
