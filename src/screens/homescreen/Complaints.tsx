@@ -17,7 +17,6 @@ export function Complaints({ id, status, date, time, reason, text, ...props }: C
         <View
             style={{
                 alignItems: "center",
-                position: "absolute",
                 top: 0,
                 width: "100%",
                 height: "100%",

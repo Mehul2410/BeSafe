@@ -82,12 +82,12 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
         },
         {
             id: 7,
-            date: "29-Aug",
+            date: "29-sep",
             time: "06:00 am",
             status: "status",
             view: "View",
             reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
+            text: "Lorem is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
         }
     ];
 
