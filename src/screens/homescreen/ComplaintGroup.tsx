@@ -10,23 +10,8 @@ import {
 import { Background, StatusDetail, Text, DateAndTime } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-interface DataProps {
-    id?: number;
-    date?: string;
-    time?: string;
-    text?: string;
-    status?: string;
-}
 
 export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
-    const [Data, setData] = useState<DataProps>({
-        id: 0,
-        date: "",
-        time: "",
-        text: "",
-        status: ""
-    });
-    console.log(Data);
     const group = [
         {
             id: 1,
@@ -99,14 +84,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                 <TouchableWithoutFeedback
                                     key={item.id}
                                     onPress={() => {
-                                        setData({
-                                            id: item.id,
-                                            date: item.date,
-                                            time: item.time,
-                                            text: item.text,
-                                            status: item.status
-                                        });
-                                        navigation.navigate("ComplaintsLayout", Data);
+                                        navigation.navigate("ComplaintsLayout", item);
                                     }}
                                 >
                                     <View
