@@ -19,11 +19,11 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             color: colors.white
                         }}
                     >
-                        {route.params.role} Verification Details
+                        Verification Details
                     </Text>
                 </View>
                 <View style={styles.box2}>
-                    <ScrollView style={{ width: "80%", height: "80%" }}>
+                    <ScrollView>
                         <CustomInput placeholder="Adhaar Card No." />
                         <CustomInput placeholder="Pan Card No." />
                         <CustomInput placeholder="Email Id" />
@@ -34,6 +34,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                         <CustomInput placeholder="City" />
                         <CustomInput placeholder="Nearest Location" />
                         <Button
+                            style={{ backgroundColor: "#281B89" }}
                             btnName="verify"
                             weight="400"
                             onPress={() => navigation.navigate("DetailFilled")}

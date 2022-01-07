@@ -5,11 +5,12 @@ import Text from "./Text";
 interface Props {
     string?: string;
     color?: string;
+    vmargin?: number;
 }
 
-export const RegularText = ({ string, color }: Props) => {
+export const RegularText = ({ string, color, vmargin = 0 }: Props) => {
     return (
-        <Text weight="400" color="#FFF">
+        <Text weight="400" color="#FFF" style={{ marginVertical: vmargin }}>
             {string}
         </Text>
     );

@@ -54,7 +54,8 @@ const Tabs = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     height: 60,
-                    backgroundColor: "#130e5c"
+                    backgroundColor: "#130e5c",
+                    borderTopColor: "#130e5c"
                 }
             }}
         >
@@ -68,8 +69,8 @@ const Tabs = () => {
                                 source={require("@assets/homeicon.png")}
                                 resizeMode="contain"
                                 style={{
-                                    height: 25,
-                                    width: 25,
+                                    height: 20,
+                                    width: 20,
                                     marginBottom: 5,
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}
@@ -87,9 +88,10 @@ const Tabs = () => {
                             source={require("@assets/plus.png")}
                             resizeMode="contain"
                             style={{
-                                height: 25,
-                                width: 25,
-                                tintColor: focused ? "#FFF" : "#1C32F3"
+                                height: 20,
+                                width: 20,
+                                tintColor: focused ? "#1C32F3" : "#FFF",
+                                transform: focused ? [{ rotate: "45deg" }] : [{ rotate: "0deg" }]
                             }}
                         />
                     ),
@@ -106,8 +108,8 @@ const Tabs = () => {
                                 source={require("@assets/profileicon.png")}
                                 resizeMode="contain"
                                 style={{
-                                    height: 25,
-                                    width: 25,
+                                    height: 20,
+                                    width: 20,
                                     marginBottom: 5,
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}

@@ -52,8 +52,8 @@ const ImageInput = ({ imageUri, onChangeImage }: Props) => {
                         source={require("@assets/camera.png")}
                         resizeMode="contain"
                         style={{
-                            height: 80,
-                            width: 80
+                            height: 60,
+                            width: 60
                         }}
                     />
                 )}

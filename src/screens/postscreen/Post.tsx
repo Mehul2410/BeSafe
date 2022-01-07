@@ -64,7 +64,7 @@ export function Post() {
                         <CustomInput placeholder="Situation" />
                         <CustomInput placeholder="Near by" />
                         <CustomInput placeholder="Situation proof" />
-                        <RegularText string="Image Proof" />
+                        <RegularText string="Image Proof" vmargin={8} />
                         <ImageInputList
                             imageUri={imageUris}
                             onAddImage={handleAdd}
