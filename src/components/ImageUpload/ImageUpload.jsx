@@ -16,12 +16,16 @@ const ImageUpload = ({ navigation, token }) => {
             alert("Sorry we need camera roll premission to make this work!");
         }
         if (status === "granted") {
-            const response = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true
-            });
-            if (!response.cancelled) {
-                setProfileImage(response.uri);
+            try {
+                const response = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true
+                });
+                if (!response.cancelled) {
+                    setProfileImage(response.uri);
+                }
+            } catch (err) {
+                console.log(err);
             }
         }
     };
