@@ -1,7 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Home, Profile, Post, ComplaintGroup } from "@screens";
-import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "react-native";
+import {
+    View,
+    Image,
+    TouchableOpacity,
+    TouchableOpacityProps,
+    Keyboard,
+    TouchableWithoutFeedback
+} from "react-native";
 import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
@@ -16,26 +23,27 @@ type CustomTabBarButtonprops = {
 const Tab = createBottomTabNavigator();
 
 const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
         onPress={onPress}
         style={{ top: -10, justifyContent: "center", alignItems: "center" }}
     >
         <View
             style={{
-                width: 60,
-                height: 60,
-                borderRadius: 35,
+                width: 50,
+                height: 50,
+                borderRadius: 15,
                 backgroundColor: colors.tertiary,
                 shadowColor: colors.black,
                 shadowOffset: { width: 6, height: 2 },
                 shadowOpacity: 0.25,
                 shadowRadius: 4,
-                elevation: 4
+                elevation: 4,
+                marginTop: 4
             }}
         >
             {children}
         </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
 );
 
 const Tabs = () => {
