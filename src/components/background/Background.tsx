@@ -9,7 +9,7 @@ type background = {
 export default function Background({ children, bgColor }: background): ReactElement {
     return (
         <SafeAreaView
-            style={[{ backgroundColor: bgColor ? bgColor : "#0085FF" }, styles.screenview]}
+            style={[{ backgroundColor: bgColor ? bgColor : "#130e5c" }, styles.screenview]}
         >
             <StatusBar barStyle="default" />
             {children}

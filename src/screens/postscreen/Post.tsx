@@ -33,32 +33,32 @@ export function Post() {
                     padding: 20
                 }}
             >
-                <Text weight="700" style={{ color: "#FFF", fontSize: 21, textAlign: "center" }}>
+                <Text weight="700" style={{ color: "#FFF", fontSize: 18, textAlign: "center" }}>
                     Your details will be verified before processing!
                 </Text>
                 <Text
                     weight="400"
                     style={{
                         color: "#FFF",
-                        fontSize: 17,
+                        fontSize: 13,
                         textDecorationLine: "underline",
                         textAlign: "center",
-                        marginVertical: 18
+                        marginVertical: 10
                     }}
                 >
-                    Strict action will be taken for registering false complint!!!
+                    Strict action will be taken for registering false complaint!!!
                 </Text>
                 <View
                     style={{
                         width: "100%",
-                        backgroundColor: "#1D0ECC",
+                        height: "85%",
+                        backgroundColor: "#281B89",
                         paddingHorizontal: 20,
                         paddingVertical: 22,
-                        borderRadius: 15,
-                        zIndex: 1000
+                        borderRadius: 15
                     }}
                 >
-                    <ScrollView style={{ height: 465 }}>
+                    <ScrollView>
                         <CustomInput placeholder="Reason of complaint" />
                         <CustomInput placeholder="Location" />
                         <CustomInput placeholder="Situation" />
@@ -72,10 +72,7 @@ export function Post() {
                         />
 
                         <CustomInput placeholder="Your nearest police station" />
-                        <Button
-                            btnName="Submit"
-                            style={{ height: 55, fontSize: 24, marginTop: 6, marginBottom: 7 }}
-                        />
+                        <Button btnName="Submit" style={{ fontSize: 18, marginTop: 6 }} />
                     </ScrollView>
                 </View>
             </View>

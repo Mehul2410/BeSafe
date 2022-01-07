@@ -83,8 +83,10 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
         <Background>
             <View
                 style={{
+                    width: "100%",
+                    height: "100%",
                     paddingHorizontal: 20,
-                    paddingBottom: 120
+                    paddingBottom: 60
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
@@ -114,8 +116,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                             backgroundColor: "#281B89",
                                             borderRadius: 10,
                                             padding: 10,
-                                            maxWidth: 350,
-                                            margin: "auto",
                                             elevation: 3
                                         }}
                                     >

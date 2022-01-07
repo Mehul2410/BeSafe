@@ -11,24 +11,18 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
     const [account, setAccount] = useState(false);
     return (
         <Background>
-            <View style={{ height: "100%", alignItems: "center", marginTop: 20 }}>
-                <Text
-                    weight="400"
-                    style={{
-                        color: colors.white,
-                        fontSize: 24,
-                        height: 60,
-                        width: 350,
-                        backgroundColor: colors.tertiary,
-                        textAlign: "center",
-                        textAlignVertical: "center",
-                        borderRadius: 10
-                    }}
-                >
-                    Setting
-                </Text>
+            <View
+                style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                    marginTop: 20,
+                    padding: 20
+                }}
+            >
+                <Button weight="400" btnName="Setting" />
 
-                <View style={{ marginTop: 25 }}>
+                <View style={{ marginTop: 25, width: "100%", height: "100%" }}>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -37,16 +31,22 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                             setChangePassword(!changePassword);
                         }}
                     >
-                        <View style={{ height: "100%", width: "100%" }}>
+                        <View
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                justifyContent: "center",
+                                padding: 20
+                            }}
+                        >
                             <View
                                 style={{
-                                    height: 310,
-                                    width: 360,
+                                    width: "100%",
+                                    justifyContent: "center",
+                                    padding: 20,
                                     backgroundColor: colors.tertiary,
                                     alignItems: "center",
                                     borderRadius: 10,
-                                    marginTop: 55,
-                                    alignSelf: "center",
                                     shadowColor: colors.black,
                                     shadowOffset: { width: 0, height: 2 },
                                     shadowOpacity: 0.25,
@@ -54,47 +54,22 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     elevation: 5
                                 }}
                             >
-                                <Text
-                                    weight="700"
-                                    style={{ fontSize: 20, color: colors.white, marginTop: 30 }}
-                                >
+                                <Text weight="700" style={{ fontSize: 20, color: colors.white }}>
                                     Password
                                 </Text>
-                                <View style={{ marginTop: 18 }}>
-                                    <CustomInput
-                                        placeholder="Old Password"
-                                        style={{ height: 50, width: 310, borderRadius: 10 }}
-                                    />
-                                    <CustomInput
-                                        placeholder="New Password"
-                                        style={{ height: 50, width: 310, borderRadius: 10 }}
-                                    />
-                                    <CustomInput
-                                        placeholder="Confirm New Password"
-                                        style={{ height: 50, width: 310, borderRadius: 10 }}
-                                    />
+                                <View style={{ width: "100%" }}>
+                                    <CustomInput placeholder="Old Password" />
+                                    <CustomInput placeholder="New Password" />
+                                    <CustomInput placeholder="Confirm New Password" />
+                                    <Pressable onPress={() => setChangePassword(!changePassword)}>
+                                        <Button
+                                            bgColor="#130e5c"
+                                            btnName="Change Password"
+                                            weight="400"
+                                        />
+                                    </Pressable>
                                 </View>
                             </View>
-                            <Pressable onPress={() => setChangePassword(!changePassword)}>
-                                <Button
-                                    btnName="Change Password"
-                                    weight="700"
-                                    style={{
-                                        width: 360,
-                                        backgroundColor: colors.tertiary,
-                                        alignSelf: "center",
-                                        alignItems: "center",
-                                        borderRadius: 10,
-                                        fontSize: 22,
-                                        marginTop: 20,
-                                        shadowColor: colors.black,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 4,
-                                        elevation: 5
-                                    }}
-                                />
-                            </Pressable>
                         </View>
                     </Modal>
                     <Pressable>
@@ -102,19 +77,10 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                             weight="400"
                             btnName="Change Password"
                             onPress={() => setChangePassword(true)}
-                            style={{
-                                backgroundColor: colors.white,
-                                color: colors.black,
-                                height: 53,
-                                width: 350,
-                                borderRadius: 10,
-                                fontSize: 18,
-                                textAlignVertical: "center",
-                                marginVertical: 12
-                            }}
+                            bgColor="#FFF"
+                            textColor="#130e5c"
                         />
                     </Pressable>
-
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -123,16 +89,22 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                             setLanguage(!language);
                         }}
                     >
-                        <View style={{ height: "100%", width: "100%" }}>
+                        <View
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                justifyContent: "center",
+                                padding: 20
+                            }}
+                        >
                             <View
                                 style={{
-                                    height: 310,
-                                    width: 360,
+                                    width: "100%",
+                                    justifyContent: "center",
+                                    padding: 20,
                                     backgroundColor: colors.tertiary,
                                     alignItems: "center",
                                     borderRadius: 10,
-                                    marginTop: 55,
-                                    alignSelf: "center",
                                     shadowColor: colors.black,
                                     shadowOffset: { width: 0, height: 2 },
                                     shadowOpacity: 0.25,
@@ -140,91 +112,49 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     elevation: 5
                                 }}
                             >
-                                <Text
-                                    weight="700"
-                                    style={{ fontSize: 20, color: colors.white, marginTop: 30 }}
-                                >
+                                <Text weight="700" style={{ fontSize: 20, color: colors.white }}>
                                     Language
                                 </Text>
-                                <View style={{ marginTop: 18 }}>
+                                <View style={{ width: "100%", marginTop: 10 }}>
                                     <Button
+                                        weight="400"
                                         btnName="English"
-                                        style={{
-                                            height: 55,
-                                            width: 310,
-                                            borderRadius: 10,
-                                            backgroundColor: colors.white,
-                                            color: colors.quatnary,
-                                            fontSize: 22,
-                                            textAlignVertical: "center",
-                                            marginVertical: 8
-                                        }}
+                                        bgColor="#FFF"
+                                        textColor="#130e5c"
+                                        style={{ marginVertical: 8 }}
                                     />
                                     <Button
+                                        weight="400"
                                         btnName="हिंदी"
-                                        style={{
-                                            height: 55,
-                                            width: 310,
-                                            borderRadius: 10,
-                                            backgroundColor: colors.white,
-                                            color: colors.quatnary,
-                                            fontSize: 22,
-                                            textAlignVertical: "center",
-                                            marginVertical: 8
-                                        }}
+                                        bgColor="#FFF"
+                                        textColor="#130e5c"
+                                        style={{ marginVertical: 8 }}
                                     />
                                     <Button
+                                        weight="400"
                                         btnName="मराठी"
-                                        style={{
-                                            height: 55,
-                                            width: 310,
-                                            borderRadius: 10,
-                                            backgroundColor: colors.white,
-                                            color: colors.quatnary,
-                                            fontSize: 22,
-                                            textAlignVertical: "center",
-                                            marginVertical: 8
-                                        }}
+                                        bgColor="#FFF"
+                                        textColor="#130e5c"
+                                        style={{ marginVertical: 8 }}
                                     />
+                                    <Pressable>
+                                        <Button
+                                            btnName="Change language"
+                                            weight="400"
+                                            onPress={() => setLanguage(!language)}
+                                            bgColor="#130e5c"
+                                        />
+                                    </Pressable>
                                 </View>
                             </View>
-                            <Pressable>
-                                <Button
-                                    btnName="Change language"
-                                    weight="700"
-                                    onPress={() => setLanguage(!language)}
-                                    style={{
-                                        width: 360,
-                                        backgroundColor: colors.tertiary,
-                                        alignSelf: "center",
-                                        alignItems: "center",
-                                        borderRadius: 10,
-                                        fontSize: 22,
-                                        marginTop: 20,
-                                        shadowColor: colors.black,
-                                        shadowOffset: { width: 0, height: 2 },
-                                        shadowOpacity: 0.25,
-                                        shadowRadius: 4,
-                                        elevation: 5
-                                    }}
-                                />
-                            </Pressable>
                         </View>
                     </Modal>
                     <Pressable onPress={() => setLanguage(!language)}>
                         <Button
                             weight="400"
                             btnName="change Language"
-                            style={{
-                                backgroundColor: colors.white,
-                                color: colors.black,
-                                height: 53,
-                                width: 350,
-                                borderRadius: 10,
-                                fontSize: 18,
-                                textAlignVertical: "center",
-                                marginVertical: 12
-                            }}
+                            bgColor="#FFF"
+                            textColor="#130e5c"
                         />
                     </Pressable>
                     <Modal
@@ -235,16 +165,22 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                             setAccount(!account);
                         }}
                     >
-                        <View style={{ height: "100%", width: "100%" }}>
+                        <View
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                justifyContent: "center",
+                                padding: 20
+                            }}
+                        >
                             <View
                                 style={{
-                                    height: 310,
-                                    width: 360,
+                                    width: "100%",
+                                    justifyContent: "center",
+                                    padding: 20,
                                     backgroundColor: colors.tertiary,
                                     alignItems: "center",
                                     borderRadius: 10,
-                                    marginTop: 55,
-                                    alignSelf: "center",
                                     shadowColor: colors.black,
                                     shadowOffset: { width: 0, height: 2 },
                                     shadowOpacity: 0.25,
@@ -256,38 +192,22 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     weight="700"
                                     style={{
                                         color: colors.white,
-                                        fontSize: 20,
-                                        marginVertical: 30
+                                        fontSize: 20
                                     }}
                                 >
                                     Delete Account
                                 </Text>
-                                <CustomInput
-                                    placeholder="Reason?"
-                                    style={{
-                                        height: 50,
-                                        width: 310,
-                                        borderRadius: 10,
-                                        textAlignVertical: "center",
-                                        fontSize: 21,
-                                        textAlign: "center"
-                                    }}
-                                />
-                                <Pressable onPress={() => setAccount(!account)}>
-                                    <Button
-                                        btnName="Confirm"
-                                        style={{
-                                            width: 210,
-                                            height: 50,
-                                            fontSize: 21,
-
-                                            marginTop: 20,
-                                            borderRadius: 13,
-                                            color: colors.quatnary,
-                                            backgroundColor: colors.white
-                                        }}
-                                    />
-                                </Pressable>
+                                <CustomInput placeholder="Reason?" />
+                                <View style={{ width: "100%" }}>
+                                    <Pressable onPress={() => setAccount(!account)}>
+                                        <Button
+                                            weight="400"
+                                            btnName="Confirm"
+                                            bgColor="#FFF"
+                                            textColor="#130e5c"
+                                        />
+                                    </Pressable>
+                                </View>
                             </View>
                         </View>
                     </Modal>
@@ -296,16 +216,8 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                             weight="400"
                             btnName="Delete Account"
                             onPress={() => setAccount(true)}
-                            style={{
-                                backgroundColor: colors.white,
-                                color: colors.black,
-                                height: 53,
-                                width: 350,
-                                borderRadius: 10,
-                                fontSize: 18,
-                                textAlignVertical: "center",
-                                marginVertical: 12
-                            }}
+                            bgColor="#FFF"
+                            textColor="#130e5c"
                         />
                     </Pressable>
                 </View>

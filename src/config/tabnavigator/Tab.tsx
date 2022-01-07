@@ -54,7 +54,7 @@ const Tabs = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     height: 60,
-                    backgroundColor: "#389FFE"
+                    backgroundColor: "#130e5c"
                 }
             }}
         >
