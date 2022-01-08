@@ -5,7 +5,7 @@ import { NavigationProps } from "@types";
 import styles from "./Profile.styles";
 
 interface profileBtnProps {
-    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help";
+    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register";
     name: string;
 }
 
@@ -49,6 +49,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                     <ProfileText name="Complaints" navigate="ComplaintGroup" />
                     <ProfileText name="Setting" navigate="Setting" />
                     <ProfileText name="Help" navigate="Help" />
+                    <ProfileText name="Logout" navigate="Register" />
                 </View>
             </View>
         </Background>
