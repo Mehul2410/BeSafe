@@ -1,11 +1,15 @@
+import { isTokenExpired, setCredentials } from "@contexts/store/credentials";
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
     lang: "en",
-    role: "citizen",
-    token: "sdvb",
+    role: null,
+    token: "",
     name: "",
     email: "",
     user: "",
+    _id: "",
+    avatar: "",
     authorized: false
 };
 
@@ -14,27 +18,33 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         signUp: (state, action) => {
-            console.log(action.payload);
-            const { user } = action.payload;
-            state.name = user.name;
-            state.email = user.email;
-            state.user = user._id;
-            state.role = user.role;
+            const { success, access_token, refresh_token } = action.payload;
+            if (!isTokenExpired(access_token)) {
+                const keys = {
+                    access_token,
+                    refresh_token
+                };
+                setCredentials(keys);
+                state.token = access_token;
+            }
         },
-        signIn: (state, action) => {
-            console.log(action.payload);
-            const { token, user } = action.payload;
-            state.token = token;
-            state.name = user.name;
-            state.email = user.email;
-            state.user = user._id;
-            state.authorized = user.authorized;
+        getTokens: (state, action) => {
+            const { access_token, refresh_token } = action.payload;
+            state.token = access_token;
+        },
+        userData: (state, action) => {
+            const { _id, email, name, role, avatar } = action.payload;
+            state._id = _id;
+            state.email = email;
+            state.name = name;
+            state.role = role;
+            state.avatar = avatar;
         }
     },
     extraReducers: {}
 });
 
 // Action creators are generated for each case reducer function
-export const { signUp, signIn } = authSlice.actions;
+export const { signUp, getTokens, userData } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -13,19 +13,19 @@ export type StackNavigatorParams = {
     PoliceSignup: undefined;
     PoliceDetail: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
     };
     DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;
     SignIn: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
         agree?: string;
     };
     SignUp: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
         agree?: string;
     };
     UserProfile: undefined;

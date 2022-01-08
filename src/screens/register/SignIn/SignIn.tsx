@@ -8,25 +8,23 @@ import { SignInvalidationSchema } from "@utils";
 import { Formik, FormikHelpers } from "formik";
 import { signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
-import { signIn } from "@contexts/slice/authSlice";
+import { signUp } from "@contexts/slice/authSlice";
+
+interface signInProps {
+    email: string;
+    password: string;
+    role: number;
+}
 
 export default function SignIn({ navigation, route }: NavigationProps<"SignIn">): ReactElement {
     const signInInfo = {
         email: "",
-        password: ""
+        password: "",
+        role: route.params.role
     };
     const dispatch = useDispatch();
     const [signInError, setSignInError] = React.useState("");
-    const SignInUser = async (
-        values: {
-            email: string;
-            password: string;
-        },
-        formikActions: FormikHelpers<{
-            email: string;
-            password: string;
-        }>
-    ) => {
+    const SignInUser = async (values: signInProps, formikActions: FormikHelpers<signInProps>) => {
         const res = await fetch(signInUser, {
             method: "POST",
             headers: {
@@ -39,12 +37,17 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         if (result.success) {
             formikActions.resetForm();
             formikActions.setSubmitting(false);
-            dispatch(signIn(result));
+            // dispatch(signIn(result));
+            dispatch(signUp(result));
         } else {
             setSignInError(result.message);
             setTimeout(() => {
                 setSignInError("");
-            }, 3000);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Register" }]
+                });
+            }, 2000);
         }
     };
 
@@ -53,7 +56,9 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             <View style={styles.view}>
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
-                    <Text style={{ color: colors.white }}>Sign-in as {route.params.role}</Text>
+                    <Text style={{ color: colors.white }}>
+                        Sign-in as {route.params.role === 5000 ? "Police" : "Citizen"}
+                    </Text>
                 </View>
                 <View style={styles.box2}>
                     <Formik
@@ -62,7 +67,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                         onSubmit={SignInUser}
                     >
                         {({ values, handleChange, errors, handleBlur, touched, handleSubmit }) => {
-                            const { email, password } = values;
+                            const { email, password, role } = values;
                             return (
                                 <>
                                     <Text weight="700" style={{ color: "red", fontSize: 14 }}>

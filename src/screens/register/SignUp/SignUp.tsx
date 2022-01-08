@@ -8,7 +8,7 @@ import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
 import { createUser, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
-import { signIn, signUp } from "@contexts/slice/authSlice";
+import { signUp } from "@contexts/slice/authSlice";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const dispatch = useDispatch();
@@ -27,17 +27,16 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             email: string;
             password: string;
             confirmPassword: string;
-            role: string;
+            role: number;
         },
         formikActions: FormikHelpers<{
             name: string;
             email: string;
             password: string;
             confirmPassword: string;
-            role: string;
+            role: number;
         }>
     ) => {
-        const { email, password } = values;
         const res = await fetch(createUser, {
             method: "POST",
             headers: {
@@ -48,30 +47,30 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         });
         const result = await res.json();
         dispatch(signUp(result));
-        if (result.success) {
-            const signInReq = await fetch(signInUser, {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ email, password })
-            });
-            const signInRes = await signInReq.json();
+        // if (result.success) {
+        //     const signInReq = await fetch(signInUser, {
+        //         method: "POST",
+        //         headers: {
+        //             Accept: "application/json",
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({ email, password })
+        //     });
+        //     const signInRes = await signInReq.json();
 
-            if (signInRes.success) {
-                formikActions.resetForm();
-                formikActions.setSubmitting(false);
-                dispatch(signIn(signInRes));
-            }
-            formikActions.resetForm();
-            formikActions.setSubmitting(false);
-        } else {
-            setSignUpError(result.message);
-            setTimeout(() => {
-                setSignUpError("");
-            }, 3000);
-        }
+        //     if (signInRes.success) {
+        //         formikActions.resetForm();
+        //         formikActions.setSubmitting(false);
+        //         dispatch(signIn(signInRes));
+        //     }
+        //     formikActions.resetForm();
+        //     formikActions.setSubmitting(false);
+        // } else {
+        //     setSignUpError(result.message);
+        //     setTimeout(() => {
+        //         setSignUpError("");
+        //     }, 3000);
+        // }
     };
 
     return (
@@ -80,7 +79,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 <View style={styles.box1}>
                     <Image style={styles.img} source={route.params.uri} />
                     <Text style={{ color: "#FFF", marginTop: 15 }}>
-                        Sign-up as {route.params.role}
+                        Sign-up as {route.params.role === 5000 ? "Police" : "Citizen"}
                     </Text>
                 </View>
                 <View style={styles.box2}>

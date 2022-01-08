@@ -6,16 +6,17 @@ import {
     Image,
     ImageSourcePropType,
     Alert,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    ViewProps
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-interface Props {
+type Props = {
     imageUri?: string;
     onChangeImage?: any;
-}
+} & ViewProps;
 
-const ImageInput = ({ imageUri, onChangeImage }: Props) => {
+const ImageInput = ({ imageUri, onChangeImage, style }: Props) => {
     const handlePress = () => {
         if (!imageUri) selectImage();
         else
@@ -34,6 +35,7 @@ const ImageInput = ({ imageUri, onChangeImage }: Props) => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
                 quality: 0.5
             });
             if (!result.cancelled) {
@@ -46,7 +48,7 @@ const ImageInput = ({ imageUri, onChangeImage }: Props) => {
 
     return (
         <TouchableWithoutFeedback onPress={handlePress}>
-            <View style={styles.container}>
+            <View style={[styles.container, style]}>
                 {!imageUri && (
                     <Image
                         source={require("@assets/camera.png")}

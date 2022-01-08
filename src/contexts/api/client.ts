@@ -1,4 +1,8 @@
-export const createUser = "http://192.168.0.108:8000/create-user";
-export const signInUser = "http://192.168.0.108:8000/sign-in";
-export const createPost = "http://192.168.0.108:8000/create-post";
-export const uploadImage = "http://192.168.0.108:8000/upload-profile";
+export const createUser = "http://192.168.0.108:5000/api/register";
+export const refresh = "http://192.168.0.108:5000/api/refresh";
+export const signInUser = "http://192.168.0.108:5000/api/login";
+export const createPost = "http://192.168.0.108:5000/api/complaints";
+export const uploadImage = "http://192.168.0.108:5000/api/upload-profile";
+export const logout = "http://192.168.0.108:5000/api/logout";
+export const myDetails = "http://192.168.0.108:5000/api/mydetails";
+export const policeDetails = "http://192.168.0.108:5000/api/policeDetails";

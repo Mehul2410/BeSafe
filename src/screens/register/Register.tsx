@@ -5,20 +5,26 @@ import styles from "./register.styles";
 import { NavigationProps } from "@types";
 
 interface rolesProps {
-    police: { uri: ImageSourcePropType; role: string; agree: string };
-    citizen: { uri: ImageSourcePropType; role: string };
+    police: { uri: ImageSourcePropType; role: number; agree: string };
+    stationAdmin: { uri: ImageSourcePropType; role: number; agree: string };
+    citizen: { uri: ImageSourcePropType; role: number };
 }
 
 export default function Register({ navigation }: NavigationProps<"Register">) {
     const roles: rolesProps = {
         police: {
             uri: require("@assets/police.png"),
-            role: "Police",
+            role: 5000,
+            agree: "Agree to go through police verification process"
+        },
+        stationAdmin: {
+            uri: require("@assets/police.png"),
+            role: 4000,
             agree: "Agree to go through police verification process"
         },
         citizen: {
             uri: require("@assets/citizen.png"),
-            role: "Citizen"
+            role: 3000
         }
     };
     return (
