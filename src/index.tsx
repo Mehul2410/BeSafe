@@ -27,6 +27,7 @@ function Navigation(): ReactElement {
                 });
                 const user = await res.json();
                 dispatch(userData(user));
+                //active status to be send from backend to login police
             }
         }
     }
@@ -42,10 +43,6 @@ function Navigation(): ReactElement {
 }
 
 export default function App(): ReactElement {
-    // const token = useSelector((state: RootStateOrAny) => state.auth.token);
-    // const { auth } = store.getState();
-
-    // console.log(auth);
     return (
         <AppBootstrap>
             <Provider store={store}>

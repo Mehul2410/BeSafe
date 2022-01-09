@@ -29,7 +29,7 @@ export const authSlice = createSlice({
             }
         },
         getTokens: (state, action) => {
-            const { access_token, refresh_token } = action.payload;
+            const { access_token } = action.payload;
             state.token = access_token;
         },
         userData: (state, action) => {

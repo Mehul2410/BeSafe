@@ -1,9 +1,12 @@
 import React from "react";
-import { Background, Text, RegularText } from "@components";
+import { Background, Text, RegularText, Button } from "@components";
 import { Image, ScrollView, View } from "react-native";
 import { NavigationProps } from "@types";
 import styles from "./Profile.styles";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getTokens } from "@contexts/slice/authSlice";
+
 interface profileBtnProps {
     navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register";
     name: string;
@@ -11,6 +14,7 @@ interface profileBtnProps {
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
     const user = useSelector((state: RootStateOrAny) => state.auth);
+    const dispatch = useDispatch();
     console.log(user);
     const ProfileText = ({ navigate, name }: profileBtnProps) => {
         return (
@@ -54,7 +58,17 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                     <ProfileText name="Complaints" navigate="ComplaintGroup" />
                     <ProfileText name="Setting" navigate="Setting" />
                     <ProfileText name="Help" navigate="Help" />
-                    <ProfileText name="Logout" navigate="Register" />
+                    <Text
+                        style={styles.btn}
+                        weight="400"
+                        color="#FFF"
+                        onPress={async () => {
+                            await AsyncStorage.removeItem("keys");
+                            dispatch(getTokens({ access_token: "" }));
+                        }}
+                    >
+                        logout
+                    </Text>
                 </View>
             </View>
         </Background>
