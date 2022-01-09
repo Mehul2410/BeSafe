@@ -8,6 +8,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { myDetails, policeDetails, uploadImage } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { userData } from "@contexts/slice/authSlice";
+import { ScrollView } from "react-native-gesture-handler";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
     const [imageUri, setImageUri] = React.useState<string>();
@@ -102,30 +103,33 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                         marginTop: 25,
                         alignItems: "center",
                         width: "100%",
-                        height: "80%",
-                        justifyContent: "space-evenly"
+                        justifyContent: "center"
                     }}
                 >
-                    <ImageInput
-                        imageUri={imageUri}
-                        onChangeImage={setImageUri}
-                        style={{
-                            borderRadius: 70
-                        }}
-                    />
-                    {/* <ImageUpload /> */}
-                    <Button
-                        btnName={date}
-                        weight="400"
-                        numberOfLines={1}
-                        onPress={showDatePicker}
-                        bgColor="#FFF"
-                        textColor={colors.quatnary}
-                    />
-                    <CustomInput placeholder="Adharcard or Pancard" />
-                    <CustomInput placeholder="Address" />
-                    <CustomInput placeholder="Occupation" />
-                    <Button btnName="save" onPress={SubmitEditProfile} />
+                    <ScrollView style={{ width: "95%", height: "80%" }}>
+                        <ImageInput
+                            imageUri={imageUri}
+                            onChangeImage={setImageUri}
+                            style={{
+                                borderRadius: 70,
+                                marginBottom: 15,
+                                margin: "auto"
+                            }}
+                        />
+                        {/* <ImageUpload /> */}
+                        <Button
+                            btnName={date}
+                            weight="400"
+                            numberOfLines={1}
+                            onPress={showDatePicker}
+                            bgColor="#FFF"
+                            textColor={colors.quatnary}
+                        />
+                        <CustomInput placeholder="Adharcard or Pancard" />
+                        <CustomInput placeholder="Address" />
+                        <CustomInput placeholder="Occupation" />
+                        <Button btnName="save" onPress={SubmitEditProfile} />
+                    </ScrollView>
                 </View>
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
