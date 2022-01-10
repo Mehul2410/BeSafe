@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, Pressable, PressableProps } from "react-native";
+import { View, Image, ScrollView, Pressable, PressableProps, Group } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -58,7 +58,6 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                     <View>
                         <Reason string="Reason" />
                         <LightText string={route.params.text} />
-
                         <Text
                             weight="700"
                             style={{

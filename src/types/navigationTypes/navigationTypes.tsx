@@ -41,6 +41,7 @@ export type StackNavigatorParams = {
         time?: string;
         status?: string;
         text?: string;
+        image?: string[];
     };
 };
 

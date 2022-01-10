@@ -99,7 +99,11 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                     <Button
                                         btnName="SignIn"
                                         weight="400"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        style={{
+                                            width: "80%",
+                                            marginVertical: 12,
+                                            backgroundColor: "#281B89"
+                                        }}
                                         onPress={() => handleSubmit()}
                                     />
                                 </>
