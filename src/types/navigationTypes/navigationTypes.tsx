@@ -36,11 +36,16 @@ export type StackNavigatorParams = {
     Complaints: undefined;
     ComplaintGroup: undefined;
     ComplaintsLayout: {
-        id?: number;
-        date?: string;
-        time?: string;
+        _id?: string;
+        complaintType?: string;
+        createdAt?: Date;
+        location?: {
+            name?: string;
+        };
+        proof?: string;
+        reason?: string;
         status?: string;
-        text?: string;
+        updatedAt?: Date;
     };
 };
 

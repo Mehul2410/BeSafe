@@ -15,7 +15,6 @@ interface profileBtnProps {
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
     const user = useSelector((state: RootStateOrAny) => state.auth);
     const dispatch = useDispatch();
-    console.log(user);
     const ProfileText = ({ navigate, name }: profileBtnProps) => {
         return (
             <Text

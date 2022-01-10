@@ -10,7 +10,8 @@ const initialState = {
     user: "",
     _id: "",
     avatar: "",
-    authorized: false
+    authorized: false,
+    complaints: []
 };
 
 export const authSlice = createSlice({
@@ -39,12 +40,16 @@ export const authSlice = createSlice({
             state.name = name;
             state.role = role;
             state.avatar = avatar;
+        },
+        userComplaints: (state, action) => {
+            const { myComplaints } = action.payload;
+            state.complaints = myComplaints.complaints;
         }
     },
     extraReducers: {}
 });
 
 // Action creators are generated for each case reducer function
-export const { signUp, getTokens, userData } = authSlice.actions;
+export const { signUp, getTokens, userData, userComplaints } = authSlice.actions;
 
 export default authSlice.reducer;

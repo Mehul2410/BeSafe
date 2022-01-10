@@ -6,9 +6,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import styles from "./signup.styles";
 import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
-import { createUser, signInUser } from "@contexts/api/client";
+import { createUser, myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
-import { signUp } from "@contexts/slice/authSlice";
+import { signUp, userData } from "@contexts/slice/authSlice";
+import { isTokenExpired } from "@contexts/store/credentials";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const dispatch = useDispatch();
@@ -46,7 +47,21 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             body: JSON.stringify({ ...values })
         });
         const result = await res.json();
-        dispatch(signUp(result));
+        if (result.success) {
+            if (!isTokenExpired(result.access_token)) {
+                const res = await fetch(myDetails, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${result.access_token}`
+                    }
+                });
+                const user = await res.json();
+                dispatch(userData(user));
+                //active status to be send from backend to login police
+            }
+            dispatch(signUp(result));
+        }
         // if (result.success) {
         //     const signInReq = await fetch(signInUser, {
         //         method: "POST",

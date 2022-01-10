@@ -6,9 +6,10 @@ import { View, Image } from "react-native";
 import styles from "./signin.styles";
 import { SignInvalidationSchema } from "@utils";
 import { Formik, FormikHelpers } from "formik";
-import { signInUser } from "@contexts/api/client";
+import { myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
-import { signUp } from "@contexts/slice/authSlice";
+import { signUp, userData } from "@contexts/slice/authSlice";
+import { isTokenExpired } from "@contexts/store/credentials";
 
 interface signInProps {
     email: string;
@@ -38,6 +39,18 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             formikActions.resetForm();
             formikActions.setSubmitting(false);
             // dispatch(signIn(result));
+            if (!isTokenExpired(result.access_token)) {
+                const res = await fetch(myDetails, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${result.access_token}`
+                    }
+                });
+                const user = await res.json();
+                dispatch(userData(user));
+                //active status to be send from backend to login police
+            }
             dispatch(signUp(result));
         } else {
             setSignInError(result.message);

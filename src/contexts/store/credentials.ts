@@ -32,7 +32,7 @@ async function getVerifiedKeys(keys: setCredProps) {
 
     if (keys) {
         console.log("checking access");
-
+        console.log(keys);
         if (!isTokenExpired(keys.access_token)) {
             console.log("returning access");
 
@@ -46,12 +46,14 @@ async function getVerifiedKeys(keys: setCredProps) {
                 console.log("fetching access using refresh");
 
                 const response = await getAccessUsingRefresh(keys.refresh_token);
-
-                await AsyncStorage.setItem("keys", JSON.stringify(response));
-
-                console.log("UPDATED ONE");
-
-                return response;
+                console.log(response);
+                if (response.success === true) {
+                    await AsyncStorage.setItem("keys", JSON.stringify(response));
+                    console.log("UPDATED ONE");
+                    return response;
+                } else {
+                    console.log("ACCESS EXPIRED");
+                }
             } else {
                 console.log("refresh expired, please login");
                 return null;

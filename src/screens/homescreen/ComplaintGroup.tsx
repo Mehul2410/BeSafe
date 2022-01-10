@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Image,
@@ -10,60 +10,52 @@ import {
 import { Background, StatusDetail, Text, DateAndTime } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
+import { complaints } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { userComplaints } from "@contexts/slice/authSlice";
+
+interface complaintProps {
+    _id?: string;
+    complaintType?: string;
+    createdAt?: Date;
+    location?: {
+        name?: string;
+    };
+    proof?: string;
+    reason?: string;
+    status?: string;
+    updatedAt?: Date;
+}
+
+type multiProps = complaintProps[];
 
 export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
-    const group = [
-        {
-            id: 1,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 2,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "In Process",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 3,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 4,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 5,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 6,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 7,
-            date: "29-sep",
-            time: "06:00 am",
-            status: "status",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
+    const getAllComplaints: multiProps = useSelector(
+        (state: RootStateOrAny) => state.auth.complaints
+    );
+    console.log(getAllComplaints);
+    const dispatch = useDispatch();
+    async function getComplaints() {
+        const data = await getCredentials();
+        if (data) {
+            if (!isTokenExpired(data.access_token)) {
+                const res = await fetch(complaints, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${data.access_token}`
+                    }
+                });
+                const user = await res.json();
+                dispatch(userComplaints(user));
+                //active status to be send from backend to login police
+            }
         }
-    ];
-
+    }
+    useEffect(() => {
+        getComplaints();
+    }, []);
     return (
         <Background>
             <View
@@ -79,28 +71,23 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 </Text>
                 <View>
                     <ScrollView>
-                        {group.map(item => {
-                            return (
-                                <TouchableWithoutFeedback
-                                    key={item.id}
-                                    onPress={() => {
-                                        navigation.navigate("ComplaintsLayout", item);
-                                    }}
-                                >
-                                    <View
-                                        style={{
-                                            marginVertical: 10,
-                                            width: "100%",
-                                            backgroundColor: "#281B89",
-                                            borderRadius: 10,
-                                            padding: 10,
-                                            elevation: 3
+                        {getAllComplaints &&
+                            getAllComplaints.map((item, index) => {
+                                return (
+                                    <TouchableWithoutFeedback
+                                        key={index}
+                                        onPress={() => {
+                                            navigation.navigate("ComplaintsLayout", item);
                                         }}
                                     >
                                         <View
                                             style={{
-                                                flexDirection: "row",
-                                                alignItems: "center"
+                                                marginVertical: 10,
+                                                width: "100%",
+                                                backgroundColor: "#281B89",
+                                                borderRadius: 10,
+                                                padding: 10,
+                                                elevation: 3
                                             }}
                                         >
                                             <View
@@ -109,18 +96,32 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     alignItems: "center"
                                                 }}
                                             >
-                                                <StatusDetail string={item.status} />
                                                 <View
                                                     style={{
-                                                        flexDirection: "column",
-                                                        alignItems: "flex-start",
-                                                        marginLeft: 10
+                                                        flexDirection: "row",
+                                                        alignItems: "center"
                                                     }}
                                                 >
-                                                    <DateAndTime string={item.date} />
-                                                    <DateAndTime string={item.time} />
-                                                </View>
-                                                {/* <Image
+                                                    <StatusDetail string={item.status} />
+                                                    <View
+                                                        style={{
+                                                            flexDirection: "column",
+                                                            alignItems: "flex-start",
+                                                            marginLeft: 10
+                                                        }}
+                                                    >
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleDateString("en-IN")}
+                                                        />
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleTimeString("en-IN")}
+                                                        />
+                                                    </View>
+                                                    {/* <Image
                                                         resizeMode="contain"
                                                         style={{
                                                             height: 22,
@@ -129,34 +130,34 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                         }}
                                                         source={require("@assets/remainder.png")}
                                                     /> */}
+                                                </View>
                                             </View>
-                                        </View>
 
-                                        <Text
-                                            weight="400"
-                                            style={{
-                                                color: colors.white,
-                                                fontSize: 15,
-                                                marginTop: 5
-                                            }}
-                                        >
-                                            Reason
-                                        </Text>
-                                        <Text
-                                            numberOfLines={4}
-                                            weight="400"
-                                            style={{
-                                                color: colors.white,
-                                                fontSize: 12,
-                                                paddingTop: 5
-                                            }}
-                                        >
-                                            {item.text}
-                                        </Text>
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            );
-                        })}
+                                            <Text
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 15,
+                                                    marginTop: 5
+                                                }}
+                                            >
+                                                Reason
+                                            </Text>
+                                            <Text
+                                                numberOfLines={4}
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 12,
+                                                    paddingTop: 5
+                                                }}
+                                            >
+                                                {item.reason}
+                                            </Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                );
+                            })}
                     </ScrollView>
                 </View>
             </View>
