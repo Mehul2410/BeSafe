@@ -11,7 +11,8 @@ const initialState = {
     _id: "",
     avatar: "",
     authorized: false,
-    complaints: []
+    complaints: [],
+    userDetails: {}
 };
 
 export const authSlice = createSlice({
@@ -34,12 +35,13 @@ export const authSlice = createSlice({
             state.token = access_token;
         },
         userData: (state, action) => {
-            const { _id, email, name, role, avatar } = action.payload;
-            state._id = _id;
-            state.email = email;
-            state.name = name;
-            state.role = role;
-            state.avatar = avatar;
+            const user = action.payload;
+            state._id = user._id;
+            state.email = user.email;
+            state.name = user.name;
+            state.role = user.role;
+            state.avatar = user.avatar;
+            state.userDetails = user.userDetails && user.userDetails;
         },
         userComplaints: (state, action) => {
             const { myComplaints } = action.payload;

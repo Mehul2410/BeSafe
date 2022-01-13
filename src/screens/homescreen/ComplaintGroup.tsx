@@ -26,6 +26,7 @@ interface complaintProps {
     reason?: string;
     status?: string;
     updatedAt?: Date;
+    image?: string[];
 }
 
 type multiProps = complaintProps[];

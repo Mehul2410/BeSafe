@@ -30,6 +30,13 @@ export type StackNavigatorParams = {
     };
     UserProfile: undefined;
     EditProfile: undefined;
+    ViewProfile: {
+        id: string;
+        name: string;
+        avatar: string;
+        email: string;
+        userDetails: any;
+    };
     Setting: undefined;
     Help: undefined;
     Post: undefined;
@@ -46,6 +53,7 @@ export type StackNavigatorParams = {
         reason?: string;
         status?: string;
         updatedAt?: Date;
+        image?: string[];
     };
 };
 

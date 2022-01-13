@@ -6,6 +6,7 @@ interface Props {
     string?: string;
     color?: string;
     vmargin?: number;
+    bgcolor?: string;
 }
 
 export const RegularText = ({ string, color, vmargin = 0 }: Props) => {
@@ -30,9 +31,9 @@ export const LargeText = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const LightText = ({ string, color }: Props) => {
+export const LightText = ({ string, color, bgcolor }: Props) => {
     return (
-        <Text weight="200" color="#FFF">
+        <Text weight="200" color="#FFF" style={{ textAlign: "justify" }}>
             {string}
         </Text>
     );

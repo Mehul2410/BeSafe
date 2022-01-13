@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Background, CustomInput, Text, Button, ImageUpload, ImageInput } from "@components";
-import { View } from "react-native";
+import { View, ScrollView } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
@@ -120,29 +120,32 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                         alignItems: "center",
                         width: "100%",
                         height: "80%",
-                        justifyContent: "space-evenly"
+                        justifyContent: "center"
                     }}
                 >
-                    <ImageInput
-                        imageUri={imageUri}
-                        onChangeImage={setImageUri}
-                        style={{
-                            borderRadius: 70
-                        }}
-                    />
-                    {/* <ImageUpload /> */}
-                    <Button
-                        btnName={date}
-                        weight="400"
-                        numberOfLines={1}
-                        onPress={showDatePicker}
-                        bgColor="#FFF"
-                        textColor={colors.quatnary}
-                    />
-                    <CustomInput placeholder="Adharcard or Pancard" />
-                    <CustomInput placeholder="Address" />
-                    <CustomInput placeholder="Occupation" />
-                    <Button btnName="save" onPress={SubmitEditProfile} />
+                    <ScrollView style={{ width: "100%", paddingHorizontal: 10 }}>
+                        <ImageInput
+                            imageUri={imageUri}
+                            onChangeImage={setImageUri}
+                            style={{
+                                borderRadius: 70,
+                                marginBottom: 15
+                            }}
+                        />
+                        {/* <ImageUpload /> */}
+                        <Button
+                            btnName={date}
+                            weight="400"
+                            numberOfLines={1}
+                            onPress={showDatePicker}
+                            bgColor="#FFF"
+                            textColor={colors.quatnary}
+                        />
+                        <CustomInput placeholder="Adharcard or Pancard" />
+                        <CustomInput placeholder="Address" />
+                        <CustomInput placeholder="Occupation" />
+                        <Button btnName="save" onPress={SubmitEditProfile} />
+                    </ScrollView>
                 </View>
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}

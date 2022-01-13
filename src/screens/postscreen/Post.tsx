@@ -59,6 +59,7 @@ export function Post() {
                     }}
                 >
                     <ScrollView>
+                        <CustomInput placeholder="Complaint against" />
                         <CustomInput placeholder="Reason of complaint" />
                         <CustomInput placeholder="Location" />
                         <CustomInput placeholder="Situation" />

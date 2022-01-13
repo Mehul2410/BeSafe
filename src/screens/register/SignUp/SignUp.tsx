@@ -157,7 +157,10 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                         <Button
                                             btnName="SignUp"
                                             weight="400"
-                                            style={{ marginVertical: 12 }}
+                                            style={{
+                                                marginVertical: 12,
+                                                backgroundColor: "#281B89"
+                                            }}
                                             onPress={() => handleSubmit()}
                                         />
                                     </ScrollView>
