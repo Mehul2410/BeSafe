@@ -9,9 +9,11 @@ import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
 import { myDetails } from "@contexts/api/client";
+import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
 
 function Navigation(): ReactElement {
-    const token = useSelector((state: RootStateOrAny) => state.auth.token);
+    const user = useSelector((state: RootStateOrAny) => state.auth);
+    console.log(user);
     const dispatch = useDispatch();
     async function data() {
         const data = await getCredentials();
@@ -37,7 +39,17 @@ function Navigation(): ReactElement {
     }, []);
     return (
         <>
-            <NavigationContainer>{token ? <Tabs /> : <AuthNavigator />}</NavigationContainer>
+            <NavigationContainer>
+                {user.token ? (
+                    user.active === false ? (
+                        <PoliceNavigation />
+                    ) : (
+                        <Tabs />
+                    )
+                ) : (
+                    <AuthNavigator />
+                )}
+            </NavigationContainer>
         </>
     );
 }

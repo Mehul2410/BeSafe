@@ -7,7 +7,14 @@ export const SignInvalidationSchema = Yup.object({
 export const SignUpvalidationSchema = Yup.object({
     name: Yup.string().trim().min(3, "Invalid name").required("Name is required"),
     email: Yup.string().email("Invalid email!").required("email is required"),
-    password: Yup.string().trim().min(8, "Password is to short! ").required("Password is required"),
+    password: Yup.string()
+        .trim()
+        .min(8, "Password is to short! ")
+        .matches(
+            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/,
+            "Must Contain 8 Characters, One Uppercase, One Lowercase and One Number"
+        )
+        .required("Password is required"),
     confirmPassword: Yup.string().equals([Yup.ref("password"), null], "Password does not match!")
 });
 

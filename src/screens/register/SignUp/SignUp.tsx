@@ -7,9 +7,10 @@ import styles from "./signup.styles";
 import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
 import { createUser, myDetails, signInUser } from "@contexts/api/client";
-import { useDispatch } from "react-redux";
-import { signUp, userData } from "@contexts/slice/authSlice";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
+import emailjs from "@emailjs/browser";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const dispatch = useDispatch();
@@ -21,71 +22,51 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         confirmPassword: "",
         role: route.params.role
     };
+    const emailMessage = {
+        citizen: "Kindly update your personal details so you can have full access to our App",
+        police: "Now as you have Created account for police you will be going under validation process to have complete access to our App"
+    };
     const [signUpError, setSignUpError] = React.useState("");
-    const SignUpUser = async (
-        values: {
-            name: string;
-            email: string;
-            password: string;
-            confirmPassword: string;
-            role: number;
-        },
-        formikActions: FormikHelpers<{
-            name: string;
-            email: string;
-            password: string;
-            confirmPassword: string;
-            role: number;
-        }>
-    ) => {
-        const res = await fetch(createUser, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ...values })
-        });
-        const result = await res.json();
-        if (result.success) {
-            if (!isTokenExpired(result.access_token)) {
-                const res = await fetch(myDetails, {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        authorization: `Bearer ${result.access_token}`
-                    }
-                });
-                const user = await res.json();
-                dispatch(userData(user));
-                //active status to be send from backend to login police
+    const SignUpUser = async (values: {
+        name: string;
+        email: string;
+        password: string;
+        confirmPassword: string;
+        role: number;
+    }) => {
+        try {
+            const res = await fetch(createUser, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ ...values })
+            });
+            const user = await res.json();
+            console.log(user);
+            if (user.success) {
+                const emailres = await emailjs.send(
+                    "gmail",
+                    "signUp",
+                    {
+                        email: values.email,
+                        message: values.role === 3000 ? emailMessage.citizen : emailMessage.police
+                    },
+                    "user_brys7kId9nfyXkoJzjuw5"
+                );
+                if (!isTokenExpired(user.access_token)) {
+                    dispatch(userData(user.result));
+                    dispatch(getTokens(user));
+                    //active status to be send from backend to login police
+                }
+                dispatch(signUp(user));
+            } else {
+                setSignUpError("Invalid mail id or password");
             }
-            dispatch(signUp(result));
+        } catch (error) {
+            console.log(error);
         }
-        // if (result.success) {
-        //     const signInReq = await fetch(signInUser, {
-        //         method: "POST",
-        //         headers: {
-        //             Accept: "application/json",
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify({ email, password })
-        //     });
-        //     const signInRes = await signInReq.json();
-
-        //     if (signInRes.success) {
-        //         formikActions.resetForm();
-        //         formikActions.setSubmitting(false);
-        //         dispatch(signIn(signInRes));
-        //     }
-        //     formikActions.resetForm();
-        //     formikActions.setSubmitting(false);
-        // } else {
-        //     setSignUpError(result.message);
-        //     setTimeout(() => {
-        //         setSignUpError("");
-        //     }, 3000);
-        // }
     };
 
     return (

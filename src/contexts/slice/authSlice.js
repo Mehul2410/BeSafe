@@ -10,9 +10,9 @@ const initialState = {
     user: "",
     _id: "",
     avatar: "",
-    authorized: false,
+    active: false,
     complaints: [],
-    userDetails: {}
+    userDetails: undefined
 };
 
 export const authSlice = createSlice({
@@ -41,6 +41,7 @@ export const authSlice = createSlice({
             state.name = user.name;
             state.role = user.role;
             state.avatar = user.avatar;
+            state.active = user.active;
             state.userDetails = user.userDetails && user.userDetails;
         },
         userComplaints: (state, action) => {

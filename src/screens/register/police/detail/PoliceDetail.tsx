@@ -43,13 +43,13 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                     <ScrollView>
                         <CustomInput placeholder="Adhaar Card No." />
                         <CustomInput placeholder="Pan Card No." />
-                        <CustomInput placeholder="Email Id" />
                         <CustomInput placeholder="Police Id" />
                         <CustomInput placeholder="Posting Area" />
                         <CustomInput placeholder="Station Name" />
                         <CustomInput placeholder="Police Post" />
+                        <CustomInput placeholder="DOB" />
                         <CustomInput placeholder="City" />
-                        <CustomInput placeholder="Nearest Location" />
+                        <CustomInput placeholder="Address" />
                         <Text weight="700" color="#FFF">
                             Verification paper
                         </Text>
