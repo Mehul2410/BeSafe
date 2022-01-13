@@ -12,6 +12,7 @@ export { DetailFilled } from "./register/police/detailfilled/DetailFilled";
 export { Home } from "./homescreen/Home";
 export { Profile } from "./profile/Profile";
 export { EditProfile } from "./profile/EditProfile";
+export { ViewProfile } from "./profile/ViewProfile";
 export { Post } from "./postscreen/Post";
 // export { Complaints } from "./homescreen/Complaints";
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";

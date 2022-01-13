@@ -17,6 +17,7 @@ const Stack = createStackNavigator<StackNavigatorParams>();
 export default function AuthNavigator(): ReactElement {
     return (
         <Stack.Navigator
+            // initialRouteName="PoliceDetail"
             screenOptions={{
                 headerMode: "screen",
                 headerShown: false

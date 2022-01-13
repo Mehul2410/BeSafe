@@ -30,17 +30,29 @@ export type StackNavigatorParams = {
     };
     UserProfile: undefined;
     EditProfile: undefined;
+    ViewProfile: {
+        id: string;
+        name: string;
+        avatar: string;
+        email: string;
+        userDetails: any;
+    };
     Setting: undefined;
     Help: undefined;
     Post: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
     ComplaintsLayout: {
-        id?: number;
-        date?: string;
-        time?: string;
+        _id?: string;
+        complaintType?: string;
+        createdAt?: Date;
+        location?: {
+            name?: string;
+        };
+        proof?: string;
+        reason?: string;
         status?: string;
-        text?: string;
+        updatedAt?: Date;
         image?: string[];
     };
 };

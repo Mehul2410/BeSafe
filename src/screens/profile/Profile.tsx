@@ -6,16 +6,28 @@ import styles from "./Profile.styles";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getTokens } from "@contexts/slice/authSlice";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ViewProfile } from "./ViewProfile";
 
 interface profileBtnProps {
-    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register";
+    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register" | "ViewProfile";
     name: string;
 }
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
-    const user = useSelector((state: RootStateOrAny) => state.auth);
+    const { userDetails, id, name, role, avatar, email } = useSelector(
+        (state: RootStateOrAny) => state.auth
+    );
     const dispatch = useDispatch();
-    console.log(user);
+    const userData = {
+        id,
+        name,
+        role,
+        avatar,
+        email,
+        userDetails
+    };
+    console.log(userDetails);
     const ProfileText = ({ navigate, name }: profileBtnProps) => {
         return (
             <Text
@@ -38,7 +50,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                     <View style={{ position: "relative" }}>
                         <Image
                             style={styles.img}
-                            source={user.avatar ? { uri: user.avatar } : require("@assets/img.png")}
+                            source={avatar ? { uri: avatar } : require("@assets/img.png")}
                         />
                         <View style={styles.edit}>
                             <Image source={require("@assets/edit.png")} />
@@ -46,10 +58,16 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                     </View>
                 </View>
                 <View style={styles.name}>
-                    <RegularText string={user.name} />
+                    <RegularText string={name} />
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                         <Image source={require("@assets/percent.png")} />
-                        <RegularText string="90%" color="#FFF" />
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                navigation.navigate("ViewProfile", userData);
+                            }}
+                        >
+                            <RegularText string="90%" color="#FFF" />
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={styles.probtn}>

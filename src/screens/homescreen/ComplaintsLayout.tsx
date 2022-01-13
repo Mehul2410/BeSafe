@@ -49,15 +49,24 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                     marginLeft: 10
                                 }}
                             >
-                                <DateAndTime string={route.params.date} />
-                                <DateAndTime string={route.params.time} />
+                                <DateAndTime
+                                    string={new Date(route.params.createdAt!).toLocaleDateString(
+                                        "en-IN"
+                                    )}
+                                />
+                                <DateAndTime
+                                    string={new Date(route.params.createdAt!).toLocaleTimeString(
+                                        "en-IN"
+                                    )}
+                                />
                             </View>
                         </View>
                     </View>
 
                     <View>
                         <Reason string="Reason" />
-                        <LightText string={route.params.text} />
+                        <LightText string={route.params.reason} />
+
                         <Text
                             weight="700"
                             style={{
@@ -69,6 +78,25 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         >
                             Images
                         </Text>
+                        <View>
+                            <ScrollView horizontal={true}>
+                                {route.params.image &&
+                                    route.params.image?.map((img, index) => {
+                                        return (
+                                            <Image
+                                                key={index}
+                                                resizeMode="contain"
+                                                style={{
+                                                    height: 150,
+                                                    width: 200,
+                                                    marginLeft: 10
+                                                }}
+                                                source={{ uri: img }}
+                                            />
+                                        );
+                                    })}
+                            </ScrollView>
+                        </View>
                     </View>
                     <Text
                         weight="400"

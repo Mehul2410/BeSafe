@@ -1,8 +1,9 @@
-export const createUser = "http://192.168.0.104:5000/api/register";
-export const refresh = "http://192.168.0.104:5000/api/refresh";
-export const signInUser = "http://192.168.0.104:5000/api/login";
-export const createPost = "http://192.168.0.104:5000/api/complaints";
-export const uploadImage = "http://192.168.0.104:5000/api/upload-profile";
-export const logout = "http://192.168.0.104:5000/api/logout";
-export const myDetails = "http://192.168.0.104:5000/api/mydetails";
-export const policeDetails = "http://192.168.0.104:5000/api/policeDetails";
+export const createUser = "https://besaferestapi.herokuapp.com/api/register";
+export const refresh = "https://besaferestapi.herokuapp.com/api/refresh";
+export const signInUser = "https://besaferestapi.herokuapp.com/api/login";
+export const createPost = "https://besaferestapi.herokuapp.com/api/complaints";
+export const complaints = "https://besaferestapi.herokuapp.com/api/complaints";
+export const uploadImage = "https://besaferestapi.herokuapp.com/api/upload-profile";
+export const logout = "https://besaferestapi.herokuapp.com/api/logout";
+export const myDetails = "https://besaferestapi.herokuapp.com/api/mydetails";
+export const policeDetails = "https://besaferestapi.herokuapp.com/api/policeDetails";
