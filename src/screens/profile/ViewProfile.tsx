@@ -44,7 +44,7 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                     <RegularText color="#FFF" string={`DOB: ${route.params.userDetails.dob}`} />
                     <RegularText
                         color="#FFF"
-                        string={`Adharcard: ${route.params.userDetails.adharCard}`}
+                        string={`Adharcard: ${route.params.userDetails.adhaarCard}`}
                     />
                     <RegularText
                         color="#FFF"

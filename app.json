@@ -21,7 +21,8 @@
             "adaptiveIcon": {
                 "foregroundImage": "./img/logo.png",
                 "backgroundColor": "#0085FF"
-            }
+            },
+            "package": "com.besafe"
         },
         "web": {
             "favicon": "./img/logo.png"
