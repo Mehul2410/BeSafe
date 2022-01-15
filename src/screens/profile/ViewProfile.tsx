@@ -48,11 +48,15 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                 <RegularText color="#FFF" string={`Email: ${route.params.email}`} />
                                 <RegularText
                                     color="#FFF"
-                                    string={`DOB: ${route.params.userDetails.dob}`}
+                                    string={`DOB: ${
+                                        route.params.userDetails && route.params.userDetails.dob
+                                    }`}
                                 />
                                 <RegularText
                                     color="#FFF"
-                                    string={`Address: ${route.params.userDetails.address}`}
+                                    string={`Address: ${
+                                        route.params.userDetails && route.params.userDetails.address
+                                    }`}
                                 />
                                 <RegularText color="#FFF" string={`Occupation:`} />
                             </View>

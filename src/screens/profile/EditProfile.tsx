@@ -129,7 +129,8 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                             onChangeImage={setImageUri}
                             style={{
                                 borderRadius: 70,
-                                marginBottom: 15
+                                marginBottom: 15,
+                                alignSelf: "center"
                             }}
                         />
                         {/* <ImageUpload /> */}
