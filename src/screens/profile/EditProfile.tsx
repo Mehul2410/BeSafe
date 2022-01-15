@@ -12,7 +12,11 @@ import { userData } from "@contexts/slice/authSlice";
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
     const [imageUri, setImageUri] = React.useState<string>();
     const [details, setDetails] = React.useState({
-        date: "Date"
+        dob: "Date",
+        adhaarCard: "",
+        panCard: "",
+        address: "",
+        occupation: ""
     });
     const dispatch = useDispatch();
     const uploadProfileImage = async () => {
@@ -52,19 +56,17 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
             try {
                 const res = await fetch(citizenDetails, {
                     method: "PUT",
-                    body: JSON.stringify({
-                        adhaarCard: "2202 2525 5151",
-                        panCard: "AAAPZ1234C",
-                        dob: "1-1-1222",
-                        address: "bgsuighfiguifhgifikgiohjiojhoi",
-                        occupation: "Farmer"
-                    }),
+                    body: JSON.stringify(details),
                     headers: {
                         "Content-Type": "application/json",
                         authorization: `Bearer ${tokens.access_token}`
                     }
                 });
-                const data = await res.json();
+                const user = await res.json();
+                console.log(user);
+                if (user.success) {
+                    dispatch(userData(user));
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -84,7 +86,7 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
     };
 
     const handleConfirm = (date: any) => {
-        setDetails({ ...details, date: date.toLocaleDateString("en-IN") });
+        setDetails({ ...details, dob: date.toLocaleDateString("en-IN") });
         hideDatePicker();
     };
 
@@ -121,16 +123,29 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                         />
                         {/* <ImageUpload /> */}
                         <Button
-                            btnName={details.date}
+                            btnName={details.dob}
                             weight="400"
                             numberOfLines={1}
                             onPress={showDatePicker}
                             bgColor="#FFF"
                             textColor={colors.quatnary}
                         />
-                        <CustomInput placeholder="Adharcard or Pancard" />
-                        <CustomInput placeholder="Address" />
-                        <CustomInput placeholder="Occupation" />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, adhaarCard: text })}
+                            placeholder="Adharcard"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, panCard: text })}
+                            placeholder="Pancard"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, address: text })}
+                            placeholder="Address"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, occupation: text })}
+                            placeholder="Occupation"
+                        />
                         <Button btnName="save" onPress={SubmitEditProfile} />
                     </ScrollView>
                 </View>
