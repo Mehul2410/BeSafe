@@ -1,5 +1,5 @@
 import React, { StyleHTMLAttributes } from "react";
-import { StyleProp, TextProps, TextStyle } from "react-native";
+import { FlexAlignType, StyleProp, TextStyle } from "react-native";
 import Text from "./Text";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
     color?: string;
     vmargin?: number;
     bgcolor?: string;
+    align?: "auto" | FlexAlignType | undefined;
 }
 
 export const RegularText = ({ string, color, vmargin = 0 }: Props) => {
@@ -17,9 +18,9 @@ export const RegularText = ({ string, color, vmargin = 0 }: Props) => {
     );
 };
 
-export const MediumText = ({ string, color }: Props) => {
+export const MediumText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
     return (
-        <Text weight="700" color="#FFF">
+        <Text weight="700" color="#FFF" style={{ alignSelf: align, marginVertical: vmargin }}>
             {string}
         </Text>
     );

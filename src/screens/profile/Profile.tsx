@@ -71,7 +71,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                     </View>
                 </View>
                 <View style={styles.probtn}>
-                    <ProfileText name="Edit Profile" navigate="EditProfile" />
+                    {role === 3000 && <ProfileText name="Edit Profile" navigate="EditProfile" />}
                     {/* history */}
                     <ProfileText name="Complaints" navigate="ComplaintGroup" />
                     <ProfileText name="Setting" navigate="Setting" />

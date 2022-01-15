@@ -33,6 +33,7 @@ export type StackNavigatorParams = {
     ViewProfile: {
         id: string;
         name: string;
+        role: number;
         avatar: string;
         email: string;
         userDetails: any;
