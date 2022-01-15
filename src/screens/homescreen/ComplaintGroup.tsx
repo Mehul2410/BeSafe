@@ -49,7 +49,9 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     }
                 });
                 const user = await res.json();
-                dispatch(userComplaints(user));
+                if (user.myComplaints) {
+                    dispatch(userComplaints(user));
+                }
                 //active status to be send from backend to login police
             }
         }

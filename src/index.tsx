@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { AppBootstrap } from "@components";
 import Tabs from "@config/tabnavigator/Tab";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,35 +9,45 @@ import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
 import { myDetails } from "@contexts/api/client";
+import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
+import useSWR from "swr";
+import { Image, View } from "react-native";
 
 function Navigation(): ReactElement {
-    const token = useSelector((state: RootStateOrAny) => state.auth.token);
     const dispatch = useDispatch();
-    async function data() {
-        const data = await getCredentials();
-        if (data) {
-            dispatch(getTokens(data));
-            if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(myDetails, {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        authorization: `Bearer ${data.access_token}`
-                    }
-                });
-                const user = await res.json();
-                dispatch(userData(user));
-                //active status to be send from backend to login police
-            }
+    async function getData() {
+        const creds = await getCredentials();
+        if (creds) {
+            const res = await fetch(myDetails, {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    authorization: `Bearer ${creds.access_token}`
+                }
+            });
+            const user = await res.json();
+            return { creds, user };
         }
     }
-
-    useEffect(() => {
-        data();
-    }, []);
+    const { data, error } = useSWR("operator_key", getData);
+    if (data) {
+        dispatch(getTokens(data.creds));
+        dispatch(userData(data.user));
+    }
+    const user = useSelector((state: RootStateOrAny) => state.auth);
     return (
         <>
-            <NavigationContainer>{token ? <Tabs /> : <AuthNavigator />}</NavigationContainer>
+            <NavigationContainer>
+                {user.token ? (
+                    user.active === false ? (
+                        <PoliceNavigation />
+                    ) : (
+                        <Tabs />
+                    )
+                ) : (
+                    <AuthNavigator />
+                )}
+            </NavigationContainer>
         </>
     );
 }

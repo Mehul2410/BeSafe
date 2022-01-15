@@ -4,11 +4,31 @@ import { Modal, Pressable, ScrollView, View } from "react-native";
 import { Button } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
+import { RootStateOrAny, useSelector } from "react-redux";
+import emailjs from "@emailjs/browser";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
+    const user = useSelector((state: RootStateOrAny) => state.auth);
     const [changePassword, setChangePassword] = useState(false);
     const [language, setLanguage] = useState(false);
     const [account, setAccount] = useState(false);
+
+    const SendMail = async () => {
+        try {
+            const emailres = await emailjs.send(
+                "gmail",
+                "contactTemplate",
+                { email: JSON.stringify(user.email) },
+                "user_brys7kId9nfyXkoJzjuw5"
+            );
+            if (emailres.status === 200) {
+                console.log(emailres);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <Background>
             <View
@@ -199,7 +219,13 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                 </Text>
                                 <CustomInput placeholder="Reason?" />
                                 <View style={{ width: "100%" }}>
-                                    <Pressable onPress={() => setAccount(!account)}>
+                                    <Pressable
+                                        onPress={async () => {
+                                            const res = await SendMail();
+                                            setAccount(!account);
+                                            await AsyncStorage.removeItem("keys");
+                                        }}
+                                    >
                                         <Button
                                             weight="400"
                                             btnName="Confirm"

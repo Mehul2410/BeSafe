@@ -28,8 +28,6 @@ export default function AuthNavigator(): ReactElement {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="PoliceDetail" component={PoliceDetail} />
-            <Stack.Screen name="DetailFilled" component={DetailFilled} />
         </Stack.Navigator>
     );
 }

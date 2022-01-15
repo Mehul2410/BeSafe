@@ -13,7 +13,8 @@
         "prepare": "husky install"
     },
     "dependencies": {
-        "@react-native-async-storage/async-storage": "^1.15.14",
+        "@emailjs/browser": "^3.4.0",
+        "@react-native-async-storage/async-storage": "~1.15.0",
         "@react-native-community/checkbox": "^0.5.8",
         "@react-native-community/datetimepicker": "^3.5.2",
         "@react-navigation/bottom-tabs": "^6.0.9",
@@ -33,6 +34,7 @@
         "react-native-datepicker": "^1.7.2",
         "react-native-elements": "^3.4.2",
         "react-native-gesture-handler": "^1.10.3",
+        "react-native-google-places-autocomplete": "^2.4.1",
         "react-native-modal": "^13.0.0",
         "react-native-modal-datetime-picker": "^12.0.0",
         "react-native-safe-area-context": "3.2.0",
@@ -40,6 +42,7 @@
         "react-native-web": "~0.13.12",
         "react-redux": "^7.2.6",
         "redux-typescript": "^1.2.1",
+        "swr": "^1.1.2",
         "yup": "^0.32.11"
     },
     "lint-staged": {
