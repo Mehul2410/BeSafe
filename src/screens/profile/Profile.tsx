@@ -25,9 +25,8 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
         role,
         avatar,
         email,
-        userDetails
+        userDetails: userDetails && userDetails
     };
-    console.log(userDetails);
     const ProfileText = ({ navigate, name }: profileBtnProps) => {
         return (
             <Text

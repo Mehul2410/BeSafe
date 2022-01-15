@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { Background, CustomInput, Text, Button, ImageUpload, ImageInput } from "@components";
+import { Background, CustomInput, Button, ImageInput } from "@components";
 import { View, ScrollView } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { myDetails, policeDetails, uploadImage } from "@contexts/api/client";
+import { citizenDetails, uploadImage } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { userData } from "@contexts/slice/authSlice";
-import { string } from "yup/lib/locale";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
     const [imageUri, setImageUri] = React.useState<string>();
-    const [details, setDetails] = React.useState();
+    const [details, setDetails] = React.useState({
+        date: "Date"
+    });
     const dispatch = useDispatch();
     const uploadProfileImage = async () => {
         const formData = new FormData();
@@ -37,18 +38,8 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                     authorization: `Bearer ${tokens.access_token}`
                 }
             });
-            const data = await res.json();
-            if (!isTokenExpired(tokens.access_token)) {
-                const res = await fetch(myDetails, {
-                    method: "GET",
-                    headers: {
-                        Accept: "application/json",
-                        authorization: `Bearer ${tokens.access_token}`
-                    }
-                });
-                const user = await res.json();
-                dispatch(userData(user));
-            }
+            console.log(res);
+            return await res.json();
         } catch (error) {
             console.log(error);
         }
@@ -58,34 +49,29 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
         try {
             if (imageUri) uploadProfileImage();
             const tokens = await getCredentials();
-            const res = await fetch(policeDetails, {
-                method: "PUT",
-                body: JSON.stringify({
-                    adharCard: "2202 2525 5151",
-                    panCard: "AAAPZ1234C",
-                    policeId: "1234",
-                    postingArea: {
-                        lat: 20220,
-                        long: 220200
-                    },
-                    stationName: "mumbai",
-                    policePost: "pnvl",
-                    dob: "1-1-1222",
-                    address: "bgsuighfiguifhgifikgiohjiojhoi"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${tokens.access_token}`
-                }
-            });
-            const data = await res.json();
-            console.log(data);
+            try {
+                const res = await fetch(citizenDetails, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        adhaarCard: "2202 2525 5151",
+                        panCard: "AAAPZ1234C",
+                        dob: "1-1-1222",
+                        address: "bgsuighfiguifhgifikgiohjiojhoi",
+                        occupation: "Farmer"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: `Bearer ${tokens.access_token}`
+                    }
+                });
+                const data = await res.json();
+            } catch (error) {
+                console.log(error);
+            }
         } catch (error) {
             console.log(error);
         }
     }
-
-    const [date, setDate] = useState("Date");
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -98,7 +84,7 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
     };
 
     const handleConfirm = (date: any) => {
-        setDate(date.toLocaleDateString("en-IN"));
+        setDetails({ ...details, date: date.toLocaleDateString("en-IN") });
         hideDatePicker();
     };
 
@@ -134,7 +120,7 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                         />
                         {/* <ImageUpload /> */}
                         <Button
-                            btnName={date}
+                            btnName={details.date}
                             weight="400"
                             numberOfLines={1}
                             onPress={showDatePicker}

@@ -42,19 +42,40 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                         />
 
                         {route.params.role === 3000 ? (
-                            <View style={{ height: "90%", justifyContent: "space-evenly" }}>
-                                <MediumText color="#FFF" string="citizen" />
-                                <RegularText color="#FFF" string={`Name: ${route.params.name}`} />
-                                <RegularText color="#FFF" string={`Email: ${route.params.email}`} />
+                            <View>
+                                <MediumText vmargin={10} color="#FFF" string="citizen" />
                                 <RegularText
+                                    vmargin={10}
                                     color="#FFF"
-                                    string={`DOB: ${route.params.userDetails.dob}`}
+                                    string={`Name: ${route.params.name}`}
                                 />
                                 <RegularText
+                                    vmargin={10}
                                     color="#FFF"
-                                    string={`Address: ${route.params.userDetails.address}`}
+                                    string={`Email: ${route.params.email}`}
                                 />
-                                <RegularText color="#FFF" string={`Occupation:`} />
+                                <RegularText
+                                    vmargin={10}
+                                    color="#FFF"
+                                    string={`DOB: ${
+                                        route.params.userDetails && route.params.userDetails.dob
+                                    }`}
+                                />
+                                <RegularText
+                                    vmargin={10}
+                                    color="#FFF"
+                                    string={`Address: ${
+                                        route.params.userDetails && route.params.userDetails.address
+                                    }`}
+                                />
+                                <RegularText
+                                    vmargin={10}
+                                    color="#FFF"
+                                    string={`Occupation: ${
+                                        route.params.userDetails &&
+                                        route.params.userDetails.occupation
+                                    }`}
+                                />
                             </View>
                         ) : (
                             <View style={{ height: "90%" }}>
