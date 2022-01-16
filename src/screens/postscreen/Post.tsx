@@ -10,10 +10,46 @@ import {
 } from "@components";
 import { View } from "react-native";
 import { ScrollView } from "react-native";
+import useSWR from "swr";
+import { allUsers } from "@contexts/api/client";
+import { getCredentials } from "@contexts/store/credentials";
 
 export function Post() {
     const [imageUris, setImageUris] = React.useState<string[]>([]);
+    const [users, setUser] = React.useState<[]>();
+    async function fetcher(url: string) {
+        const creds = await getCredentials();
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                authorization: `Bearer ${creds.access_token}`
+            }
+        });
+        const result = await res.json();
+        setUser(result);
+        return true;
+    }
+    const { data, error } = useSWR(allUsers, fetcher);
+    const [complaint, setComplaint] = React.useState({
+        complaintAgainst: "",
+        reason: "",
+        complaintType: "",
+        locationName: "",
+        locationAddress: "",
+        currentSituation: "",
+        nearestPoliceStation: "",
+        nearestPoliceStationAddress: ""
+    });
 
+    const SearchResult =
+        users &&
+        users.filter(value => {
+            return Object.values(value)
+                .join(" ")
+                .toLowerCase()
+                .includes(complaint.complaintAgainst.toLowerCase());
+        });
     const handleAdd = (uri: string) => {
         setImageUris([...imageUris, uri]);
     };
@@ -59,12 +95,40 @@ export function Post() {
                     }}
                 >
                     <ScrollView>
-                        <CustomInput placeholder="Complaint against" />
-                        <CustomInput placeholder="Reason of complaint" />
-                        <CustomInput placeholder="Location" />
-                        <CustomInput placeholder="Situation" />
-                        <CustomInput placeholder="Near by" />
-                        <CustomInput placeholder="Situation proof" />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, complaintAgainst: text })
+                            }
+                            placeholder="Complaint against"
+                        />
+                        {SearchResult &&
+                            SearchResult.map(item => {
+                                console.log(item);
+                                // ithe ek view banav tyat image ani name fkta display kr insta gram vr search kela vr kasa yeta tasa
+                            })}
+
+                        <CustomInput
+                            onChangeText={text => setComplaint({ ...complaint, reason: text })}
+                            placeholder="Reason of complaint"
+                        />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, locationName: text })
+                            }
+                            placeholder="Location Name"
+                        />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, currentSituation: text })
+                            }
+                            placeholder="Current Situation"
+                        />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, nearestPoliceStation: text })
+                            }
+                            placeholder="Near by Police Station"
+                        />
                         <RegularText string="Image Proof" vmargin={8} />
                         <ImageInputList
                             imageUri={imageUris}
@@ -72,7 +136,12 @@ export function Post() {
                             onRemoveImage={(uri: string) => handleRemove(uri)}
                         />
 
-                        <CustomInput placeholder="Your nearest police station" />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, nearestPoliceStation: text })
+                            }
+                            placeholder="Your nearest police station"
+                        />
                         <Button btnName="Submit" style={{ fontSize: 18, marginTop: 6 }} />
                     </ScrollView>
                 </View>
