@@ -236,7 +236,11 @@ export function Post() {
                             onAddImage={handleAdd}
                             onRemoveImage={(uri: string) => handleRemove(uri)}
                         />
-                        <Button btnName="Submit" style={{ fontSize: 18, marginTop: 6 }} />
+                        <Button
+                            btnName="Submit"
+                            style={{ fontSize: 18, marginTop: 6 }}
+                            onPress={submitComplaint}
+                        />
                     </ScrollView>
                 </View>
             </View>
