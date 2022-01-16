@@ -8,13 +8,14 @@ import {
     ImageInputList,
     RegularText
 } from "@components";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import { ScrollView } from "react-native";
 import useSWR from "swr";
 import { allUsers, createPost } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 // import useLocation from "@assets/hooks/useLocation.hook";
 import * as Location from "expo-location";
+// import { ViewProfile } from "../profile/ViewProfile";
 
 export function Post() {
     const [imageUris, setImageUris] = React.useState<string[]>([]);
@@ -33,6 +34,7 @@ export function Post() {
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
     const SearchResult =
+        complaint.complaintAgainst !== "" &&
         users &&
         users.filter(value => {
             return Object.values(value)
@@ -173,11 +175,35 @@ export function Post() {
                             }
                             placeholder="Complaint against"
                         />
-                        {/* {SearchResult &&
-                            SearchResult.map(item => {
-                                console.log(item);
-                                // ithe ek view banav tyat image ani name fkta display kr insta gram vr search kela vr kasa yeta tasa
-                            })} */}
+                        {SearchResult &&
+                            SearchResult.map((item: any, index) => {
+                                return (
+                                    <View
+                                        style={{
+                                            width: "100%",
+                                            flexDirection: "row",
+                                            marginBottom: 10
+                                        }}
+                                        key={index}
+                                    >
+                                        <Image
+                                            style={{
+                                                height: 35,
+                                                width: 35,
+                                                marginRight: 10,
+                                                borderRadius: 100
+                                            }}
+                                            resizeMode="contain"
+                                            source={
+                                                item.avatar
+                                                    ? { uri: item.avatar }
+                                                    : require("@assets/img.png")
+                                            }
+                                        />
+                                        <RegularText align="center" string={item.name} />
+                                    </View>
+                                );
+                            })}
 
                         <CustomInput
                             onChangeText={text => setComplaint({ ...complaint, reason: text })}
