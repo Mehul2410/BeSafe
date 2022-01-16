@@ -35,7 +35,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
     );
-    console.log(getAllComplaints);
+    // console.log(getAllComplaints);
     const dispatch = useDispatch();
     async function getComplaints() {
         const data = await getCredentials();
