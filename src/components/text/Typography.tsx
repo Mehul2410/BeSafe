@@ -1,10 +1,11 @@
+import { colors } from "@utils";
 import React, { StyleHTMLAttributes } from "react";
 import { FlexAlignType, StyleProp, TextStyle } from "react-native";
 import Text from "./Text";
 
 interface Props {
     string?: string;
-    color?: string;
+    color?: "#FFF" | "#1D0ECC" | "#000";
     vmargin?: number;
     bgcolor?: string;
     align?: "auto" | FlexAlignType | undefined;
@@ -12,7 +13,7 @@ interface Props {
 
 export const RegularText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
     return (
-        <Text weight="400" color="#FFF" style={{ marginVertical: vmargin, alignSelf: align }}>
+        <Text weight="400" color={color} style={{ marginVertical: vmargin, alignSelf: align }}>
             {string}
         </Text>
     );

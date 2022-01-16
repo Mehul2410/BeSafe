@@ -200,7 +200,11 @@ export function Post() {
                                                     : require("@assets/img.png")
                                             }
                                         />
-                                        <RegularText align="center" string={item.name} />
+                                        <RegularText
+                                            color="#FFF"
+                                            align="center"
+                                            string={item.name}
+                                        />
                                     </View>
                                 );
                             })}
@@ -256,7 +260,44 @@ export function Post() {
                             btnName="Get Near by Police Station"
                             onPress={nearByPoliceStation}
                         />
-                        <RegularText string="Image Proof" vmargin={8} />
+
+                        {nearbyStation &&
+                            nearbyStation.map((item: any, index) => {
+                                console.log(nearbyStation);
+                                return (
+                                    <View
+                                        style={{
+                                            width: "100%",
+                                            flexDirection: "column",
+                                            backgroundColor: "#FFF",
+                                            marginBottom: 8,
+                                            borderRadius: 7,
+                                            padding: 10
+                                        }}
+                                        key={index}
+                                    >
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`Station Name: ${item.name && item.name}`}
+                                        />
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`Address: ${item.address && item.address}`}
+                                        />
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`${
+                                                item.distance && (item.distance / 1000).toFixed(1)
+                                            } KM`}
+                                        />
+                                    </View>
+                                );
+                            })}
+
+                        <RegularText color="#FFF" string="Image Proof" vmargin={8} />
                         <ImageInputList
                             imageUri={imageUris}
                             onAddImage={handleAdd}

@@ -3,7 +3,7 @@ import { Text as DefaultText, TextProps as NativeTextProps } from "react-native"
 
 type TextProps = {
     weight: "900" | "700" | "400" | "200";
-    color?: "#FFF" | "#1D0ECC";
+    color?: "#FFF" | "#1D0ECC" | "#000";
     children: ReactNode;
 } & NativeTextProps;
 
