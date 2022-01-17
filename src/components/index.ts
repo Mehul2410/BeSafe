@@ -17,3 +17,4 @@ export { default as TextCheckBox } from "./TextCheckbox/TextCheckBox";
 export { default as CustomInput } from "./CustomInput/CustomInput";
 export { default as ImageInput } from "./ImagePicker/ImageInput";
 export { default as ImageInputList } from "./ImagePicker/ImageInputList";
+export { default as Loader } from "./Loader/Loader";

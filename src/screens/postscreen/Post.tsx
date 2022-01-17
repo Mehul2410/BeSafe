@@ -6,15 +6,17 @@ import {
     Button,
     ImageInput,
     ImageInputList,
-    RegularText
+    RegularText,
+    Loader
 } from "@components";
-import { View, Image } from "react-native";
+import { View, Image, ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native";
 import useSWR from "swr";
 import { allUsers, createPost } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 // import useLocation from "@assets/hooks/useLocation.hook";
 import * as Location from "expo-location";
+
 // import { ViewProfile } from "../profile/ViewProfile";
 
 export function Post() {
@@ -175,7 +177,7 @@ export function Post() {
                             }
                             placeholder="Complaint against"
                         />
-                        {SearchResult &&
+                        {SearchResult ? (
                             SearchResult.map((item: any, index) => {
                                 return (
                                     <View
@@ -207,7 +209,10 @@ export function Post() {
                                         />
                                     </View>
                                 );
-                            })}
+                            })
+                        ) : (
+                            <Loader />
+                        )}
 
                         <CustomInput
                             onChangeText={text => setComplaint({ ...complaint, reason: text })}
@@ -272,7 +277,7 @@ export function Post() {
                                             backgroundColor: "#FFF",
                                             marginBottom: 8,
                                             borderRadius: 7,
-                                            padding: 10
+                                            padding: 7
                                         }}
                                         key={index}
                                     >

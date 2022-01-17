@@ -9,11 +9,16 @@ interface Props {
     vmargin?: number;
     bgcolor?: string;
     align?: "auto" | FlexAlignType | undefined;
+    size?: number;
 }
 
-export const RegularText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
+export const RegularText = ({ string, color, align = "center", vmargin = 0, size }: Props) => {
     return (
-        <Text weight="400" color={color} style={{ marginVertical: vmargin, alignSelf: align }}>
+        <Text
+            weight="400"
+            color={color ? color : "#FFF"}
+            style={{ marginVertical: vmargin, alignSelf: align, fontSize: size }}
+        >
             {string}
         </Text>
     );
