@@ -3,24 +3,23 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     view: {
-        flex: 1,
-        justifyContent: "flex-end",
-        alignItems: "center"
+        width: "100%",
+        height: "100%",
+        justifyContent: "flex-end"
     },
     box1: {
         width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: 20
+        textAlign: "center",
+        marginBottom: 40
     },
     box2: {
-        justifyContent: "center",
-        alignItems: "center",
+        padding: 20,
         backgroundColor: colors.tertiary,
         width: "100%",
-        borderTopLeftRadius: 60,
-        borderTopRightRadius: 60,
-        paddingVertical: 20
+        height: "80%",
+        borderTopLeftRadius: 45,
+        borderTopRightRadius: 45,
+        paddingVertical: 35
     }
 });
 

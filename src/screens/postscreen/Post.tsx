@@ -1,54 +1,312 @@
 import React from "react";
-import { Background, CustomInput, Text, Button } from "@components";
-import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import {
+    Background,
+    CustomInput,
+    Text,
+    Button,
+    ImageInput,
+    ImageInputList,
+    RegularText
+} from "@components";
+import { View, Image } from "react-native";
+import { ScrollView } from "react-native";
+import useSWR from "swr";
+import { allUsers, createPost } from "@contexts/api/client";
+import { getCredentials } from "@contexts/store/credentials";
+// import useLocation from "@assets/hooks/useLocation.hook";
+import * as Location from "expo-location";
+// import { ViewProfile } from "../profile/ViewProfile";
 
 export function Post() {
+    const [imageUris, setImageUris] = React.useState<string[]>([]);
+    const [location, setLocation] = React.useState("");
+    const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
+    const [users, setUser] = React.useState<[]>();
+    const [complaint, setComplaint] = React.useState({
+        complaintAgainst: "",
+        reason: "",
+        complaintType: "",
+        locationName: "",
+        locationAddress: "",
+        currentSituation: "",
+        nearestPoliceStation: "",
+        nearestPoliceStationAddress: ""
+    });
+    const [nearbyStation, setNearbyStation] = React.useState<[]>();
+    const SearchResult =
+        complaint.complaintAgainst !== "" &&
+        users &&
+        users.filter(value => {
+            return Object.values(value)
+                .join(" ")
+                .toLowerCase()
+                .includes(complaint.complaintAgainst.toLowerCase());
+        });
+
+    async function fetcher(url: string) {
+        const creds = await getCredentials();
+        const res = await fetch(url, {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                authorization: `Bearer ${creds.access_token}`
+            }
+        });
+        const result = await res.json();
+        setUser(result);
+        try {
+            const { granted } = await Location.requestForegroundPermissionsAsync();
+            if (!granted) return;
+            const {
+                coords: { latitude, longitude }
+            } = await Location.getCurrentPositionAsync();
+            setlatlng({ latitude, longitude });
+        } catch (error) {
+            console.log(error);
+        }
+        return true;
+    }
+    const { data, error } = useSWR(allUsers, fetcher);
+    const handleAdd = (uri: string) => {
+        setImageUris([...imageUris, uri]);
+    };
+
+    const handleRemove = (uri: string) => {
+        setImageUris(imageUris.filter(imageUris => imageUris !== uri));
+    };
+
+    async function locationAddress() {
+        const loc = await fetch(
+            `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.locationName}&language=en`,
+            {
+                method: "GET",
+                headers: {
+                    "x-rapidapi-host": "trueway-places.p.rapidapi.com",
+                    "x-rapidapi-key": "4dbe734a50msh60cc149bbe99849p1aefa1jsn434bf0188f79"
+                }
+            }
+        );
+        const { results } = await loc.json();
+        setLocation(results[0].address);
+    }
+    async function nearByPoliceStation() {
+        const station = await fetch(
+            `https://trueway-places.p.rapidapi.com/FindPlacesNearby?location=${latlng?.latitude},${latlng?.longitude}&type=police_station&language=en`,
+            {
+                method: "GET",
+                headers: {
+                    "x-rapidapi-host": "trueway-places.p.rapidapi.com",
+                    "x-rapidapi-key": "4dbe734a50msh60cc149bbe99849p1aefa1jsn434bf0188f79"
+                }
+            }
+        );
+        const { results } = await station.json();
+        setNearbyStation(results);
+    }
+
+    async function submitComplaint() {
+        const formData = new FormData();
+        formData.append(
+            "imageProof",
+            JSON.parse(
+                JSON.stringify({
+                    uri: imageUris,
+                    type: "image"
+                })
+            )
+        );
+        const blob = new Blob([JSON.stringify(complaint)], {
+            type: "application/json"
+        });
+        formData.append("data", blob);
+        const creds = await getCredentials();
+        const submit = await fetch(createPost, {
+            method: "POST",
+            body: formData,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "multipart/form-data",
+                authorization: `Bearer ${creds.access_token}`
+            }
+        });
+        console.log(await submit.json());
+    }
+
     return (
         <Background>
             <View
                 style={{
-                    position: "absolute",
-                    height: "90%",
+                    width: "100%",
+                    height: "100%",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    padding: 20
                 }}
             >
-                <Text weight="700" style={{ color: "#FFF", fontSize: 21, textAlign: "center" }}>
+                <Text weight="700" style={{ color: "#FFF", fontSize: 18, textAlign: "center" }}>
                     Your details will be verified before processing!
                 </Text>
                 <Text
                     weight="400"
                     style={{
                         color: "#FFF",
-                        fontSize: 17,
+                        fontSize: 13,
                         textDecorationLine: "underline",
                         textAlign: "center",
-                        marginVertical: 18
+                        marginVertical: 10
                     }}
                 >
-                    Strict action will be taken for registering false complint!!!
+                    Strict action will be taken for registering false complaint!!!
                 </Text>
                 <View
                     style={{
-                        width: "90%",
-                        backgroundColor: "#1D0ECC",
+                        width: "100%",
+                        height: "85%",
+                        backgroundColor: "#281B89",
                         paddingHorizontal: 20,
                         paddingVertical: 22,
-                        borderRadius: 15,
-                        zIndex: 1000
+                        borderRadius: 15
                     }}
                 >
-                    <ScrollView style={{ height: 465 }}>
-                        <CustomInput placeholder="Reason of complaint" />
-                        <CustomInput placeholder="Location" />
-                        <CustomInput placeholder="Situation" />
-                        <CustomInput placeholder="Near by" />
-                        <CustomInput placeholder="Situation proof" />
-                        <CustomInput placeholder="Your nearest police station" />
+                    <ScrollView>
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, complaintAgainst: text })
+                            }
+                            placeholder="Complaint against"
+                        />
+                        {SearchResult &&
+                            SearchResult.map((item: any, index) => {
+                                return (
+                                    <View
+                                        style={{
+                                            width: "100%",
+                                            flexDirection: "row",
+                                            marginBottom: 10
+                                        }}
+                                        key={index}
+                                    >
+                                        <Image
+                                            style={{
+                                                height: 35,
+                                                width: 35,
+                                                marginRight: 10,
+                                                borderRadius: 100
+                                            }}
+                                            resizeMode="contain"
+                                            source={
+                                                item.avatar
+                                                    ? { uri: item.avatar }
+                                                    : require("@assets/img.png")
+                                            }
+                                        />
+                                        <RegularText
+                                            color="#FFF"
+                                            align="center"
+                                            string={item.name}
+                                        />
+                                    </View>
+                                );
+                            })}
+
+                        <CustomInput
+                            onChangeText={text => setComplaint({ ...complaint, reason: text })}
+                            placeholder="Reason of complaint"
+                        />
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, locationName: text })
+                            }
+                            placeholder="Location Name"
+                        />
+                        {location !== "" && <RegularText string={location} />}
+                        {location === "" ? (
+                            <Button
+                                btnName={
+                                    complaint.locationAddress
+                                        ? "Saved Address"
+                                        : "Check location Address"
+                                }
+                                weight="400"
+                                onPress={locationAddress}
+                            />
+                        ) : (
+                            <Button
+                                btnName="Approve Address"
+                                weight="400"
+                                onPress={() => {
+                                    setComplaint({
+                                        ...complaint,
+                                        locationAddress: location
+                                    });
+                                    setLocation("");
+                                }}
+                            />
+                        )}
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, currentSituation: text })
+                            }
+                            placeholder="Current Situation"
+                        />
+                        {/* <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, nearestPoliceStation: text })
+                            }
+                            placeholder="Near by Police Station"
+                        /> */}
+                        <Button
+                            weight="400"
+                            btnName="Get Near by Police Station"
+                            onPress={nearByPoliceStation}
+                        />
+
+                        {nearbyStation &&
+                            nearbyStation.map((item: any, index) => {
+                                console.log(nearbyStation);
+                                return (
+                                    <View
+                                        style={{
+                                            width: "100%",
+                                            flexDirection: "column",
+                                            backgroundColor: "#FFF",
+                                            marginBottom: 8,
+                                            borderRadius: 7,
+                                            padding: 10
+                                        }}
+                                        key={index}
+                                    >
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`Station Name: ${item.name && item.name}`}
+                                        />
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`Address: ${item.address && item.address}`}
+                                        />
+                                        <RegularText
+                                            color="#000"
+                                            align="flex-start"
+                                            string={`${
+                                                item.distance && (item.distance / 1000).toFixed(1)
+                                            } KM`}
+                                        />
+                                    </View>
+                                );
+                            })}
+
+                        <RegularText color="#FFF" string="Image Proof" vmargin={8} />
+                        <ImageInputList
+                            imageUri={imageUris}
+                            onAddImage={handleAdd}
+                            onRemoveImage={(uri: string) => handleRemove(uri)}
+                        />
                         <Button
                             btnName="Submit"
-                            style={{ height: 55, fontSize: 24, marginTop: 6, marginBottom: 7 }}
+                            style={{ fontSize: 18, marginTop: 6 }}
+                            onPress={submitComplaint}
                         />
                     </ScrollView>
                 </View>

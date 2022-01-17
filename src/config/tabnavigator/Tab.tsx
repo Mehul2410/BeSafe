@@ -1,10 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { ReactNode, useEffect, useState } from "react";
 import { Home, Profile, Post, ComplaintGroup } from "@screens";
-import { View, Image, TouchableOpacity, TouchableOpacityProps, Keyboard } from "react-native";
+import {
+    View,
+    Image,
+    TouchableOpacity,
+    TouchableOpacityProps,
+    Keyboard,
+    TouchableWithoutFeedback
+} from "react-native";
 import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
+import ComplaintNavigator from "./ComplaintNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -15,66 +23,45 @@ type CustomTabBarButtonprops = {
 const Tab = createBottomTabNavigator();
 
 const CustomTabBarButton = ({ children, onPress }: CustomTabBarButtonprops) => (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
         onPress={onPress}
-        style={{ top: -40, justifyContent: "center", alignItems: "center" }}
+        style={{ top: -10, justifyContent: "center", alignItems: "center" }}
     >
         <View
             style={{
-                width: 70,
-                height: 70,
-                borderRadius: 35,
-                // borderColor: colors.primary,
-                // borderWidth: 4,
+                width: 50,
+                height: 50,
+                borderRadius: 15,
                 backgroundColor: colors.tertiary,
                 shadowColor: colors.black,
                 shadowOffset: { width: 6, height: 2 },
                 shadowOpacity: 0.25,
                 shadowRadius: 4,
-                elevation: 4
+                elevation: 4,
+                marginTop: 4
             }}
         >
             {children}
         </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
 );
 
 const Tabs = () => {
-    const [margin, setMargin] = useState(10);
-
-    useEffect(() => {
-        const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-            setMargin(-120);
-        });
-        const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-            setMargin(10);
-        });
-
-        return () => {
-            showSubscription.remove();
-            hideSubscription.remove();
-        };
-    }, []);
     return (
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    position: "absolute",
-                    bottom: margin,
-                    left: 20,
-                    right: 20,
-                    elevation: 0,
-                    borderRadius: 10,
-                    height: 80,
-                    backgroundColor: "#389FFE"
+                    height: 60,
+                    backgroundColor: "#130e5c",
+                    borderTopColor: "#130e5c"
                 }
             }}
         >
             <Tab.Screen
                 name="Home"
-                component={ComplaintGroup}
+                component={ComplaintNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -82,21 +69,12 @@ const Tabs = () => {
                                 source={require("@assets/homeicon.png")}
                                 resizeMode="contain"
                                 style={{
-                                    height: 25,
-                                    width: 25,
+                                    height: 20,
+                                    width: 20,
                                     marginBottom: 5,
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}
                             />
-                            <Text
-                                weight="200"
-                                style={{
-                                    color: focused ? "#1C32F3" : "#FFF",
-                                    fontFamily: "Chillax-Medium"
-                                }}
-                            >
-                                HOME
-                            </Text>
                         </View>
                     )
                 }}
@@ -110,9 +88,10 @@ const Tabs = () => {
                             source={require("@assets/plus.png")}
                             resizeMode="contain"
                             style={{
-                                height: 25,
-                                width: 25,
-                                tintColor: focused ? "#FFF" : "#1C32F3"
+                                height: 20,
+                                width: 20,
+                                tintColor: focused ? "#1C32F3" : "#FFF",
+                                transform: focused ? [{ rotate: "45deg" }] : [{ rotate: "0deg" }]
                             }}
                         />
                     ),
@@ -129,21 +108,12 @@ const Tabs = () => {
                                 source={require("@assets/profileicon.png")}
                                 resizeMode="contain"
                                 style={{
-                                    height: 25,
-                                    width: 25,
+                                    height: 20,
+                                    width: 20,
                                     marginBottom: 5,
                                     tintColor: focused ? "#1C32F3" : "#FFF"
                                 }}
                             />
-                            <Text
-                                weight="200"
-                                style={{
-                                    color: focused ? "#1C32F3" : "#FFF",
-                                    fontFamily: "Chillax-Medium"
-                                }}
-                            >
-                                PROFILE
-                            </Text>
                         </View>
                     )
                 }}

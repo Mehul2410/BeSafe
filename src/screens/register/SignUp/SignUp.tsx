@@ -6,9 +6,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import styles from "./signup.styles";
 import { Formik, FormikHelpers } from "formik";
 import { SignUpvalidationSchema } from "@utils";
-import { createUser, signInUser } from "@contexts/api/client";
-import { useDispatch } from "react-redux";
-import { signIn, signUp } from "@contexts/slice/authSlice";
+import { createUser, myDetails, signInUser } from "@contexts/api/client";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
+import { isTokenExpired } from "@contexts/store/credentials";
+import emailjs from "@emailjs/browser";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
     const dispatch = useDispatch();
@@ -20,57 +22,50 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         confirmPassword: "",
         role: route.params.role
     };
+    const emailMessage = {
+        citizen: "Kindly update your personal details so you can have full access to our App",
+        police: "Now as you have Created account for police you will be going under validation process to have complete access to our App"
+    };
     const [signUpError, setSignUpError] = React.useState("");
-    const SignUpUser = async (
-        values: {
-            name: string;
-            email: string;
-            password: string;
-            confirmPassword: string;
-            role: string;
-        },
-        formikActions: FormikHelpers<{
-            name: string;
-            email: string;
-            password: string;
-            confirmPassword: string;
-            role: string;
-        }>
-    ) => {
-        const { email, password } = values;
-        const res = await fetch(createUser, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ ...values })
-        });
-        const result = await res.json();
-        dispatch(signUp(result));
-        if (result.success) {
-            const signInReq = await fetch(signInUser, {
+    const SignUpUser = async (values: {
+        name: string;
+        email: string;
+        password: string;
+        confirmPassword: string;
+        role: number;
+    }) => {
+        try {
+            const res = await fetch(createUser, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ ...values })
             });
-            const signInRes = await signInReq.json();
-
-            if (signInRes.success) {
-                formikActions.resetForm();
-                formikActions.setSubmitting(false);
-                dispatch(signIn(signInRes));
+            const user = await res.json();
+            console.log(user);
+            if (user.success) {
+                const emailres = await emailjs.send(
+                    "gmail",
+                    "signUp",
+                    {
+                        email: values.email,
+                        message: values.role === 3000 ? emailMessage.citizen : emailMessage.police
+                    },
+                    "user_brys7kId9nfyXkoJzjuw5"
+                );
+                if (!isTokenExpired(user.access_token)) {
+                    dispatch(userData(user.result));
+                    dispatch(getTokens(user));
+                    //active status to be send from backend to login police
+                }
+                dispatch(signUp(user));
+            } else {
+                setSignUpError("Invalid mail id or password");
             }
-            formikActions.resetForm();
-            formikActions.setSubmitting(false);
-        } else {
-            setSignUpError(result.message);
-            setTimeout(() => {
-                setSignUpError("");
-            }, 3000);
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -80,7 +75,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 <View style={styles.box1}>
                     <Image style={styles.img} source={route.params.uri} />
                     <Text style={{ color: "#FFF", marginTop: 15 }}>
-                        Sign-up as {route.params.role}
+                        Sign-up as {route.params.role === 5000 ? "Police" : "Citizen"}
                     </Text>
                 </View>
                 <View style={styles.box2}>
@@ -143,7 +138,10 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                         <Button
                                             btnName="SignUp"
                                             weight="400"
-                                            style={{ marginVertical: 12 }}
+                                            style={{
+                                                marginVertical: 12,
+                                                backgroundColor: "#281B89"
+                                            }}
                                             onPress={() => handleSubmit()}
                                         />
                                     </ScrollView>

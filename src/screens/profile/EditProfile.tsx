@@ -1,15 +1,79 @@
 import React, { useState } from "react";
-import { Background, CustomInput, Text, Button, ImageUpload } from "@components";
-import { View } from "react-native";
+import { Background, CustomInput, Button, ImageInput } from "@components";
+import { View, ScrollView } from "react-native";
 import { colors } from "@utils";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
-import { useSelector, RootStateOrAny } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { citizenDetails, uploadImage } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { userData } from "@contexts/slice/authSlice";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
-    const token = useSelector((state: RootStateOrAny) => state.auth.token);
-    console.log(token);
-    const [date, setDate] = useState("Date");
+    const [imageUri, setImageUri] = React.useState<string>();
+    const [details, setDetails] = React.useState({
+        dob: "Date",
+        adhaarCard: "",
+        panCard: "",
+        address: "",
+        occupation: ""
+    });
+    const dispatch = useDispatch();
+    const uploadProfileImage = async () => {
+        const formData = new FormData();
+        formData.append(
+            "profile",
+            JSON.parse(
+                JSON.stringify({
+                    name: "image",
+                    uri: imageUri,
+                    type: "image/jpg"
+                })
+            )
+        );
+        try {
+            const tokens = await getCredentials();
+            const res = await fetch(uploadImage, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "multipart/form-data",
+                    authorization: `Bearer ${tokens.access_token}`
+                }
+            });
+            console.log(res);
+            return await res.json();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    async function SubmitEditProfile() {
+        try {
+            if (imageUri) uploadProfileImage();
+            const tokens = await getCredentials();
+            try {
+                const res = await fetch(citizenDetails, {
+                    method: "PUT",
+                    body: JSON.stringify(details),
+                    headers: {
+                        "Content-Type": "application/json",
+                        authorization: `Bearer ${tokens.access_token}`
+                    }
+                });
+                const user = await res.json();
+                console.log(user);
+                if (user.success) {
+                    dispatch(userData(user));
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -22,60 +86,69 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
     };
 
     const handleConfirm = (date: any) => {
-        setDate(date.toLocaleDateString("en-IN"));
+        setDetails({ ...details, dob: date.toLocaleDateString("en-IN") });
         hideDatePicker();
     };
 
     return (
         <Background>
-            <View style={{ height: "100%", alignItems: "center" }}>
-                <Text
-                    weight="400"
+            <View
+                style={{
+                    height: "100%",
+                    width: "100%",
+                    alignItems: "center",
+                    padding: 20,
+                    justifyContent: "center"
+                }}
+            >
+                <Button weight="400" btnName="Edit Profile" />
+                <View
                     style={{
-                        color: colors.white,
-                        fontSize: 24,
-                        height: 60,
-                        width: 350,
-                        backgroundColor: colors.tertiary,
-                        textAlign: "center",
-                        textAlignVertical: "center",
-                        borderRadius: 10
+                        marginTop: 25,
+                        alignItems: "center",
+                        width: "100%",
+                        height: "80%",
+                        justifyContent: "center"
                     }}
                 >
-                    Edit Profile
-                </Text>
-                <View style={{ marginTop: 25, alignItems: "center" }}>
-                    <ImageUpload navigation={navigation} token={token} />
-                    <Button
-                        btnName={date}
-                        weight="400"
-                        numberOfLines={1}
-                        onPress={showDatePicker}
-                        style={{
-                            backgroundColor: "#FFF",
-                            color: colors.quatnary,
-                            height: 53,
-                            width: 350,
-                            borderRadius: 10,
-                            fontSize: 18,
-                            marginVertical: 12
-                        }}
-                    />
-
-                    <CustomInput
-                        placeholder="Adharcard or Pancard"
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
-                    <CustomInput
-                        placeholder="Address "
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
-                    <CustomInput
-                        placeholder="Occupation"
-                        style={{ height: 53, width: 350, borderRadius: 10 }}
-                    />
+                    <ScrollView style={{ width: "100%", paddingHorizontal: 10 }}>
+                        <ImageInput
+                            imageUri={imageUri}
+                            onChangeImage={setImageUri}
+                            style={{
+                                borderRadius: 70,
+                                marginBottom: 15,
+                                alignSelf: "center"
+                            }}
+                        />
+                        {/* <ImageUpload /> */}
+                        <Button
+                            btnName={details.dob}
+                            weight="400"
+                            numberOfLines={1}
+                            onPress={showDatePicker}
+                            bgColor="#FFF"
+                            textColor={colors.quatnary}
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, adhaarCard: text })}
+                            placeholder="Adharcard"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, panCard: text })}
+                            placeholder="Pancard"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, address: text })}
+                            placeholder="Address"
+                        />
+                        <CustomInput
+                            onChangeText={text => setDetails({ ...details, occupation: text })}
+                            placeholder="Occupation"
+                        />
+                        <Button btnName="save" onPress={SubmitEditProfile} />
+                    </ScrollView>
                 </View>
-
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     mode="date"

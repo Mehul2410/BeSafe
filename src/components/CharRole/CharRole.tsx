@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        paddingVertical: 20
+        paddingVertical: 15
     },
     text: {
         color: "#FFF"

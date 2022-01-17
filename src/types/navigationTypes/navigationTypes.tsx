@@ -13,28 +13,49 @@ export type StackNavigatorParams = {
     PoliceSignup: undefined;
     PoliceDetail: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
     };
     DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;
     SignIn: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
         agree?: string;
     };
     SignUp: {
         uri: ImageSourcePropType;
-        role: string;
+        role: number;
         agree?: string;
     };
     UserProfile: undefined;
     EditProfile: undefined;
+    ViewProfile: {
+        id: string;
+        name: string;
+        role: number;
+        avatar: string;
+        email: string;
+        userDetails: any;
+    };
     Setting: undefined;
     Help: undefined;
     Post: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
+    ComplaintsLayout: {
+        _id?: string;
+        complaintType?: string;
+        createdAt?: Date;
+        location?: {
+            name?: string;
+        };
+        proof?: string;
+        reason?: string;
+        status?: string;
+        updatedAt?: Date;
+        image?: string[];
+    };
 };
 
 export type NavigationProps<T extends keyof StackNavigatorParams> = {

@@ -3,7 +3,7 @@ import { Text as DefaultText, TextProps as NativeTextProps } from "react-native"
 
 type TextProps = {
     weight: "900" | "700" | "400" | "200";
-    color?: "#FFF" | "#1D0ECC";
+    color?: "#FFF" | "#1D0ECC" | "#000";
     children: ReactNode;
 } & NativeTextProps;
 
@@ -21,13 +21,13 @@ export default function Text({
     let fontFamily;
     if (weight === "900") {
         fontFamily = "Chillax-Bold";
-        fontSize = 45;
+        fontSize = 30;
     } else if (weight === "700") {
         fontFamily = "Chillax-Medium";
-        fontSize = 30;
+        fontSize = 24;
     } else if (weight === "400") {
         fontFamily = "Chillax-Regular";
-        fontSize = 20;
+        fontSize = 18;
     } else if (weight === "200") {
         fontFamily = "Chillax-Light";
         fontSize = 15;

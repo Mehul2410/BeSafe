@@ -6,27 +6,30 @@ import { View, Image } from "react-native";
 import styles from "./signin.styles";
 import { SignInvalidationSchema } from "@utils";
 import { Formik, FormikHelpers } from "formik";
-import { signInUser } from "@contexts/api/client";
+import { myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
-import { signIn } from "@contexts/slice/authSlice";
+import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
+import { isTokenExpired } from "@contexts/store/credentials";
+
+interface signInProps {
+    email: string;
+    password: string;
+    role: number;
+}
 
 export default function SignIn({ navigation, route }: NavigationProps<"SignIn">): ReactElement {
     const signInInfo = {
         email: "",
-        password: ""
+        password: "",
+        role: route.params.role
     };
     const dispatch = useDispatch();
     const [signInError, setSignInError] = React.useState("");
-    const SignInUser = async (
-        values: {
-            email: string;
-            password: string;
-        },
-        formikActions: FormikHelpers<{
-            email: string;
-            password: string;
-        }>
-    ) => {
+    const SignInUser = async (values: signInProps, formikActions: FormikHelpers<signInProps>) => {
+        try {
+        } catch (error) {
+            console.log(error);
+        }
         const res = await fetch(signInUser, {
             method: "POST",
             headers: {
@@ -35,16 +38,17 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             },
             body: JSON.stringify({ ...values })
         });
-        const result = await res.json();
-        if (result.success) {
-            formikActions.resetForm();
-            formikActions.setSubmitting(false);
-            dispatch(signIn(result));
+        const user = await res.json();
+        console.log(user);
+        if (user.success) {
+            if (!isTokenExpired(user.access_token)) {
+                dispatch(userData(user.result));
+                dispatch(getTokens(user));
+                //active status to be send from backend to login police
+            }
+            dispatch(signUp(user));
         } else {
-            setSignInError(result.message);
-            setTimeout(() => {
-                setSignInError("");
-            }, 3000);
+            setSignInError("Invalid mail id or password");
         }
     };
 
@@ -53,7 +57,9 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             <View style={styles.view}>
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
-                    <Text style={{ color: colors.white }}>Sign-in as {route.params.role}</Text>
+                    <Text style={{ color: colors.white }}>
+                        Sign-in as {route.params.role === 5000 ? "Police" : "Citizen"}
+                    </Text>
                 </View>
                 <View style={styles.box2}>
                     <Formik
@@ -62,7 +68,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                         onSubmit={SignInUser}
                     >
                         {({ values, handleChange, errors, handleBlur, touched, handleSubmit }) => {
-                            const { email, password } = values;
+                            const { email, password, role } = values;
                             return (
                                 <>
                                     <Text weight="700" style={{ color: "red", fontSize: 14 }}>
@@ -94,7 +100,11 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                     <Button
                                         btnName="SignIn"
                                         weight="400"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        style={{
+                                            width: "80%",
+                                            marginVertical: 12,
+                                            backgroundColor: "#281B89"
+                                        }}
                                         onPress={() => handleSubmit()}
                                     />
                                 </>

@@ -6,8 +6,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import Button from "../Button/Button";
 import { uploadImage } from "../../contexts/api/client";
+import { NavigationProps } from "@types";
+import { getCredentials } from "@contexts/store/credentials";
 
-const ImageUpload = ({ navigation, token }) => {
+type imageUploadProps = {
+    token: string;
+};
+
+const ImageUpload = () => {
     const [profileImage, setProfileImage] = React.useState("");
 
     const openImageLibrary = async () => {
@@ -16,40 +22,44 @@ const ImageUpload = ({ navigation, token }) => {
             alert("Sorry we need camera roll premission to make this work!");
         }
         if (status === "granted") {
-            const response = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true
-            });
-            if (!response.cancelled) {
-                setProfileImage(response.uri);
+            try {
+                const response = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true
+                });
+                if (!response.cancelled) {
+                    setProfileImage(response.uri);
+                }
+            } catch (err) {
+                console.log(err);
             }
         }
     };
     const uploadProfileImage = async () => {
         const formData = new FormData();
-        formData.append("profile", {
-            name: "image",
-            uri: profileImage,
-            type: "image/jpg"
-        });
+        formData.append(
+            "profile",
+            JSON.stringify({
+                name: "image",
+                uri: profileImage,
+                type: "image/jpg"
+            })
+        );
 
         try {
+            const tokens = await getCredentials();
             const res = await fetch(uploadImage, {
                 method: "POST",
                 body: formData,
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "multipart/form-data",
-                    authorization: `JWT ${token}`
+                    authorization: `Bearer ${tokens.access_token}`
                 }
             });
             const data = await res.json();
-            console.log(data);
-            if (data.success) {
-                // navigation.navigate("Profile", { token });
-            }
         } catch (error) {
-            console.log(error.message);
+            console.log(error);
         }
     };
 
@@ -60,7 +70,7 @@ const ImageUpload = ({ navigation, token }) => {
                     <Image
                         style={styles.image}
                         source={
-                            profileImage ? { uri: profileImage } : require("@assets/smiley.png")
+                            profileImage ? { uri: profileImage } : require("@assets/camera.png")
                         }
                     />
                 </TouchableOpacity>
@@ -85,8 +95,8 @@ const ImageUpload = ({ navigation, token }) => {
 
 const styles = StyleSheet.create({
     image: {
-        width: 120,
-        height: 120
+        width: 60,
+        height: 60
     },
     circle: {
         borderRadius: 75,

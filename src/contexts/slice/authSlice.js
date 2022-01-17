@@ -1,12 +1,18 @@
+import { isTokenExpired, setCredentials } from "@contexts/store/credentials";
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
     lang: "en",
-    role: "citizen",
-    token: "sdvb",
+    role: null,
+    token: "",
     name: "",
     email: "",
     user: "",
-    authorized: false
+    _id: "",
+    avatar: "",
+    active: false,
+    complaints: [],
+    userDetails: undefined
 };
 
 export const authSlice = createSlice({
@@ -14,27 +20,39 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         signUp: (state, action) => {
-            console.log(action.payload);
-            const { user } = action.payload;
-            state.name = user.name;
-            state.email = user.email;
-            state.user = user._id;
-            state.role = user.role;
+            const { success, access_token, refresh_token } = action.payload;
+            if (!isTokenExpired(access_token)) {
+                const keys = {
+                    access_token,
+                    refresh_token
+                };
+                setCredentials(keys);
+                state.token = access_token;
+            }
         },
-        signIn: (state, action) => {
-            console.log(action.payload);
-            const { token, user } = action.payload;
-            state.token = token;
-            state.name = user.name;
+        getTokens: (state, action) => {
+            const { access_token } = action.payload;
+            state.token = access_token;
+        },
+        userData: (state, action) => {
+            const user = action.payload;
+            state._id = user._id;
             state.email = user.email;
-            state.user = user._id;
-            state.authorized = user.authorized;
+            state.name = user.name;
+            state.role = user.role;
+            state.avatar = user.avatar;
+            state.active = user.active;
+            state.userDetails = user.userDetails && user.userDetails;
+        },
+        userComplaints: (state, action) => {
+            const { myComplaints } = action.payload;
+            state.complaints = myComplaints.complaints;
         }
     },
     extraReducers: {}
 });
 
 // Action creators are generated for each case reducer function
-export const { signUp, signIn } = authSlice.actions;
+export const { signUp, getTokens, userData, userComplaints } = authSlice.actions;
 
 export default authSlice.reducer;

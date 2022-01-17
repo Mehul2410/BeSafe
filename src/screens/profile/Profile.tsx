@@ -1,15 +1,32 @@
 import React from "react";
-import { Background, Text, RegularText } from "@components";
+import { Background, Text, RegularText, Button } from "@components";
 import { Image, ScrollView, View } from "react-native";
 import { NavigationProps } from "@types";
 import styles from "./Profile.styles";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getTokens } from "@contexts/slice/authSlice";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ViewProfile } from "./ViewProfile";
 
 interface profileBtnProps {
-    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help";
+    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register" | "ViewProfile";
     name: string;
 }
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
+    const { userDetails, id, name, role, avatar, email } = useSelector(
+        (state: RootStateOrAny) => state.auth
+    );
+    const dispatch = useDispatch();
+    const userData = {
+        id,
+        name,
+        role,
+        avatar,
+        email,
+        userDetails: userDetails && userDetails
+    };
     const ProfileText = ({ navigate, name }: profileBtnProps) => {
         return (
             <Text
@@ -30,25 +47,45 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
             <View style={styles.view}>
                 <View style={styles.profile}>
                     <View style={{ position: "relative" }}>
-                        <Image style={styles.img} source={require("@assets/img.png")} />
+                        <Image
+                            style={styles.img}
+                            source={avatar ? { uri: avatar } : require("@assets/img.png")}
+                        />
                         <View style={styles.edit}>
                             <Image source={require("@assets/edit.png")} />
                         </View>
                     </View>
                 </View>
                 <View style={styles.name}>
-                    <RegularText string="John K. Wick" />
+                    <RegularText string={name} />
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                         <Image source={require("@assets/percent.png")} />
-                        <RegularText string="90%" color="#FFF" />
+                        <TouchableWithoutFeedback
+                            onPress={() => {
+                                navigation.navigate("ViewProfile", userData);
+                            }}
+                        >
+                            <RegularText string="90%" color="#FFF" />
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={styles.probtn}>
-                    <ProfileText name="Edit Profile" navigate="EditProfile" />
+                    {role === 3000 && <ProfileText name="Edit Profile" navigate="EditProfile" />}
                     {/* history */}
                     <ProfileText name="Complaints" navigate="ComplaintGroup" />
                     <ProfileText name="Setting" navigate="Setting" />
                     <ProfileText name="Help" navigate="Help" />
+                    <Text
+                        style={styles.btn}
+                        weight="400"
+                        color="#FFF"
+                        onPress={async () => {
+                            await AsyncStorage.removeItem("keys");
+                            dispatch(getTokens({ access_token: "" }));
+                        }}
+                    >
+                        logout
+                    </Text>
                 </View>
             </View>
         </Background>

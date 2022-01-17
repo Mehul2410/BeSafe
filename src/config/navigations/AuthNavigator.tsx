@@ -17,6 +17,7 @@ const Stack = createStackNavigator<StackNavigatorParams>();
 export default function AuthNavigator(): ReactElement {
     return (
         <Stack.Navigator
+            // initialRouteName="PoliceDetail"
             screenOptions={{
                 headerMode: "screen",
                 headerShown: false
@@ -27,8 +28,6 @@ export default function AuthNavigator(): ReactElement {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="PoliceDetail" component={PoliceDetail} />
-            <Stack.Screen name="DetailFilled" component={DetailFilled} />
         </Stack.Navigator>
     );
 }

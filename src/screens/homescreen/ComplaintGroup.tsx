@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Image,
@@ -10,113 +10,79 @@ import {
 import { Background, StatusDetail, Text, DateAndTime } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { Complaints } from "./Complaints";
+import { complaints } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { userComplaints } from "@contexts/slice/authSlice";
 
-interface C {
-    id: number | undefined;
-    date: string | undefined;
-    time: string | undefined;
-    status: string | undefined;
-    view: string | undefined;
-    reason: string | undefined;
-    text: string | undefined;
+interface complaintProps {
+    _id?: string;
+    complaintType?: string;
+    createdAt?: Date;
+    location?: {
+        name?: string;
+    };
+    proof?: string;
+    reason?: string;
+    status?: string;
+    updatedAt?: Date;
+    image?: string[];
 }
 
-export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
-    const [a, seta] = useState<C | undefined>(undefined);
-    const [show, setShow] = useState(false);
-    const group = [
-        {
-            id: 1,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 2,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 3,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 4,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 5,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 6,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        },
-        {
-            id: 7,
-            date: "29-Aug",
-            time: "06:00 am",
-            status: "status",
-            view: "View",
-            reason: "Reason",
-            text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type andscrambled it to make a type specimen book. It has survived not only fivecenturies, but also the leap into electronic typesetting, remainingessentially unchanged."
-        }
-    ];
+type multiProps = complaintProps[];
 
+export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
+    const getAllComplaints: multiProps = useSelector(
+        (state: RootStateOrAny) => state.auth.complaints
+    );
+    // console.log(getAllComplaints);
+    const dispatch = useDispatch();
+    async function getComplaints() {
+        const data = await getCredentials();
+        if (data) {
+            if (!isTokenExpired(data.access_token)) {
+                const res = await fetch(complaints, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${data.access_token}`
+                    }
+                });
+                const user = await res.json();
+                if (user.myComplaints) {
+                    dispatch(userComplaints(user));
+                }
+                //active status to be send from backend to login police
+            }
+        }
+    }
+    useEffect(() => {
+        getComplaints();
+    }, []);
     return (
         <Background>
-            {/* style={{ flex: 1, height: "100%", width: "100%" }}
-             style={{ alignItems: "center", width: "100%" }}
-             */}
-            <View>
+            <View
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    paddingHorizontal: 20,
+                    paddingBottom: 60
+                }}
+            >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
                     Complaints
                 </Text>
-                <View
-                    style={{
-                        paddingHorizontal: 20,
-                        paddingBottom: 215
-                    }}
-                >
+                <View>
                     <ScrollView>
-                        {group.map(item => {
-                            return (
-                                <TouchableWithoutFeedback
-                                    key={item.id}
-                                    onPress={() => {
-                                        seta(item);
-                                        setShow(true);
-                                    }}
-                                >
-                                    <View>
+                        {getAllComplaints &&
+                            getAllComplaints.map((item, index) => {
+                                return (
+                                    <TouchableWithoutFeedback
+                                        key={index}
+                                        onPress={() => {
+                                            navigation.navigate("ComplaintsLayout", item);
+                                        }}
+                                    >
                                         <View
                                             style={{
                                                 marginVertical: 10,
@@ -124,8 +90,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                 backgroundColor: "#281B89",
                                                 borderRadius: 10,
                                                 padding: 10,
-                                                maxWidth: 350,
-                                                margin: "auto"
+                                                elevation: 3
                                             }}
                                         >
                                             <View
@@ -148,8 +113,16 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                             marginLeft: 10
                                                         }}
                                                     >
-                                                        <DateAndTime string={item.date} />
-                                                        <DateAndTime string={item.time} />
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleDateString("en-IN")}
+                                                        />
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleTimeString("en-IN")}
+                                                        />
                                                     </View>
                                                     {/* <Image
                                                         resizeMode="contain"
@@ -171,7 +144,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     marginTop: 5
                                                 }}
                                             >
-                                                {item.reason}
+                                                Reason
                                             </Text>
                                             <Text
                                                 numberOfLines={4}
@@ -182,30 +155,22 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     paddingTop: 5
                                                 }}
                                             >
-                                                {item.text}
+                                                {item.reason}
                                             </Text>
                                         </View>
-                                        {show && (
-                                            <Modal transparent={true}>
-                                                <Complaints
-                                                    onPress={() => setShow(!show)}
-                                                    id={a?.id}
-                                                    status={a?.status}
-                                                    date={a?.date}
-                                                    time={a?.time}
-                                                    reason={a?.reason}
-                                                    text={a?.text}
-                                                    style={{}}
-                                                />
-                                            </Modal>
-                                        )}
-                                    </View>
-                                </TouchableWithoutFeedback>
-                            );
-                        })}
+                                    </TouchableWithoutFeedback>
+                                );
+                            })}
                     </ScrollView>
                 </View>
             </View>
         </Background>
     );
 }
+
+// id={a?.id}
+// status={a?.status}
+// date={a?.date}
+// time={a?.time}
+// reason={a?.reason}
+// text={a?.text}
