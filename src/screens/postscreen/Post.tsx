@@ -16,15 +16,19 @@ import { allUsers, createPost } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 // import useLocation from "@assets/hooks/useLocation.hook";
 import * as Location from "expo-location";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 // import { ViewProfile } from "../profile/ViewProfile";
 
 export function Post() {
+    const [loading, setLoading] = React.useState(false);
+    const [policeLoading, setPoliceLoading] = React.useState(false);
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [users, setUser] = React.useState<[]>();
     const [complaint, setComplaint] = React.useState({
+        complaintAgainstName: "",
         complaintAgainst: "",
         reason: "",
         complaintType: "",
@@ -36,13 +40,13 @@ export function Post() {
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
     const SearchResult =
-        complaint.complaintAgainst !== "" &&
+        complaint.complaintAgainstName !== "" &&
         users &&
         users.filter(value => {
             return Object.values(value)
                 .join(" ")
                 .toLowerCase()
-                .includes(complaint.complaintAgainst.toLowerCase());
+                .includes(complaint.complaintAgainstName.toLowerCase());
         });
 
     async function fetcher(url: string) {
@@ -92,6 +96,7 @@ export function Post() {
         setLocation(results[0].address);
     }
     async function nearByPoliceStation() {
+        setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
         const station = await fetch(
             `https://trueway-places.p.rapidapi.com/FindPlacesNearby?location=${latlng?.latitude},${latlng?.longitude}&type=police_station&language=en`,
             {
@@ -104,34 +109,49 @@ export function Post() {
         );
         const { results } = await station.json();
         setNearbyStation(results);
+        setPoliceLoading(true);
+        setTimeout(() => {
+            setPoliceLoading(false);
+        }, 1000);
     }
 
     async function submitComplaint() {
         const formData = new FormData();
-        formData.append(
-            "imageProof",
-            JSON.parse(
-                JSON.stringify({
-                    uri: imageUris,
-                    type: "image"
-                })
-            )
-        );
-        const blob = new Blob([JSON.stringify(complaint)], {
-            type: "application/json"
+        imageUris.forEach(element => {
+            formData.append(
+                "imageProof",
+                JSON.parse(
+                    JSON.stringify({
+                        name: `image.${element.split(".")[1]}`,
+                        uri: element,
+                        type: `image/${element.split(".")[1]}`
+                    })
+                )
+            );
         });
-        formData.append("data", blob);
+        formData.append("data", JSON.stringify(complaint));
         const creds = await getCredentials();
-        const submit = await fetch(createPost, {
-            method: "POST",
-            body: formData,
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "multipart/form-data",
-                authorization: `Bearer ${creds.access_token}`
-            }
-        });
-        console.log(await submit.json());
+        try {
+            const submit = await fetch(createPost, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "multipart/form-data",
+                    authorization: `Bearer ${creds.access_token}`
+                }
+            });
+            console.log(await submit.json());
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function handleLoading() {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
     }
 
     return (
@@ -172,48 +192,63 @@ export function Post() {
                 >
                     <ScrollView>
                         <CustomInput
-                            onChangeText={text =>
-                                setComplaint({ ...complaint, complaintAgainst: text })
-                            }
+                            value={complaint.complaintAgainstName}
+                            onChangeText={text => {
+                                setComplaint({ ...complaint, complaintAgainstName: text });
+                                handleLoading();
+                            }}
                             placeholder="Complaint against"
                         />
-                        {SearchResult ? (
+                        <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, complaintType: text })
+                            }
+                            placeholder="Complaint Type"
+                        />
+                        {SearchResult &&
                             SearchResult.map((item: any, index) => {
                                 return (
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            flexDirection: "row",
-                                            marginBottom: 10
-                                        }}
+                                    <TouchableWithoutFeedback
                                         key={index}
+                                        onPress={() => {
+                                            setComplaint({
+                                                ...complaint,
+                                                complaintAgainst: item._id,
+                                                complaintAgainstName: item.name
+                                            });
+                                        }}
                                     >
-                                        <Image
+                                        <View
                                             style={{
-                                                height: 35,
-                                                width: 35,
-                                                marginRight: 10,
-                                                borderRadius: 100
+                                                width: "100%",
+                                                flexDirection: "row",
+                                                marginBottom: 10
                                             }}
-                                            resizeMode="contain"
-                                            source={
-                                                item.avatar
-                                                    ? { uri: item.avatar }
-                                                    : require("@assets/img.png")
-                                            }
-                                        />
-                                        <RegularText
-                                            color="#FFF"
-                                            align="center"
-                                            string={item.name}
-                                        />
-                                    </View>
+                                        >
+                                            <Image
+                                                style={{
+                                                    height: 35,
+                                                    width: 35,
+                                                    marginRight: 10,
+                                                    borderRadius: 100
+                                                }}
+                                                resizeMode="contain"
+                                                source={
+                                                    item.avatar
+                                                        ? { uri: item.avatar }
+                                                        : require("@assets/img.png")
+                                                }
+                                            />
+                                            <RegularText
+                                                color="#FFF"
+                                                align="center"
+                                                string={item.name}
+                                            />
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 );
-                            })
-                        ) : (
-                            <PostLoader />
-                        )}
-
+                            })}
+                        {loading && <PostLoader />}
                         <CustomInput
                             onChangeText={text => setComplaint({ ...complaint, reason: text })}
                             placeholder="Reason of complaint"
@@ -222,19 +257,31 @@ export function Post() {
                             onChangeText={text =>
                                 setComplaint({ ...complaint, locationName: text })
                             }
+                            editable={complaint.locationAddress ? false : true}
                             placeholder="Location Name"
                         />
                         {location !== "" && <RegularText string={location} />}
                         {location === "" ? (
-                            <Button
-                                btnName={
-                                    complaint.locationAddress
-                                        ? "Saved Address"
-                                        : "Check location Address"
-                                }
-                                weight="400"
-                                onPress={locationAddress}
-                            />
+                            <>
+                                <Button
+                                    btnName={
+                                        complaint.locationAddress
+                                            ? "Saved Address"
+                                            : "Check location Address"
+                                    }
+                                    weight="400"
+                                    onPress={locationAddress}
+                                />
+                                {complaint.locationAddress !== "" && (
+                                    <Button
+                                        btnName="Change Address"
+                                        weight="400"
+                                        onPress={() =>
+                                            setComplaint({ ...complaint, locationAddress: "" })
+                                        }
+                                    />
+                                )}
+                            </>
                         ) : (
                             <Button
                                 btnName="Approve Address"
@@ -254,58 +301,68 @@ export function Post() {
                             }
                             placeholder="Current Situation"
                         />
-                        {/* <CustomInput
-                            onChangeText={text =>
-                                setComplaint({ ...complaint, nearestPoliceStation: text })
-                            }
-                            placeholder="Near by Police Station"
-                        /> */}
                         <Button
                             weight="400"
                             btnName="Get Near by Police Station"
                             onPress={nearByPoliceStation}
                         />
-
-                        {nearbyStation &&
+                        {policeLoading && <PostLoader />}
+                        {complaint.nearestPoliceStation === "" ? (
+                            nearbyStation &&
                             nearbyStation.map((item: any, index) => {
                                 return (
-                                    <View
-                                        style={{
-                                            width: "100%",
-                                            flexDirection: "column",
-                                            backgroundColor: "#FFF",
-                                            borderBottomColor: "#000",
-                                            borderBottomWidth: 1,
-                                            borderRadius: 3,
-                                            padding: 5
-                                        }}
+                                    <TouchableWithoutFeedback
                                         key={index}
+                                        onPress={() => {
+                                            setComplaint({
+                                                ...complaint,
+                                                nearestPoliceStation: item.name,
+                                                nearestPoliceStationAddress: item.address
+                                            });
+                                        }}
                                     >
-                                        <RegularText
-                                            textalign="justify"
-                                            size={13}
-                                            color="#000"
-                                            string={`Station Name: ${item.name && item.name}`}
-                                        />
-                                        <RegularText
-                                            size={13}
-                                            color="#000"
-                                            textalign="justify"
-                                            string={`Address: ${item.address && item.address}`}
-                                        />
-
-                                        <RegularText
-                                            color="#000"
-                                            size={13}
-                                            textalign="justify"
-                                            string={`${
-                                                item.distance && (item.distance / 1000).toFixed(1)
-                                            } KM`}
-                                        />
-                                    </View>
+                                        <View
+                                            style={{
+                                                width: "100%",
+                                                flexDirection: "column",
+                                                backgroundColor: "#FFF",
+                                                borderRadius: 5,
+                                                padding: 5,
+                                                marginVertical: 4
+                                            }}
+                                        >
+                                            <RegularText
+                                                align="flex-start"
+                                                size={11}
+                                                color="#000"
+                                                string={`Station Name: ${item.name && item.name}`}
+                                            />
+                                            <RegularText
+                                                size={11}
+                                                color="#000"
+                                                textalign="justify"
+                                                string={`Address: ${item.address && item.address}`}
+                                            />
+                                            <RegularText
+                                                color="#000"
+                                                size={11}
+                                                align="flex-start"
+                                                string={`${
+                                                    item.distance &&
+                                                    (item.distance / 1000).toFixed(1)
+                                                } KM`}
+                                            />
+                                        </View>
+                                    </TouchableWithoutFeedback>
                                 );
-                            })}
-
+                            })
+                        ) : (
+                            <Button
+                                weight="400"
+                                btnName="Saved Police Station"
+                                onPress={nearByPoliceStation}
+                            />
+                        )}
                         <RegularText color="#FFF" string="Image Proof" vmargin={8} size={18} />
                         <ImageInputList
                             imageUri={imageUris}

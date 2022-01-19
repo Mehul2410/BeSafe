@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback
 } from "react-native";
-import { Background, StatusDetail, Text, DateAndTime } from "@components";
+import { Background, StatusDetail, Text, DateAndTime, PostLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { complaints } from "@contexts/api/client";
@@ -32,6 +32,7 @@ interface complaintProps {
 type multiProps = complaintProps[];
 
 export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
+    const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
     );
@@ -54,6 +55,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 }
                 //active status to be send from backend to login police
             }
+            setLoading(true);
         }
     }
     useEffect(() => {
@@ -72,6 +74,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
                     Complaints
                 </Text>
+                {!loading && <PostLoader />}
                 <View>
                     <ScrollView>
                         {getAllComplaints &&

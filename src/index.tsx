@@ -1,19 +1,20 @@
 import React, { ReactElement } from "react";
-import { AppBootstrap } from "@components";
+import { AppBootstrap, PostLoader, Normalloader } from "@components";
 import Tabs from "@config/tabnavigator/Tab";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "@config/navigations/AuthNavigator";
 import { store } from "@contexts/store/store";
 import { Provider, RootStateOrAny, useSelector } from "react-redux";
-import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { getCredentials } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
 import { myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
-import useSWR from "swr";
-import { Image, View } from "react-native";
+import { View } from "react-native";
+import { colors } from "./utils/colors/colors";
 
 function Navigation(): ReactElement {
+    const [loading, setLoading] = React.useState(false);
     const dispatch = useDispatch();
     async function getData() {
         const creds = await getCredentials();
@@ -25,29 +26,49 @@ function Navigation(): ReactElement {
                     authorization: `Bearer ${creds.access_token}`
                 }
             });
-            const user = await res.json();
-            return { creds, user };
+            const data = await res.json();
+            if (data.success) {
+                dispatch(getTokens(creds));
+                dispatch(userData(data.user));
+                setLoading(true);
+            } else {
+                setLoading(false);
+            }
+        } else {
+            setLoading(true);
         }
     }
-    const { data, error } = useSWR("operator_key", getData);
-    if (data) {
-        dispatch(getTokens(data.creds));
-        dispatch(userData(data.user));
-    }
+    React.useEffect(() => {
+        getData();
+    }, []);
     const user = useSelector((state: RootStateOrAny) => state.auth);
     return (
         <>
-            <NavigationContainer>
-                {user.token ? (
-                    user.active === false ? (
-                        <PoliceNavigation />
+            {!loading ? (
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: colors.primary,
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}
+                >
+                    {/* vallabh */}
+                    <Normalloader />
+                </View>
+            ) : (
+                <NavigationContainer>
+                    {user.token ? (
+                        user.active === false ? (
+                            <PoliceNavigation />
+                        ) : (
+                            <Tabs />
+                        )
                     ) : (
-                        <Tabs />
-                    )
-                ) : (
-                    <AuthNavigator />
-                )}
-            </NavigationContainer>
+                        <AuthNavigator />
+                    )}
+                </NavigationContainer>
+            )}
         </>
     );
 }
