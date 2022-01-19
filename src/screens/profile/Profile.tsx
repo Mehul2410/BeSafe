@@ -51,21 +51,17 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                             style={styles.img}
                             source={avatar ? { uri: avatar } : require("@assets/img.png")}
                         />
-                        <View style={styles.edit}>
-                            <Image source={require("@assets/edit.png")} />
-                        </View>
                     </View>
                 </View>
                 <View style={styles.name}>
-                    <RegularText string={name} />
+                    <RegularText string={name} size={17} />
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                        <Image source={require("@assets/percent.png")} />
                         <TouchableWithoutFeedback
                             onPress={() => {
                                 navigation.navigate("ViewProfile", userData);
                             }}
                         >
-                            <RegularText string="90%" color="#FFF" />
+                            <RegularText string="View" size={17} />
                         </TouchableWithoutFeedback>
                     </View>
                 </View>

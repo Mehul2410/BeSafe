@@ -7,7 +7,7 @@ import {
     ImageInput,
     ImageInputList,
     RegularText,
-    Loader
+    PostLoader
 } from "@components";
 import { View, Image, ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native";
@@ -211,7 +211,7 @@ export function Post() {
                                 );
                             })
                         ) : (
-                            <Loader />
+                            <PostLoader />
                         )}
 
                         <CustomInput
@@ -268,32 +268,36 @@ export function Post() {
 
                         {nearbyStation &&
                             nearbyStation.map((item: any, index) => {
-                                console.log(nearbyStation);
                                 return (
                                     <View
                                         style={{
                                             width: "100%",
                                             flexDirection: "column",
                                             backgroundColor: "#FFF",
-                                            marginBottom: 8,
-                                            borderRadius: 7,
-                                            padding: 7
+                                            borderBottomColor: "#000",
+                                            borderBottomWidth: 1,
+                                            borderRadius: 3,
+                                            padding: 5
                                         }}
                                         key={index}
                                     >
                                         <RegularText
+                                            textalign="justify"
+                                            size={13}
                                             color="#000"
-                                            align="flex-start"
                                             string={`Station Name: ${item.name && item.name}`}
                                         />
                                         <RegularText
+                                            size={13}
                                             color="#000"
-                                            align="flex-start"
+                                            textalign="justify"
                                             string={`Address: ${item.address && item.address}`}
                                         />
+
                                         <RegularText
                                             color="#000"
-                                            align="flex-start"
+                                            size={13}
+                                            textalign="justify"
                                             string={`${
                                                 item.distance && (item.distance / 1000).toFixed(1)
                                             } KM`}
@@ -302,7 +306,7 @@ export function Post() {
                                 );
                             })}
 
-                        <RegularText color="#FFF" string="Image Proof" vmargin={8} />
+                        <RegularText color="#FFF" string="Image Proof" vmargin={8} size={18} />
                         <ImageInputList
                             imageUri={imageUris}
                             onAddImage={handleAdd}

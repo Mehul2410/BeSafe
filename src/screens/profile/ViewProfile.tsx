@@ -45,16 +45,22 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                             <View>
                                 <MediumText vmargin={10} color="#FFF" string="citizen" />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Name: ${route.params.name}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Email: ${route.params.email}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`DOB: ${
@@ -62,6 +68,8 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                     }`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Address: ${
@@ -69,6 +77,8 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                     }`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Occupation: ${
@@ -81,52 +91,72 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                             <View style={{ height: "90%" }}>
                                 <MediumText vmargin={10} color="#FFF" string="police" />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Name: ${route.params.name}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Email: ${route.params.email}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`DOB: ${route.params.userDetails.dob}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Police ID: ${route.params.userDetails.policeID}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Posting Area: ${route.params.userDetails.postingArea}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Police Post: ${route.params.userDetails.policePost}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Adhaarcard: ${route.params.userDetails.adhaarCard}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Pancard: ${route.params.userDetails.panCard}`}
                                 />
 
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Address: ${route.params.userDetails.address}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
                                     string={`Posting Area: ${route.params.userDetails.postingAreaAddress}`}

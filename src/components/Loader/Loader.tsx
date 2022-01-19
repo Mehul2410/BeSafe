@@ -3,7 +3,7 @@ import { Background } from "@components";
 import { StyleSheet, ActivityIndicator, View } from "react-native";
 import { LightText, RegularText } from "../text/Typography";
 
-export default function Loader(): ReactElement {
+export const PostLoader = () => {
     return (
         <>
             <View
@@ -19,6 +19,22 @@ export default function Loader(): ReactElement {
             </View>
         </>
     );
-}
+};
 
-const styles = StyleSheet.create({});
+// export const MediumText = () => {
+//     return (
+//         <>
+//             <View
+//                 style={{
+//                     flexDirection: "row",
+//                     alignItems: "center",
+//                     justifyContent: "center",
+//                     marginVertical: 3
+//                 }}
+//             >
+//                 <ActivityIndicator size="large" color="#FFF" style={{ marginEnd: 10 }} />
+//                 <LightText string="loading..." />
+//             </View>
+//         </>
+//     );
+// };

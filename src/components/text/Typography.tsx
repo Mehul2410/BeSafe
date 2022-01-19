@@ -10,14 +10,27 @@ interface Props {
     bgcolor?: string;
     align?: "auto" | FlexAlignType | undefined;
     size?: number;
+    textalign?: "auto" | "left" | "right" | "center" | "justify";
 }
 
-export const RegularText = ({ string, color, align = "center", vmargin = 0, size }: Props) => {
+export const RegularText = ({
+    string,
+    color,
+    align = "center",
+    vmargin = 0,
+    size,
+    textalign
+}: Props) => {
     return (
         <Text
             weight="400"
             color={color ? color : "#FFF"}
-            style={{ marginVertical: vmargin, alignSelf: align, fontSize: size }}
+            style={{
+                marginVertical: vmargin,
+                alignSelf: align,
+                fontSize: size,
+                textAlign: textalign
+            }}
         >
             {string}
         </Text>
