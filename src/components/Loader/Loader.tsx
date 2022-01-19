@@ -21,20 +21,10 @@ export const PostLoader = () => {
     );
 };
 
-// export const MediumText = () => {
-//     return (
-//         <>
-//             <View
-//                 style={{
-//                     flexDirection: "row",
-//                     alignItems: "center",
-//                     justifyContent: "center",
-//                     marginVertical: 3
-//                 }}
-//             >
-//                 <ActivityIndicator size="large" color="#FFF" style={{ marginEnd: 10 }} />
-//                 <LightText string="loading..." />
-//             </View>
-//         </>
-//     );
-// };
+export const Normalloader = () => {
+    return (
+        <>
+            <ActivityIndicator size={90} color="#FFF" style={{ marginEnd: 10 }} />
+        </>
+    );
+};
