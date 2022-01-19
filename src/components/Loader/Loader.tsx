@@ -24,7 +24,7 @@ export const PostLoader = () => {
 export const Normalloader = () => {
     return (
         <>
-            <View style={{ height: "100%" }}>
+            <View style={{ height: "100%", alignItems: "center" }}>
                 <ActivityIndicator size={90} color="#FFF" style={{ marginEnd: 10 }} />
             </View>
         </>
