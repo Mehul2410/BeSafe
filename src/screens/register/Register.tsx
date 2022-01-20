@@ -41,7 +41,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                     }}
                 />
                 <CharRole
-                    role="Police"
+                    role="Station Admin"
                     uri={require("@assets/admin.png")}
                     onPress={() => {
                         navigation.navigate("SignIn", roles.police);

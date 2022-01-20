@@ -45,17 +45,7 @@ function Navigation(): ReactElement {
     return (
         <>
             {!loading ? (
-                <View
-                    style={{
-                        flex: 1,
-                        backgroundColor: colors.primary,
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}
-                >
-                    {/* vallabh */}
-                    <Normalloader />
-                </View>
+                <Normalloader />
             ) : (
                 <NavigationContainer>
                     {user.token ? (

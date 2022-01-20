@@ -7,7 +7,15 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback
 } from "react-native";
-import { Background, StatusDetail, Text, DateAndTime, PostLoader } from "@components";
+import {
+    Background,
+    StatusDetail,
+    Text,
+    DateAndTime,
+    PostLoader,
+    Normalloader,
+    ComplaintLoader
+} from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { complaints } from "@contexts/api/client";
@@ -74,7 +82,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
                     Complaints
                 </Text>
-                {!loading && <PostLoader />}
+                {!loading && <ComplaintLoader />}
                 <View>
                     <ScrollView>
                         {getAllComplaints &&

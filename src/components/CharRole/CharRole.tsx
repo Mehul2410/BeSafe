@@ -14,12 +14,21 @@ type charRoleProps = {
     uri: ImageSourcePropType;
 } & TouchableWithoutFeedbackProps;
 
+// interface Props {
+
+//     margin?: number;
+
+// }
+
 export function CharRole({ role, uri, ...props }: charRoleProps): ReactElement {
     return (
         <View>
             <TouchableWithoutFeedback {...props}>
                 <View style={styles.char}>
-                    <Image source={uri} style={styles.img} />
+                    <Image
+                        source={uri}
+                        style={{ height: 180, width: "500%", resizeMode: "contain" }}
+                    />
                     <Text weight="400" style={styles.text}>
                         {role}
                     </Text>
@@ -37,11 +46,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15
     },
     text: {
-        color: "#FFF"
-    },
-    img: {
-        height: 180,
-        maxWidth: "80%",
-        resizeMode: "contain"
+        color: "#FFF",
+        marginTop: 10
     }
 });

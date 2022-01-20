@@ -54,7 +54,7 @@ export type StackNavigatorParams = {
         reason?: string;
         status?: string;
         updatedAt?: Date;
-        image?: string[];
+        images?: string[];
     };
 };
 

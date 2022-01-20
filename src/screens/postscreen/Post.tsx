@@ -7,7 +7,8 @@ import {
     ImageInput,
     ImageInputList,
     RegularText,
-    PostLoader
+    PostLoader,
+    LocationLoader
 } from "@components";
 import { View, Image, ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native";
@@ -23,6 +24,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 export function Post() {
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
+    const [locationLoading, setLocationLoading] = React.useState(false);
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
@@ -94,6 +96,10 @@ export function Post() {
         );
         const { results } = await loc.json();
         setLocation(results[0].address);
+        setLocationLoading(true);
+        setTimeout(() => {
+            setLocationLoading(false);
+        }, 1000);
     }
     async function nearByPoliceStation() {
         setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
@@ -199,12 +205,6 @@ export function Post() {
                             }}
                             placeholder="Complaint against"
                         />
-                        <CustomInput
-                            onChangeText={text =>
-                                setComplaint({ ...complaint, complaintType: text })
-                            }
-                            placeholder="Complaint Type"
-                        />
                         {SearchResult &&
                             SearchResult.map((item: any, index) => {
                                 return (
@@ -250,6 +250,12 @@ export function Post() {
                             })}
                         {loading && <PostLoader />}
                         <CustomInput
+                            onChangeText={text =>
+                                setComplaint({ ...complaint, complaintType: text })
+                            }
+                            placeholder="Complaint Type"
+                        />
+                        <CustomInput
                             onChangeText={text => setComplaint({ ...complaint, reason: text })}
                             placeholder="Reason of complaint"
                         />
@@ -260,6 +266,7 @@ export function Post() {
                             editable={complaint.locationAddress ? false : true}
                             placeholder="Location Name"
                         />
+                        {locationLoading && <PostLoader />}
                         {location !== "" && <RegularText string={location} />}
                         {location === "" ? (
                             <>
@@ -306,7 +313,7 @@ export function Post() {
                             btnName="Get Near by Police Station"
                             onPress={nearByPoliceStation}
                         />
-                        {policeLoading && <PostLoader />}
+                        {policeLoading && <LocationLoader />}
                         {complaint.nearestPoliceStation === "" ? (
                             nearbyStation &&
                             nearbyStation.map((item: any, index) => {

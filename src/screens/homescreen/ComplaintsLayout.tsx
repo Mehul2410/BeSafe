@@ -80,8 +80,8 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         </Text>
                         <View>
                             <ScrollView horizontal={true}>
-                                {route.params.image &&
-                                    route.params.image?.map((img, index) => {
+                                {route.params.images &&
+                                    route.params.images?.map((img, index) => {
                                         return (
                                             <Image
                                                 key={index}
