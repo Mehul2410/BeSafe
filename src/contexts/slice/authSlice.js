@@ -46,7 +46,7 @@ export const authSlice = createSlice({
         },
         userComplaints: (state, action) => {
             const { myComplaints } = action.payload;
-            state.complaints = myComplaints.complaints;
+            state.complaints = myComplaints;
         }
     },
     extraReducers: {}

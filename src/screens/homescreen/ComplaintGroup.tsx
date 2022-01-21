@@ -23,28 +23,28 @@ import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
 
-interface complaintProps {
-    _id?: string;
-    complaintType?: string;
-    createdAt?: Date;
-    location?: {
-        name?: string;
-    };
-    proof?: string;
-    reason?: string;
-    status?: string;
-    updatedAt?: Date;
-    image?: string[];
-}
+// interface complaintProps {
+//     _id?: string;
+//     complaintType?: string;
+//     createdAt?: Date;
+//     location?: {
+//         name?: string;
+//     };
+//     proof?: string;
+//     reason?: string;
+//     status?: string;
+//     updatedAt?: Date;
+//     image?: string[];
+// }
 
-type multiProps = complaintProps[];
+// type multiProps = complaintProps[];
+type multiProps = any[];
 
 export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
     );
-    // console.log(getAllComplaints);
     const dispatch = useDispatch();
     async function getComplaints() {
         const data = await getCredentials();
@@ -58,6 +58,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     }
                 });
                 const user = await res.json();
+                // console.log(user);
                 if (user.myComplaints) {
                     dispatch(userComplaints(user));
                 }
@@ -86,28 +87,23 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                 <View>
                     <ScrollView>
                         {getAllComplaints &&
-                            getAllComplaints.map((item, index) => {
-                                return (
-                                    <TouchableWithoutFeedback
-                                        key={index}
-                                        onPress={() => {
-                                            navigation.navigate("ComplaintsLayout", item);
-                                        }}
-                                    >
-                                        <View
-                                            style={{
-                                                marginVertical: 10,
-                                                width: "100%",
-                                                backgroundColor: "#281B89",
-                                                borderRadius: 10,
-                                                padding: 10,
-                                                elevation: 3
+                            getAllComplaints.map((allData: []) => {
+                                return allData.complaints.map((item, index) => {
+                                    return (
+                                        <TouchableWithoutFeedback
+                                            key={index}
+                                            onPress={() => {
+                                                navigation.navigate("ComplaintsLayout", item);
                                             }}
                                         >
                                             <View
                                                 style={{
-                                                    flexDirection: "row",
-                                                    alignItems: "center"
+                                                    marginVertical: 10,
+                                                    width: "100%",
+                                                    backgroundColor: "#281B89",
+                                                    borderRadius: 10,
+                                                    padding: 10,
+                                                    elevation: 3
                                                 }}
                                             >
                                                 <View
@@ -116,61 +112,68 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                         alignItems: "center"
                                                     }}
                                                 >
-                                                    <StatusDetail string={item.status} />
                                                     <View
                                                         style={{
-                                                            flexDirection: "column",
-                                                            alignItems: "flex-start",
-                                                            marginLeft: 10
+                                                            flexDirection: "row",
+                                                            alignItems: "center"
                                                         }}
                                                     >
-                                                        <DateAndTime
-                                                            string={new Date(
-                                                                item.createdAt!
-                                                            ).toLocaleDateString("en-IN")}
-                                                        />
-                                                        <DateAndTime
-                                                            string={new Date(
-                                                                item.createdAt!
-                                                            ).toLocaleTimeString("en-IN")}
-                                                        />
+                                                        <StatusDetail string={item.status} />
+                                                        <View
+                                                            style={{
+                                                                flexDirection: "column",
+                                                                alignItems: "flex-start",
+                                                                marginLeft: 10
+                                                            }}
+                                                        >
+                                                            <DateAndTime
+                                                                string={new Date(
+                                                                    item.createdAt!
+                                                                ).toLocaleDateString("en-IN")}
+                                                            />
+                                                            <DateAndTime
+                                                                string={new Date(
+                                                                    item.createdAt!
+                                                                ).toLocaleTimeString("en-IN")}
+                                                            />
+                                                        </View>
+                                                        {/* <Image
+                                                                    resizeMode="contain"
+                                                                    style={{
+                                                                        height: 22,
+                                                                        width: 22,
+                                                                        marginLeft: 4
+                                                                    }}
+                                                                    source={require("@assets/remainder.png")}
+                                                                /> */}
                                                     </View>
-                                                    {/* <Image
-                                                        resizeMode="contain"
-                                                        style={{
-                                                            height: 22,
-                                                            width: 22,
-                                                            marginLeft: 4
-                                                        }}
-                                                        source={require("@assets/remainder.png")}
-                                                    /> */}
                                                 </View>
-                                            </View>
 
-                                            <Text
-                                                weight="400"
-                                                style={{
-                                                    color: colors.white,
-                                                    fontSize: 15,
-                                                    marginTop: 5
-                                                }}
-                                            >
-                                                Reason
-                                            </Text>
-                                            <Text
-                                                numberOfLines={4}
-                                                weight="400"
-                                                style={{
-                                                    color: colors.white,
-                                                    fontSize: 12,
-                                                    paddingTop: 5
-                                                }}
-                                            >
-                                                {item.reason}
-                                            </Text>
-                                        </View>
-                                    </TouchableWithoutFeedback>
-                                );
+                                                <Text
+                                                    weight="400"
+                                                    style={{
+                                                        color: colors.white,
+                                                        fontSize: 15,
+                                                        marginTop: 5
+                                                    }}
+                                                >
+                                                    Reason
+                                                </Text>
+                                                <Text
+                                                    numberOfLines={4}
+                                                    weight="400"
+                                                    style={{
+                                                        color: colors.white,
+                                                        fontSize: 12,
+                                                        paddingTop: 5
+                                                    }}
+                                                >
+                                                    {item.reason}
+                                                </Text>
+                                            </View>
+                                        </TouchableWithoutFeedback>
+                                    );
+                                });
                             })}
                     </ScrollView>
                 </View>
