@@ -37,9 +37,13 @@ export const RegularText = ({
     );
 };
 
-export const MediumText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
+export const MediumText = ({ string, color, align = "center", vmargin = 0, size }: Props) => {
     return (
-        <Text weight="700" color="#FFF" style={{ alignSelf: align, marginVertical: vmargin }}>
+        <Text
+            weight="700"
+            color="#FFF"
+            style={{ alignSelf: align, marginVertical: vmargin, fontSize: size }}
+        >
             {string}
         </Text>
     );
@@ -88,7 +92,7 @@ export const DateAndTime = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const Reason = ({ string, color }: Props) => {
+export const Reason = ({ string, color, vmargin }: Props) => {
     return (
         <Text
             weight="700"
@@ -96,8 +100,7 @@ export const Reason = ({ string, color }: Props) => {
                 color: "#FFF",
                 marginTop: 5,
                 marginBottom: 10,
-                fontSize: 18,
-                marginStart: 3
+                fontSize: 18
             }}
         >
             {string}

@@ -45,6 +45,7 @@ export type StackNavigatorParams = {
     ComplaintGroup: undefined;
     ComplaintsLayout: {
         _id?: string;
+        complaintAgainstName?: string;
         complaintType?: string;
         createdAt?: Date;
         location?: {
@@ -55,6 +56,7 @@ export type StackNavigatorParams = {
         status?: string;
         updatedAt?: Date;
         images?: string[];
+        assignTo?: string;
     };
 };
 

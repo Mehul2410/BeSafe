@@ -7,7 +7,8 @@ import {
     Reason,
     Background,
     RegularText,
-    LightText
+    LightText,
+    MediumText
 } from "@components";
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
@@ -64,7 +65,12 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                     </View>
 
                     <View>
-                        <Reason string="Reason" />
+                        <MediumText
+                            size={19}
+                            align="flex-start"
+                            string={`Your complaint is raised against: ${route.params.complaintAgainstName} `}
+                        />
+                        <Reason vmargin={3} string="Reason" />
                         <LightText string={route.params.reason} />
 
                         <Text
@@ -72,8 +78,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             style={{
                                 color: colors.white,
                                 marginVertical: 10,
-                                fontSize: 18,
-                                marginStart: 3
+                                fontSize: 18
                             }}
                         >
                             Images
@@ -106,11 +111,10 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             paddingVertical: 10,
                             backgroundColor: "#A6B1E1",
                             textAlign: "center",
-
                             borderRadius: 10
                         }}
                     >
-                        Case Handler: NAME
+                        Case Handler: {route.params.assignTo}
                     </Text>
                 </ScrollView>
             </View>
