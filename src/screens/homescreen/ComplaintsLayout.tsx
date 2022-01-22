@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, Pressable, PressableProps, Group } from "react-native";
+import { View, Image, ScrollView, Pressable, PressableProps, Group, Modal } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -7,12 +7,20 @@ import {
     Reason,
     Background,
     RegularText,
-    LightText
+    LightText,
+    Button
 } from "@components";
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
+    const [view, setView] = React.useState(false);
+    const images = route.params.images?.map((img, index) => {
+        return { url: img };
+    });
+
+    console.log(images);
     return (
         <Background bgColor="#281B89">
             <View
@@ -80,21 +88,20 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         </Text>
                         <View>
                             <ScrollView horizontal={true}>
-                                {route.params.images &&
-                                    route.params.images?.map((img, index) => {
-                                        return (
-                                            <Image
-                                                key={index}
-                                                resizeMode="contain"
-                                                style={{
-                                                    height: 150,
-                                                    width: 200,
-                                                    marginLeft: 10
-                                                }}
-                                                source={{ uri: img }}
-                                            />
-                                        );
-                                    })}
+                                <Modal
+                                    visible={view}
+                                    transparent={true}
+                                    onRequestClose={() => setView(false)}
+                                >
+                                    <ImageViewer
+                                        imageUrls={images}
+                                        onSwipeDown={() => setView(false)}
+                                        onCancel={() => setView(false)}
+                                        enableSwipeDown={true}
+                                        backgroundColor="#281B89"
+                                    />
+                                </Modal>
+                                <Button btnName="View Case Images" onPress={() => setView(true)} />
                             </ScrollView>
                         </View>
                     </View>
