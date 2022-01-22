@@ -88,7 +88,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     <ScrollView>
                         {getAllComplaints &&
                             getAllComplaints.map((allData: []) => {
-                                return allData.complaints.map((item, index) => {
+                                return allData.complaints.map((item: any, index: any) => {
                                     return (
                                         <TouchableWithoutFeedback
                                             key={index}

@@ -8,9 +8,18 @@ type btnProps = {
     btnName: string;
     bgColor?: string;
     textColor?: string;
+    size?: number;
 } & TextProps;
 
-export default function Button({ weight, btnName, bgColor, textColor, style, ...props }: btnProps) {
+export default function Button({
+    weight,
+    btnName,
+    bgColor,
+    textColor,
+    style,
+    size,
+    ...props
+}: btnProps) {
     return (
         <Text
             weight={weight}
@@ -18,7 +27,8 @@ export default function Button({ weight, btnName, bgColor, textColor, style, ...
                 styles.button,
                 {
                     backgroundColor: bgColor ? bgColor : "#1D0ECC",
-                    color: textColor ? textColor : "#FFF"
+                    color: textColor ? textColor : "#FFF",
+                    fontSize: size ? size : 24
                 },
                 style
             ]}

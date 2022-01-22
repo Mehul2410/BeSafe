@@ -27,7 +27,7 @@ export function CharRole({ role, uri, ...props }: charRoleProps): ReactElement {
                 <View style={styles.char}>
                     <Image
                         source={uri}
-                        style={{ height: 180, width: "500%", resizeMode: "contain" }}
+                        style={{ height: 180, maxWidth: "80%", resizeMode: "contain" }}
                     />
                     <Text weight="400" style={styles.text}>
                         {role}

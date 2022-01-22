@@ -1,6 +1,6 @@
 import React from "react";
-import { ImageSourcePropType, View } from "react-native";
-import { Background, Text, CharRole } from "@components";
+import { ImageSourcePropType, Modal, Pressable, View } from "react-native";
+import { Background, Text, CharRole, Button } from "@components";
 import styles from "./register.styles";
 import { NavigationProps } from "@types";
 
@@ -11,6 +11,7 @@ interface rolesProps {
 }
 
 export default function Register({ navigation }: NavigationProps<"Register">) {
+    const [police, setPolice] = React.useState(false);
     const roles: rolesProps = {
         police: {
             uri: require("@assets/police.png"),
@@ -33,20 +34,59 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                 <Text weight="700" style={{ color: "#FFF" }}>
                     Select your role
                 </Text>
-                <CharRole
-                    role="Police"
-                    uri={require("@assets/police.png")}
-                    onPress={() => {
-                        navigation.navigate("SignIn", roles.police);
+                <Modal
+                    transparent={true}
+                    animationType="slide"
+                    visible={police}
+                    onRequestClose={() => {
+                        setPolice(!police);
                     }}
-                />
-                <CharRole
-                    role="Station Admin"
-                    uri={require("@assets/admin.png")}
-                    onPress={() => {
-                        navigation.navigate("SignIn", roles.police);
-                    }}
-                />
+                >
+                    <View
+                        style={{
+                            // paddingTop: 100,
+                            backgroundColor: "#281B89",
+                            height: "100%",
+                            justifyContent: "center"
+                        }}
+                    >
+                        <CharRole
+                            role="Police"
+                            uri={require("@assets/police.png")}
+                            onPress={() => {
+                                navigation.navigate("SignIn", roles.police);
+                                setPolice(!police);
+                            }}
+                        />
+                        <CharRole
+                            role="Station Admin"
+                            uri={require("@assets/admin.png")}
+                            onPress={() => {
+                                navigation.navigate("SignIn", roles.police);
+                                setPolice(!police);
+                            }}
+                        />
+                        <Pressable onPress={() => setPolice(!police)}>
+                            <Button
+                                weight="700"
+                                size={18}
+                                btnName="back"
+                                style={{
+                                    width: "80%",
+                                    justifyContent: "center",
+                                    alignSelf: "center"
+                                }}
+                            />
+                        </Pressable>
+                    </View>
+                </Modal>
+                <Pressable>
+                    <CharRole
+                        role="Police"
+                        uri={require("@assets/police.png")}
+                        onPress={() => setPolice(true)}
+                    />
+                </Pressable>
                 <CharRole
                     role="Citizen"
                     uri={require("@assets/citizen.png")}
@@ -57,4 +97,20 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
             </View>
         </Background>
     );
+}
+{
+    /* <CharRole
+                    role="Station Admin"
+                    uri={require("@assets/admin.png")}
+                    onPress={() => {
+                        navigation.navigate("SignIn", roles.police);
+                    }}
+                />
+            <CharRole
+                    role="Police"
+                    uri={require("@assets/police.png")}
+                    onPress={() => {
+                        navigation.navigate("SignIn", roles.police);
+                    }}
+                /> */
 }
