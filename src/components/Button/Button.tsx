@@ -28,7 +28,7 @@ export default function Button({
                 {
                     backgroundColor: bgColor ? bgColor : "#1D0ECC",
                     color: textColor ? textColor : "#FFF",
-                    fontSize: size ? size : 24
+                    fontSize: size ? size : 18
                 },
                 style
             ]}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, ScrollView, Pressable, PressableProps, Group } from "react-native";
+import { View, Image, ScrollView, Pressable, PressableProps, Group, Modal } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -7,13 +7,24 @@ import {
     Reason,
     Background,
     RegularText,
+    MediumText,
     LightText,
-    MediumText
+    Button
 } from "@components";
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
+import ImageViewer from "react-native-image-zoom-viewer";
+import { RootStateOrAny, useSelector } from "react-redux";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
+    const [view, setView] = React.useState(false);
+    const { _id } = useSelector((state: RootStateOrAny) => state.auth);
+
+    const images = route.params.images?.map((img, index) => {
+        return { url: img };
+    });
+
+    console.log(_id);
     return (
         <Background bgColor="#281B89">
             <View
@@ -63,12 +74,22 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             </View>
                         </View>
                     </View>
-
+                    {/* string={`Your complaint is raised against: ${
+                                route.params.complaintAgainstName &&
+                                route.params.complaintAgainstName
+                            } `} */}
                     <View>
                         <MediumText
                             size={19}
                             align="flex-start"
-                            string={`Your complaint is raised against: ${route.params.complaintAgainstName} `}
+                            string={
+                                route.params.complaintAgainst === _id
+                                    ? "You are involved in this complaint"
+                                    : `Your complaint is raised against: ${
+                                          route.params.complaintAgainstName &&
+                                          route.params.complaintAgainstName
+                                      } `
+                            }
                         />
                         <Reason vmargin={3} string="Reason" />
                         <LightText string={route.params.reason} />
@@ -84,38 +105,35 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             Images
                         </Text>
                         <View>
-                            <ScrollView horizontal={true}>
-                                {route.params.images &&
-                                    route.params.images?.map((img, index) => {
-                                        return (
-                                            <Image
-                                                key={index}
-                                                resizeMode="contain"
-                                                style={{
-                                                    height: 150,
-                                                    width: 200,
-                                                    marginLeft: 10
-                                                }}
-                                                source={{ uri: img }}
-                                            />
-                                        );
-                                    })}
-                            </ScrollView>
+                            <Modal
+                                visible={view}
+                                transparent={true}
+                                onRequestClose={() => setView(false)}
+                            >
+                                <ImageViewer
+                                    imageUrls={images}
+                                    onSwipeDown={() => setView(false)}
+                                    onCancel={() => setView(false)}
+                                    enableSwipeDown={true}
+                                    backgroundColor="#281B89"
+                                />
+                            </Modal>
+                            <Button btnName="View Case Images" onPress={() => setView(true)} />
                         </View>
                     </View>
-                    <Text
+                    <Button
+                        bgColor="#DC143C"
                         weight="400"
                         style={{
                             color: colors.white,
-                            fontSize: 23,
+                            fontSize: 18,
                             paddingVertical: 10,
-                            backgroundColor: "#A6B1E1",
+
                             textAlign: "center",
                             borderRadius: 10
                         }}
-                    >
-                        Case Handler: {route.params.assignTo}
-                    </Text>
+                        btnName={`Case Handler: ${route.params.assignTo}`}
+                    />
                 </ScrollView>
             </View>
         </Background>
