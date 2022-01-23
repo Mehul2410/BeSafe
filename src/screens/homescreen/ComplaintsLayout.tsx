@@ -14,9 +14,16 @@ import {
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
+import { updateStatus } from "@contexts/api/client";
+import { getCredentials } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
+    const [changeStatus, setChangeStatus] = React.useState({
+        activity: false,
+        status: ""
+    });
+
     const [view, setView] = React.useState(false);
     const { _id } = useSelector((state: RootStateOrAny) => state.auth);
 
@@ -24,7 +31,34 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
         return { url: img };
     });
 
-    console.log(_id);
+    async function handleChangeStatus() {
+        const creds = await getCredentials();
+        if (creds) {
+            try {
+                const res = await fetch(updateStatus, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        status: changeStatus.status,
+                        _id: route.params._id
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await res.json();
+                if (statusChange.acknowledged) {
+                    console.log("updated");
+                } else {
+                    console.log("error");
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }
+
     return (
         <Background bgColor="#281B89">
             <View
@@ -74,10 +108,6 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             </View>
                         </View>
                     </View>
-                    {/* string={`Your complaint is raised against: ${
-                                route.params.complaintAgainstName &&
-                                route.params.complaintAgainstName
-                            } `} */}
                     <View>
                         <MediumText
                             size={19}
@@ -91,7 +121,40 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                       } `
                             }
                         />
-                        <Reason vmargin={3} string="Reason" />
+                        <Button
+                            btnName="Change Status"
+                            weight="400"
+                            onPress={() =>
+                                setChangeStatus({
+                                    ...changeStatus,
+                                    activity: !changeStatus.activity
+                                })
+                            }
+                        />
+                        {changeStatus.activity &&
+                            ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
+                                return (
+                                    <Text
+                                        key={index}
+                                        onPress={() =>
+                                            setChangeStatus({ ...changeStatus, status: items })
+                                        }
+                                    >
+                                        {items}
+                                    </Text>
+                                );
+                            })}
+                        {changeStatus.status !== "" && (
+                            <>
+                                <Text>{`Change Complaint status to ${changeStatus.status}`}</Text>
+                                <Button btnName="Yes" onPress={handleChangeStatus} />
+                                <Button
+                                    btnName="No"
+                                    onPress={() => setChangeStatus({ activity: false, status: "" })}
+                                />
+                            </>
+                        )}
+                        <Reason string="Reason" />
                         <LightText string={route.params.reason} />
 
                         <Text
