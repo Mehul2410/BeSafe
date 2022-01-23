@@ -1,21 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    Image,
-    ScrollView,
-    Modal,
-    TouchableOpacity,
-    TouchableWithoutFeedback
-} from "react-native";
-import {
-    Background,
-    StatusDetail,
-    Text,
-    DateAndTime,
-    PostLoader,
-    Normalloader,
-    ComplaintLoader
-} from "@components";
+import { View, Image, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import { complaints } from "@contexts/api/client";
