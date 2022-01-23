@@ -41,6 +41,7 @@ export type StackNavigatorParams = {
     Setting: undefined;
     Help: undefined;
     Post: undefined;
+    Exam: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
     ComplaintsLayout: {

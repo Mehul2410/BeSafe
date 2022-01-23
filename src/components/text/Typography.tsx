@@ -42,7 +42,7 @@ export const MediumText = ({ string, color, align = "center", vmargin = 0, size 
         <Text
             weight="700"
             color="#FFF"
-            style={{ alignSelf: align, marginVertical: vmargin, fontSize: size }}
+            style={{ alignSelf: align, marginVertical: vmargin, fontSize: size ? size : 24 }}
         >
             {string}
         </Text>

@@ -10,6 +10,7 @@ export { Profile } from "./profile/Profile";
 export { EditProfile } from "./profile/EditProfile";
 export { ViewProfile } from "./profile/ViewProfile";
 export { Post } from "./postscreen/Post";
+export { Exam } from "./profile/Exam";
 // export { Complaints } from "./homescreen/Complaints";
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";
 export { ComplaintsLayout } from "./homescreen/ComplaintsLayout";

@@ -18,10 +18,32 @@ import { getCredentials } from "@contexts/store/credentials";
 // import useLocation from "@assets/hooks/useLocation.hook";
 import * as Location from "expo-location";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-
 // import { ViewProfile } from "../profile/ViewProfile";
+//notification
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 export function Post() {
+    // async function registerForPushNotificationsAsync() {
+    //     let token;
+    //     console.log(token);
+    //     if (Constants.isDevice) {
+    //         const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    //         let finalStatus = existingStatus;
+    //         if (existingStatus !== "granted") {
+    //             const { status } = await Notifications.requestPermissionsAsync();
+    //             finalStatus = status;
+    //         }
+    //         if (finalStatus !== "granted") {
+    //             alert("Failed to get push token for push notification!");
+    //             return;
+    //         }
+    //         token = (await Notifications.getExpoPushTokenAsync()).data;
+    //     } else {
+    //         alert("Must use physical device for Push Notifications");
+    //     }
+    // }
+
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
