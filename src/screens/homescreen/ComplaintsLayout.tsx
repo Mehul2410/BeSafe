@@ -7,6 +7,7 @@ import {
     Reason,
     Background,
     RegularText,
+    MediumText,
     LightText,
     Button
 } from "@components";
@@ -15,6 +16,7 @@ import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { updateStatus } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
+import { RootStateOrAny, useSelector } from "react-redux";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -23,6 +25,8 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
     });
 
     const [view, setView] = React.useState(false);
+    const { _id } = useSelector((state: RootStateOrAny) => state.auth);
+
     const images = route.params.images?.map((img, index) => {
         return { url: img };
     });
@@ -105,6 +109,18 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         </View>
                     </View>
                     <View>
+                        <MediumText
+                            size={19}
+                            align="flex-start"
+                            string={
+                                route.params.complaintAgainst === _id
+                                    ? "You are involved in this complaint"
+                                    : `Your complaint is raised against: ${
+                                          route.params.complaintAgainstName &&
+                                          route.params.complaintAgainstName
+                                      } `
+                            }
+                        />
                         <Button
                             btnName="Change Status"
                             weight="400"
@@ -146,45 +162,41 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             style={{
                                 color: colors.white,
                                 marginVertical: 10,
-                                fontSize: 18,
-                                marginStart: 3
+                                fontSize: 18
                             }}
                         >
                             Images
                         </Text>
                         <View>
-                            <ScrollView horizontal={true}>
-                                <Modal
-                                    visible={view}
-                                    transparent={true}
-                                    onRequestClose={() => setView(false)}
-                                >
-                                    <ImageViewer
-                                        imageUrls={images}
-                                        onSwipeDown={() => setView(false)}
-                                        onCancel={() => setView(false)}
-                                        enableSwipeDown={true}
-                                        backgroundColor="#281B89"
-                                    />
-                                </Modal>
-                                <Button btnName="View Case Images" onPress={() => setView(true)} />
-                            </ScrollView>
+                            <Modal
+                                visible={view}
+                                transparent={true}
+                                onRequestClose={() => setView(false)}
+                            >
+                                <ImageViewer
+                                    imageUrls={images}
+                                    onSwipeDown={() => setView(false)}
+                                    onCancel={() => setView(false)}
+                                    enableSwipeDown={true}
+                                    backgroundColor="#281B89"
+                                />
+                            </Modal>
+                            <Button btnName="View Case Images" onPress={() => setView(true)} />
                         </View>
                     </View>
-                    <Text
+                    <Button
+                        bgColor="#DC143C"
                         weight="400"
                         style={{
                             color: colors.white,
-                            fontSize: 23,
+                            fontSize: 18,
                             paddingVertical: 10,
-                            backgroundColor: "#A6B1E1",
-                            textAlign: "center",
 
+                            textAlign: "center",
                             borderRadius: 10
                         }}
-                    >
-                        Case Handler: NAME
-                    </Text>
+                        btnName={`Case Handler: ${route.params.assignTo}`}
+                    />
                 </ScrollView>
             </View>
         </Background>
