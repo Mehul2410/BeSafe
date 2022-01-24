@@ -13,6 +13,7 @@ import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
 import ComplaintNavigator from "./ComplaintNavigator";
+import PostNavigator from "./PostNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -81,7 +82,7 @@ const Tabs = () => {
             />
             <Tab.Screen
                 name="Post"
-                component={Post}
+                component={PostNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image
