@@ -1,5 +1,14 @@
 import React from "react";
-import { View, Image, ScrollView, Pressable, PressableProps, Group, Modal } from "react-native";
+import {
+    View,
+    Image,
+    ScrollView,
+    Pressable,
+    PressableProps,
+    Group,
+    Modal,
+    ListViewBase
+} from "react-native";
 import {
     Text,
     DateAndTime,
@@ -17,6 +26,7 @@ import ImageViewer from "react-native-image-zoom-viewer";
 import { updateStatus } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
+import { ListItem } from "react-native-elements";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -134,14 +144,22 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         {changeStatus.activity &&
                             ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
                                 return (
-                                    <Text
-                                        key={index}
-                                        onPress={() =>
-                                            setChangeStatus({ ...changeStatus, status: items })
-                                        }
+                                    <ListItem
+                                        style={{
+                                            flexDirection: "column",
+                                            flexWrap: "wrap"
+                                        }}
                                     >
-                                        {items}
-                                    </Text>
+                                        <Button
+                                            weight="700"
+                                            style={{ margin: 3, width: 100, fontSize: 18 }}
+                                            key={index}
+                                            onPress={() =>
+                                                setChangeStatus({ ...changeStatus, status: items })
+                                            }
+                                            btnName={items}
+                                        />
+                                    </ListItem>
                                 );
                             })}
                         {changeStatus.status !== "" && (

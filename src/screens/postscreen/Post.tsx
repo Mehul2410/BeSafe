@@ -13,7 +13,7 @@ import {
 import { View, Image, ActivityIndicator } from "react-native";
 import { ScrollView } from "react-native";
 import useSWR from "swr";
-import { allUsers, createPost } from "@contexts/api/client";
+import { allUsers, createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 // import useLocation from "@assets/hooks/useLocation.hook";
 import * as Location from "expo-location";
@@ -170,6 +170,18 @@ export function Post() {
                 }
             });
             console.log(await submit.json());
+            const token = await fetch(sendNotification, {
+                method: "POST",
+                body: JSON.stringify({
+                    userMessage: "Joi.string().required()"
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    authorization: `Bearer ${creds.access_token}`
+                }
+            });
+            const statusChange = await token.json();
         } catch (err) {
             console.log(err);
         }

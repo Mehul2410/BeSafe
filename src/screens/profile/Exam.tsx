@@ -16,7 +16,7 @@ export function Exam() {
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
-    console.log(expoPushToken);
+
     useEffect(() => {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
@@ -74,7 +74,7 @@ async function schedulePushNotification() {
     });
 }
 
-async function registerForPushNotificationsAsync() {
+export async function registerForPushNotificationsAsync() {
     let token;
     if (Constants.isDevice) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -88,7 +88,6 @@ async function registerForPushNotificationsAsync() {
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log(token);
     } else {
         alert("Must use physical device for Push Notifications");
     }

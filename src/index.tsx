@@ -8,10 +8,11 @@ import { Provider, RootStateOrAny, useSelector } from "react-redux";
 import { getCredentials } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
-import { myDetails } from "@contexts/api/client";
+import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
 import { View } from "react-native";
 import { colors } from "./utils/colors/colors";
+import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
 
 function Navigation(): ReactElement {
     const [loading, setLoading] = React.useState(false);
@@ -19,20 +20,38 @@ function Navigation(): ReactElement {
     async function getData() {
         const creds = await getCredentials();
         if (creds) {
-            const res = await fetch(myDetails, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
+            const expo = await registerForPushNotificationsAsync();
+            try {
+                const token = await fetch(expoTokens, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        notificationToken: expo
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await token.json();
+                console.log(statusChange);
+                const res = await fetch(myDetails, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const data = await res.json();
+                if (data.success) {
+                    dispatch(getTokens(creds));
+                    dispatch(userData(data.user));
+                    setLoading(true);
+                } else {
+                    setLoading(false);
                 }
-            });
-            const data = await res.json();
-            if (data.success) {
-                dispatch(getTokens(creds));
-                dispatch(userData(data.user));
-                setLoading(true);
-            } else {
-                setLoading(false);
+            } catch (error) {
+                console.log(error);
             }
         } else {
             setLoading(true);

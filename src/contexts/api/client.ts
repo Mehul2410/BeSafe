@@ -11,3 +11,5 @@ export const policeDetails = "https://besaferestapi.herokuapp.com/api/policeDeta
 export const citizenDetails = "https://besaferestapi.herokuapp.com/api/citizenDetails";
 export const updateStatus = "https://besaferestapi.herokuapp.com/api/updateStatus";
 export const allUsers = "https://besaferestapi.herokuapp.com/api/allusers";
+export const expoTokens = "https://besaferestapi.herokuapp.com/api/expoTokens";
+export const sendNotification = "https://besaferestapi.herokuapp.com/api/sendNoti";
