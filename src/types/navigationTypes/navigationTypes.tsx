@@ -39,9 +39,16 @@ export type StackNavigatorParams = {
         userDetails: any;
     };
     Setting: undefined;
+    PostForm: undefined;
     Help: undefined;
     Post: undefined;
+    Wanted: undefined;
+    CyberCrime: undefined;
+    MissingPerson: undefined;
+    MSLF: undefined;
+    UnidPerson: undefined;
     Exam: undefined;
+    AllComplaints: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
     ComplaintsLayout: {
@@ -50,7 +57,6 @@ export type StackNavigatorParams = {
         complaintAgainstName?: string;
         complaintType?: string;
         createdAt?: Date;
-
         proof?: string;
         reason?: string;
         status?: string;

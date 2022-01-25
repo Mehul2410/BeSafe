@@ -27,6 +27,7 @@ import { updateStatus } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { ListItem } from "react-native-elements";
+import { Chip } from "react-native-paper";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -144,32 +145,68 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         {changeStatus.activity &&
                             ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
                                 return (
-                                    <ListItem
-                                        style={{
-                                            flexDirection: "column",
-                                            flexWrap: "wrap"
-                                        }}
-                                    >
-                                        <Button
-                                            weight="700"
-                                            style={{ margin: 3, width: 100, fontSize: 18 }}
+                                    // <ListItem
+                                    //     style={{
+                                    //         flexDirection: "column",
+                                    //         flexWrap: "wrap"
+                                    //     }}
+                                    // >
+                                    //     <Button
+                                    // weight="700"
+                                    // style={{ margin: 3, width: 100, fontSize: 18 }}
+                                    // key={index}
+                                    // onPress={() =>
+                                    //     setChangeStatus({ ...changeStatus, status: items })
+                                    // }
+                                    // btnName=
+                                    //     />
+                                    // </ListItem>
+                                    <View style={{ alignItems: "center" }}>
+                                        <Chip
                                             key={index}
+                                            textStyle={{
+                                                alignContent: "center",
+                                                alignSelf: "center",
+                                                justifyContent: "center"
+                                            }}
+                                            style={{
+                                                width: "45%",
+                                                marginBottom: 5
+                                            }}
                                             onPress={() =>
                                                 setChangeStatus({ ...changeStatus, status: items })
                                             }
-                                            btnName={items}
-                                        />
-                                    </ListItem>
+                                        >
+                                            {items}
+                                        </Chip>
+                                    </View>
                                 );
                             })}
                         {changeStatus.status !== "" && (
                             <>
-                                <Text>{`Change Complaint status to ${changeStatus.status}`}</Text>
-                                <Button btnName="Yes" onPress={handleChangeStatus} />
-                                <Button
-                                    btnName="No"
-                                    onPress={() => setChangeStatus({ activity: false, status: "" })}
+                                <MediumText
+                                    size={18}
+                                    string={`Change Complaint status to ${changeStatus.status}`}
                                 />
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        justifyContent: "space-around"
+                                    }}
+                                >
+                                    <Button
+                                        style={{ width: "45%" }}
+                                        btnName="Yes"
+                                        onPress={handleChangeStatus}
+                                    />
+                                    <Button
+                                        style={{ width: "45%" }}
+                                        btnName="No"
+                                        onPress={() =>
+                                            setChangeStatus({ activity: false, status: "" })
+                                        }
+                                    />
+                                </View>
                             </>
                         )}
                         <Reason string="Reason" />

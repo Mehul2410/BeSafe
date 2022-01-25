@@ -47,10 +47,17 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
             <View style={styles.view}>
                 <View style={styles.profile}>
                     <View style={{ position: "relative" }}>
-                        <Image
-                            style={styles.img}
-                            source={avatar ? { uri: avatar } : require("@assets/img.png")}
-                        />
+                        {role === 3000 ? (
+                            <Image
+                                style={styles.img}
+                                source={avatar ? { uri: avatar } : require("@assets/img.png")}
+                            />
+                        ) : (
+                            <Image
+                                style={styles.img}
+                                source={avatar ? { uri: avatar } : require("@assets/police.png")}
+                            />
+                        )}
                     </View>
                 </View>
                 <View style={styles.name}>

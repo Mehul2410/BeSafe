@@ -12,7 +12,7 @@ import { userData } from "@contexts/slice/authSlice";
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
     const [imageUri, setImageUri] = React.useState<string>();
     const [details, setDetails] = React.useState({
-        dob: "Date",
+        dob: "Birth Date(MM-DD-YYYY)",
         adhaarCard: "",
         panCard: "",
         address: "",

@@ -1,33 +1,31 @@
-import React, { Children, ReactNode } from "react";
 import {
     Background,
-    CustomInput,
-    Text,
-    Button,
-    ImageInput,
-    ImageInputList,
+    Complaint,
     RegularText,
+    Text,
+    CustomInput,
     PostLoader,
+    Button,
     LocationLoader,
-    Complaint
+    ImageInputList,
+    MediumText,
+    LightText
 } from "@components";
-import { View, Image, ActivityIndicator } from "react-native";
-import { ScrollView } from "react-native";
-import useSWR from "swr";
 import { allUsers, createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
-import * as Location from "expo-location";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { NavigationProps } from "@types";
+import { colors } from "@utils";
+import React from "react";
+import { TouchableWithoutFeedback, View } from "react-native";
+import { date } from "yup/lib/locale";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-export function Post({}: NavigationProps<"Post">) {
+export function MissingPerson() {
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
-    const [users, setUser] = React.useState<[]>();
     const [complaint, setComplaint] = React.useState({
         complaintAgainstName: "",
         complaintAgainst: "",
@@ -40,40 +38,7 @@ export function Post({}: NavigationProps<"Post">) {
         nearestPoliceStationAddress: ""
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
-    const SearchResult =
-        complaint.complaintAgainstName !== "" &&
-        users &&
-        users.filter(value => {
-            return Object.values(value)
-                .join(" ")
-                .toLowerCase()
-                .includes(complaint.complaintAgainstName.toLowerCase());
-        });
 
-    async function fetcher(url: string) {
-        const creds = await getCredentials();
-        const res = await fetch(url, {
-            method: "GET",
-            headers: {
-                Accept: "application/json",
-                authorization: `Bearer ${creds.access_token}`
-            }
-        });
-        const result = await res.json();
-        setUser(result);
-        try {
-            const { granted } = await Location.requestForegroundPermissionsAsync();
-            if (!granted) return;
-            const {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync();
-            setlatlng({ latitude, longitude });
-        } catch (error) {
-            console.log(error);
-        }
-        return true;
-    }
-    const { data, error } = useSWR(allUsers, fetcher);
     const handleAdd = (uri: string) => {
         setImageUris([...imageUris, uri]);
     };
@@ -170,66 +135,63 @@ export function Post({}: NavigationProps<"Post">) {
             setLoading(false);
         }, 1000);
     }
+    const [details, setDetails] = React.useState({
+        dob: "(MM-DD-YYYY)"
+    });
+    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date: any) => {
+        setDetails({ ...details, dob: date.toString("en-IN") });
+        hideDatePicker();
+    };
 
     return (
         <Background>
             <Complaint>
-                <CustomInput
-                    value={complaint.complaintAgainstName}
-                    onChangeText={text => {
-                        setComplaint({ ...complaint, complaintAgainstName: text });
-                        handleLoading();
+                <MediumText size={18} string="Missing Date Range" />
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                        alignItems: "center"
                     }}
-                    placeholder="Complaint against"
-                />
-                {SearchResult &&
-                    SearchResult.map((item: any, index) => {
-                        return (
-                            <TouchableWithoutFeedback
-                                key={index}
-                                onPress={() => {
-                                    setComplaint({
-                                        ...complaint,
-                                        complaintAgainst: item._id,
-                                        complaintAgainstName: item.name
-                                    });
-                                }}
-                            >
-                                <View
-                                    style={{
-                                        width: "100%",
-                                        flexDirection: "row",
-                                        marginBottom: 10
-                                    }}
-                                >
-                                    <Image
-                                        style={{
-                                            height: 35,
-                                            width: 35,
-                                            marginRight: 10,
-                                            borderRadius: 100
-                                        }}
-                                        resizeMode="contain"
-                                        source={
-                                            item.avatar
-                                                ? { uri: item.avatar }
-                                                : require("@assets/img.png")
-                                        }
-                                    />
-                                    <RegularText color="#FFF" align="center" string={item.name} />
-                                </View>
-                            </TouchableWithoutFeedback>
-                        );
-                    })}
-                {loading && <PostLoader />}
-                <CustomInput
-                    onChangeText={text => setComplaint({ ...complaint, reason: text })}
-                    placeholder="Reason of complaint"
-                />
-                <CustomInput
-                    onChangeText={text => setComplaint({ ...complaint, currentSituation: text })}
-                    placeholder="Current Situation"
-                />
+                >
+                    <Button
+                        style={{ fontSize: 13, width: "45%" }}
+                        btnName={details.dob}
+                        weight="400"
+                        numberOfLines={1}
+                        onPress={showDatePicker}
+                        bgColor="#FFF"
+                        textColor={colors.quatnary}
+                    />
+                    <LightText string="To" />
+                    <Button
+                        style={{ fontSize: 13, width: "45%" }}
+                        btnName={details.dob}
+                        weight="400"
+                        numberOfLines={1}
+                        onPress={showDatePicker}
+                        bgColor="#FFF"
+                        textColor={colors.quatnary}
+                    />
+                </View>
+
+                <CustomInput placeholder="Name" />
+                <CustomInput placeholder="Father Name" />
+                <CustomInput placeholder="height" />
+                <LightText textalign="center" string="Eg.20-25" />
+                <CustomInput placeholder="Religion" />
+                <CustomInput placeholder="Sex" />
+
                 <CustomInput
                     onChangeText={text => setComplaint({ ...complaint, locationName: text })}
                     editable={complaint.locationAddress ? false : true}
@@ -341,6 +303,12 @@ export function Post({}: NavigationProps<"Post">) {
                     btnName="Submit"
                     style={{ fontSize: 18, marginTop: 6 }}
                     onPress={submitComplaint}
+                />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="datetime"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
                 />
             </Complaint>
         </Background>

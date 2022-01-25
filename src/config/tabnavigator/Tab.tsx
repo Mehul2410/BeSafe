@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { ReactNode, useEffect, useState } from "react";
-import { Home, Profile, Post, ComplaintGroup } from "@screens";
+import { Home, Profile, Post, ComplaintGroup, AllComplaints } from "@screens";
 import {
     View,
     Image,
@@ -13,6 +13,7 @@ import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
 import ComplaintNavigator from "./ComplaintNavigator";
+import PostNavigator from "./PostNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
@@ -80,8 +81,8 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="Post"
-                component={Post}
+                name="ComplaintTypes"
+                component={PostNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image
