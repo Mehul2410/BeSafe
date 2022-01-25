@@ -19,7 +19,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
             agree: "Agree to go through police verification process"
         },
         stationAdmin: {
-            uri: require("@assets/police.png"),
+            uri: require("@assets/admin.png"),
             role: 4000,
             agree: "Agree to go through police verification process"
         },
@@ -62,7 +62,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                             role="Station Admin"
                             uri={require("@assets/admin.png")}
                             onPress={() => {
-                                navigation.navigate("SignIn", roles.police);
+                                navigation.navigate("SignIn", roles.stationAdmin);
                                 setPolice(!police);
                             }}
                         />
@@ -97,20 +97,4 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
             </View>
         </Background>
     );
-}
-{
-    /* <CharRole
-                    role="Station Admin"
-                    uri={require("@assets/admin.png")}
-                    onPress={() => {
-                        navigation.navigate("SignIn", roles.police);
-                    }}
-                />
-            <CharRole
-                    role="Police"
-                    uri={require("@assets/police.png")}
-                    onPress={() => {
-                        navigation.navigate("SignIn", roles.police);
-                    }}
-                /> */
 }

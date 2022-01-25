@@ -43,7 +43,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                     }
                 });
                 const user = await res.json();
-                // console.log(user);
                 if (user.myComplaints) {
                     dispatch(userComplaints(user));
                 }
@@ -52,6 +51,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
             setLoading(true);
         }
     }
+
     useEffect(() => {
         getComplaints();
     }, []);
@@ -74,7 +74,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
                                 return allData.complaints.map((item: any, index: any) => {
-                                    console.log(allData.complaints);
                                     return (
                                         <TouchableWithoutFeedback
                                             key={index}
@@ -134,7 +133,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                                 /> */}
                                                     </View>
                                                 </View>
-
                                                 <Text
                                                     weight="400"
                                                     style={{

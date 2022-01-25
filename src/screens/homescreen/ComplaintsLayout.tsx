@@ -1,31 +1,40 @@
 import React from "react";
-import { View, Image, ScrollView, Pressable, PressableProps, Group, Modal } from "react-native";
+import { View, Image, Modal, FlatList } from "react-native";
 import {
     Text,
     DateAndTime,
     StatusDetail,
-    Reason,
     Background,
     RegularText,
     MediumText,
     LightText,
-    Button
+    Button,
+    Heading
 } from "@components";
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { updateStatus } from "@contexts/api/client";
-import { getCredentials } from "@contexts/store/credentials";
+import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
     });
+    const [police, setPolice] = React.useState<any[]>();
+    const [assignComplaint, setAssignComplaint] = React.useState({
+        activity: false,
+        _id: "",
+        name: "",
+        avatar: "",
+        policePost: ""
+    });
 
     const [view, setView] = React.useState(false);
-    const { _id } = useSelector((state: RootStateOrAny) => state.auth);
+    const { _id, role } = useSelector((state: RootStateOrAny) => state.auth);
 
     const images = route.params.images?.map((img, index) => {
         return { url: img };
@@ -59,71 +68,153 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
         }
     }
 
-    return (
-        <Background bgColor="#281B89">
-            <View
-                style={{
-                    height: "100%",
-                    width: "100%",
-                    paddingHorizontal: 20,
-                    paddingBottom: 10
-                }}
-            >
-                <ScrollView>
+    async function getAllStationPolice() {
+        const data = await getCredentials();
+        if (data) {
+            if (!isTokenExpired(data.access_token)) {
+                const user = await fetch(getStationPolice, {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                        authorization: `Bearer ${data.access_token}`
+                    }
+                });
+                const res = await user.json();
+                if (res.success) {
+                    setPolice(res.user);
+                }
+                //active status to be send from backend to login police
+            }
+        }
+    }
+
+    React.useEffect(() => {
+        getAllStationPolice();
+    }, []);
+
+    const [selectedId, setSelectedId] = React.useState(null);
+
+    function Police({ item }: any) {
+        return (
+            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
+                <View
+                    style={{
+                        width: "100%",
+                        flexDirection: "row",
+                        marginBottom: 10,
+                        borderWidth: 1,
+                        borderColor: "#FFFFFF",
+                        paddingHorizontal: 20,
+                        paddingVertical: 10,
+                        borderRadius: 10,
+                        alignItems: "center",
+                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
+                    }}
+                >
+                    <Image
+                        style={{
+                            width: 45,
+                            height: 40,
+                            marginRight: 10,
+                            borderRadius: 100
+                        }}
+                        resizeMode="contain"
+                        source={item.avatar ? { uri: item.avatar } : require("@assets/img.png")}
+                    />
+                    <View>
+                        <RegularText
+                            color="#FFF"
+                            textalign="left"
+                            align="center"
+                            string={item.name}
+                        />
+                        <RegularText
+                            color="#FFF"
+                            align="center"
+                            textalign="left"
+                            string={item.userDetails && item.userDetails.policePost}
+                        />
+                    </View>
+                </View>
+            </TouchableWithoutFeedback>
+        );
+    }
+
+    const flatListHead = () => {
+        return (
+            <>
+                <View
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}
+                >
                     <View
                         style={{
                             display: "flex",
                             flexDirection: "row",
-                            justifyContent: "space-between",
-                            alignItems: "center"
+                            alignItems: "center",
+                            width: "100%",
+                            marginBottom: 10
                         }}
                     >
+                        <StatusDetail string={route.params.status && route.params.status} />
                         <View
                             style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                width: "100%",
-                                marginBottom: 10
+                                flexDirection: "column",
+                                alignItems: "flex-start",
+                                marginLeft: 10
                             }}
                         >
-                            <StatusDetail string={route.params.status && route.params.status} />
-                            <View
-                                style={{
-                                    flexDirection: "column",
-                                    alignItems: "flex-start",
-                                    marginLeft: 10
-                                }}
-                            >
-                                <DateAndTime
-                                    string={new Date(route.params.createdAt!).toLocaleDateString(
-                                        "en-IN"
-                                    )}
-                                />
-                                <DateAndTime
-                                    string={new Date(route.params.createdAt!).toLocaleTimeString(
-                                        "en-IN"
-                                    )}
-                                />
-                            </View>
+                            <DateAndTime
+                                string={new Date(route.params.createdAt!).toLocaleDateString(
+                                    "en-IN"
+                                )}
+                            />
+                            <DateAndTime
+                                string={new Date(route.params.createdAt!).toLocaleTimeString(
+                                    "en-IN"
+                                )}
+                            />
                         </View>
                     </View>
-                    <View>
-                        <MediumText
-                            size={19}
-                            align="flex-start"
-                            string={
-                                route.params.complaintAgainst === _id
-                                    ? "You are involved in this complaint"
-                                    : `Your complaint is raised against: ${
-                                          route.params.complaintAgainstName &&
-                                          route.params.complaintAgainstName
-                                      } `
-                            }
-                        />
+                </View>
+                <MediumText
+                    size={19}
+                    align="flex-start"
+                    string={
+                        route.params.complaintAgainst === _id
+                            ? "You are involved in this complaint"
+                            : `Your complaint is raised against: ${
+                                  route.params.complaintAgainstName &&
+                                  route.params.complaintAgainstName
+                              } `
+                    }
+                />
+                <Button
+                    btnName="Assign Complaint"
+                    weight="200"
+                    onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
+                />
+            </>
+        );
+    };
+
+    const flatListFooter = () => {
+        return (
+            <>
+                <Button
+                    btnName="Assign Complaint"
+                    weight="200"
+                    onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
+                />
+                {role === 5000 && (
+                    <>
                         <Button
                             btnName="Change Status"
-                            weight="400"
+                            weight="200"
                             onPress={() =>
                                 setChangeStatus({
                                     ...changeStatus,
@@ -137,7 +228,10 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                     <Text
                                         key={index}
                                         onPress={() =>
-                                            setChangeStatus({ ...changeStatus, status: items })
+                                            setChangeStatus({
+                                                ...changeStatus,
+                                                status: items
+                                            })
                                         }
                                     >
                                         {items}
@@ -147,57 +241,85 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         {changeStatus.status !== "" && (
                             <>
                                 <Text>{`Change Complaint status to ${changeStatus.status}`}</Text>
-                                <Button btnName="Yes" onPress={handleChangeStatus} />
+                                <Button weight="200" btnName="Yes" onPress={handleChangeStatus} />
                                 <Button
+                                    weight="200"
                                     btnName="No"
-                                    onPress={() => setChangeStatus({ activity: false, status: "" })}
+                                    onPress={() =>
+                                        setChangeStatus({
+                                            activity: false,
+                                            status: ""
+                                        })
+                                    }
                                 />
                             </>
                         )}
-                        <Reason string="Reason" />
-                        <LightText string={route.params.reason} />
-
-                        <Text
-                            weight="700"
-                            style={{
-                                color: colors.white,
-                                marginVertical: 10,
-                                fontSize: 18
-                            }}
-                        >
-                            Images
-                        </Text>
-                        <View>
-                            <Modal
-                                visible={view}
-                                transparent={true}
-                                onRequestClose={() => setView(false)}
-                            >
-                                <ImageViewer
-                                    imageUrls={images}
-                                    onSwipeDown={() => setView(false)}
-                                    onCancel={() => setView(false)}
-                                    enableSwipeDown={true}
-                                    backgroundColor="#281B89"
-                                />
-                            </Modal>
-                            <Button btnName="View Case Images" onPress={() => setView(true)} />
-                        </View>
-                    </View>
+                    </>
+                )}
+                <View style={{ marginBottom: 80 }}>
+                    <Heading string="Reason" />
+                    <LightText string={route.params.reason} />
+                </View>
+            </>
+        );
+    };
+    return (
+        <Background bgColor="#281B89">
+            <View
+                style={{
+                    position: "relative",
+                    height: "100%",
+                    width: "100%"
+                }}
+            >
+                <View
+                    style={{
+                        paddingHorizontal: 20,
+                        paddingBottom: 10,
+                        height: "100%",
+                        width: "100%"
+                    }}
+                >
+                    {role === 4000 && (
+                        <FlatList
+                            data={police && police}
+                            renderItem={assignComplaint ? Police : null}
+                            keyExtractor={item => item._id}
+                            ListHeaderComponent={flatListHead}
+                            ListFooterComponent={flatListFooter}
+                            extraData={selectedId}
+                        />
+                    )}
+                </View>
+                <View
+                    style={{
+                        position: "absolute",
+                        width: "100%",
+                        paddingHorizontal: 20,
+                        bottom: 0,
+                        left: 0,
+                        backgroundColor: "#281B89"
+                    }}
+                >
+                    <Modal visible={view} transparent={true} onRequestClose={() => setView(false)}>
+                        <ImageViewer
+                            imageUrls={images}
+                            onSwipeDown={() => setView(false)}
+                            onCancel={() => setView(false)}
+                            enableSwipeDown={true}
+                            backgroundColor="#281B89"
+                        />
+                    </Modal>
+                    <Button weight="200" btnName="View Case Images" onPress={() => setView(true)} />
                     <Button
                         bgColor="#DC143C"
-                        weight="400"
+                        weight="200"
                         style={{
-                            color: colors.white,
-                            fontSize: 18,
-                            paddingVertical: 10,
-
-                            textAlign: "center",
-                            borderRadius: 10
+                            color: colors.white
                         }}
-                        btnName={`Case Handler: ${route.params.assignTo}`}
+                        btnName={`Assigned to: ${route.params.assignTo}`}
                     />
-                </ScrollView>
+                </View>
             </View>
         </Background>
     );

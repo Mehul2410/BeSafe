@@ -42,7 +42,6 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                     authorization: `Bearer ${tokens.access_token}`
                 }
             });
-            console.log(res);
             return await res.json();
         } catch (error) {
             console.log(error);
