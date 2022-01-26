@@ -2,7 +2,6 @@ import {
     Background,
     Complaint,
     RegularText,
-    Text,
     CustomInput,
     PostLoader,
     Button,
@@ -11,15 +10,12 @@ import {
     MediumText,
     LightText
 } from "@components";
-import { allUsers, createPost, sendNotification } from "@contexts/api/client";
+import { createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
 import React from "react";
-import { TextInput, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native";
-import { date } from "yup/lib/locale";
+import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Icon } from "react-native-elements";
-import { setUseProxies } from "immer";
 
 export function MissingPerson() {
     const [loading, setLoading] = React.useState(false);
@@ -175,7 +171,7 @@ export function MissingPerson() {
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
-                    <LightText string="To" />
+                    <LightText string="-" />
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
                         btnName={details.dob}

@@ -245,13 +245,13 @@ export function Post({}: NavigationProps<"Post">) {
                                     ? "Saved Address"
                                     : "Check location Address"
                             }
-                            weight="400"
+                            weight="200"
                             onPress={locationAddress}
                         />
                         {complaint.locationAddress !== "" && (
                             <Button
                                 btnName="Change Address"
-                                weight="400"
+                                weight="200"
                                 onPress={() => setComplaint({ ...complaint, locationAddress: "" })}
                             />
                         )}
@@ -259,7 +259,7 @@ export function Post({}: NavigationProps<"Post">) {
                 ) : (
                     <Button
                         btnName="Approve Address"
-                        weight="400"
+                        weight="200"
                         onPress={() => {
                             setComplaint({
                                 ...complaint,
@@ -271,7 +271,7 @@ export function Post({}: NavigationProps<"Post">) {
                 )}
 
                 <Button
-                    weight="400"
+                    weight="200"
                     btnName="Get Near by Police Station"
                     onPress={nearByPoliceStation}
                 />
@@ -326,12 +326,18 @@ export function Post({}: NavigationProps<"Post">) {
                     })
                 ) : (
                     <Button
-                        weight="400"
+                        weight="200"
                         btnName="Saved Police Station"
                         onPress={nearByPoliceStation}
                     />
                 )}
-                <RegularText color="#FFF" string="Image Proof" vmargin={8} size={18} />
+                <RegularText
+                    align="flex-start"
+                    color="#FFF"
+                    string="Image Proof"
+                    vmargin={8}
+                    size={18}
+                />
                 <ImageInputList
                     imageUri={imageUris}
                     onAddImage={handleAdd}
@@ -339,6 +345,7 @@ export function Post({}: NavigationProps<"Post">) {
                 />
                 <Button
                     btnName="Submit"
+                    weight="200"
                     style={{ fontSize: 18, marginTop: 6 }}
                     onPress={submitComplaint}
                 />
