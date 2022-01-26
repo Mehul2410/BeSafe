@@ -185,8 +185,10 @@ export function MissingPerson() {
 
                 <CustomInput placeholder="Name" />
                 <CustomInput placeholder="Father Name" />
-                <CustomInput placeholder="height" />
-                <LightText textalign="center" string="Eg.20-25" />
+                <CustomInput placeholder="Height" />
+                <LightText textalign="center" string="Eg.5-6 feet OR in Cm" />
+                <CustomInput placeholder="Expected Age" />
+                <LightText textalign="center" string="Eg.21-24" />
                 <CustomInput placeholder="Religion" />
 
                 <CustomInput placeholder="Sex" />

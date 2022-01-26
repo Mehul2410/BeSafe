@@ -155,10 +155,69 @@ export function UnidPerson() {
         hideDatePicker();
     };
 
+    const [changeStatus, setChangeStatus] = React.useState({
+        activity: false,
+        status: ""
+    });
     return (
         <Background>
             <Complaint>
-                <MediumText size={18} string="Found Date Range" />
+                <Button
+                    btnName="Report Type"
+                    weight="200"
+                    onPress={() =>
+                        setChangeStatus({
+                            ...changeStatus,
+                            activity: !changeStatus.activity
+                        })
+                    }
+                />
+                <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                    {changeStatus.activity &&
+                        ["Person", "Child", "DeadBody"].map((items, index) => {
+                            return (
+                                <Button
+                                    weight="200"
+                                    style={{
+                                        margin: 3,
+                                        width: 90,
+                                        paddingVertical: 5,
+                                        borderRadius: 30,
+                                        backgroundColor:
+                                            changeStatus.status === items ? "#0d054b" : "#1D0ECC"
+                                    }}
+                                    key={index}
+                                    onPress={() =>
+                                        setChangeStatus({ ...changeStatus, status: items })
+                                    }
+                                    btnName={items}
+                                />
+                            );
+                        })}
+                </View>
+                {changeStatus.status !== "" && (
+                    <>
+                        <Text
+                            weight="200"
+                            color="#FFF"
+                        >{`Change Complaint status to ${changeStatus.status}`}</Text>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-around"
+                            }}
+                        >
+                            <Button weight="200" style={{ width: "45%" }} btnName="Yes" />
+                            <Button
+                                weight="200"
+                                style={{ width: "45%" }}
+                                btnName="No"
+                                onPress={() => setChangeStatus({ activity: false, status: "" })}
+                            />
+                        </View>
+                    </>
+                )}
+                <MediumText size={18} string={`${changeStatus.status} Found Date Range`} />
                 <View
                     style={{
                         flexDirection: "row",
@@ -186,10 +245,12 @@ export function UnidPerson() {
                         textColor={colors.quatnary}
                     />
                 </View>
-                <CustomInput placeholder="height" />
-                <LightText textalign="center" string="Eg.20-25" />
-                <CustomInput placeholder="Upper Dress with Color" />
-                <CustomInput placeholder="Lower Dress with Color" />
+                <CustomInput placeholder={`${changeStatus.status} Height`} />
+                <LightText textalign="center" string="Eg.5-6 feet OR in Cm" />
+                <CustomInput placeholder={`${changeStatus.status} Expected Age`} />
+                <LightText textalign="center" string="Eg.21-24" />
+                <CustomInput placeholder={`${changeStatus.status} Upper Dress with Color `} />
+                <CustomInput placeholder={`${changeStatus.status} Lower Dress with Color`} />
                 <LightText textalign="center" string="Eg.shirt-red OR jeans-blue" />
 
                 <CustomInput placeholder="FaceCut with Color" />

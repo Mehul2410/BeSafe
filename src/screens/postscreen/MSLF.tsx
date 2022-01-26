@@ -11,7 +11,8 @@ import {
     MediumText,
     LightText
 } from "@components";
-import { allUsers, createPost, sendNotification } from "@contexts/api/client";
+import { NavigationProps } from "@types";
+import { allUsers, createPost, sendNotification, updateStatus } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
 import React from "react";
@@ -21,7 +22,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Icon } from "react-native-elements";
 import { setUseProxies } from "immer";
 
-export function MSLF() {
+export function MSLF({ route }: NavigationProps<"MSLF">) {
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -137,6 +138,7 @@ export function MSLF() {
             setLoading(false);
         }, 1000);
     }
+
     const [details, setDetails] = React.useState({
         dob: "Date & Time"
     });
@@ -155,10 +157,69 @@ export function MSLF() {
         hideDatePicker();
     };
 
+    const [changeStatus, setChangeStatus] = React.useState({
+        activity: false,
+        status: ""
+    });
     return (
         <Background>
             <Complaint>
-                <MediumText size={18} string="Missing Date Range" />
+                <Button
+                    btnName="Report Type"
+                    weight="200"
+                    onPress={() =>
+                        setChangeStatus({
+                            ...changeStatus,
+                            activity: !changeStatus.activity
+                        })
+                    }
+                />
+                <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                    {changeStatus.activity &&
+                        ["Missing", "Stolen", "Lost", "Found"].map((items, index) => {
+                            return (
+                                <Button
+                                    weight="200"
+                                    style={{
+                                        margin: 3,
+                                        width: 90,
+                                        paddingVertical: 5,
+                                        borderRadius: 30,
+                                        backgroundColor:
+                                            changeStatus.status === items ? "#0d054b" : "#1D0ECC"
+                                    }}
+                                    key={index}
+                                    onPress={() =>
+                                        setChangeStatus({ ...changeStatus, status: items })
+                                    }
+                                    btnName={items}
+                                />
+                            );
+                        })}
+                </View>
+                {changeStatus.status !== "" && (
+                    <>
+                        <Text
+                            weight="200"
+                            color="#FFF"
+                        >{`Change Complaint status to ${changeStatus.status}`}</Text>
+                        <View
+                            style={{
+                                flexDirection: "row",
+                                justifyContent: "space-around"
+                            }}
+                        >
+                            <Button weight="200" style={{ width: "45%" }} btnName="Yes" />
+                            <Button
+                                weight="200"
+                                style={{ width: "45%" }}
+                                btnName="No"
+                                onPress={() => setChangeStatus({ activity: false, status: "" })}
+                            />
+                        </View>
+                    </>
+                )}
+                <MediumText size={18} string={`${changeStatus.status} Date Range`} />
                 <View
                     style={{
                         flexDirection: "row",
@@ -175,7 +236,7 @@ export function MSLF() {
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
-                    <LightText string="To" />
+                    <LightText string="-" />
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
                         btnName={details.dob}
@@ -187,18 +248,12 @@ export function MSLF() {
                     />
                 </View>
 
-                <CustomInput placeholder="Name" />
-                <CustomInput placeholder="Father Name" />
-                <CustomInput placeholder="height" />
-                <LightText textalign="center" string="Eg.20-25" />
-                <CustomInput placeholder="Religion" />
-
-                <CustomInput placeholder="Sex" />
-
+                <CustomInput placeholder={`${changeStatus.status} Thing name`} />
+                <CustomInput placeholder={`${changeStatus.status} Description of Thing`} />
                 <CustomInput
                     onChangeText={text => setComplaint({ ...complaint, locationName: text })}
                     editable={complaint.locationAddress ? false : true}
-                    placeholder="Location Name"
+                    placeholder={`${changeStatus.status} Location Name`}
                 />
                 {locationLoading && <PostLoader />}
                 {location !== "" && <RegularText string={location} />}
