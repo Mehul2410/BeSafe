@@ -244,17 +244,6 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         {changeStatus.status !== "" && (
                             <>
                                 <Text>{`Change Complaint status to ${changeStatus.status}`}</Text>
-                                <Button weight="200" btnName="Yes" onPress={handleChangeStatus} />
-                                <Button
-                                    weight="200"
-                                    btnName="No"
-                                    onPress={() =>
-                                        setChangeStatus({
-                                            activity: false,
-                                            status: ""
-                                        })
-                                    }
-                                />
                                 <View
                                     style={{
                                         flexDirection: "row",
