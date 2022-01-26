@@ -102,11 +102,10 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                     style={{
                         width: "100%",
                         flexDirection: "row",
-                        marginBottom: 10,
                         borderWidth: 1,
                         borderColor: "#FFFFFF",
                         paddingHorizontal: 20,
-                        paddingVertical: 10,
+                        paddingVertical: 8,
                         borderRadius: 10,
                         alignItems: "center",
                         backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
@@ -236,7 +235,6 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                             style={{
                                                 margin: 3,
                                                 width: 100,
-                                                // fontSize: 10,
                                                 paddingVertical: 5,
                                                 borderRadius: 30,
                                                 backgroundColor:
