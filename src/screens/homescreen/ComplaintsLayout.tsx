@@ -210,7 +210,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
             <>
                 {role === 4000 && (
                     <Button
-                        btnName="Assign Complaint"
+                        btnName="Update Complaint"
                         weight="200"
                         onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
                     />
@@ -227,34 +227,38 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                 })
                             }
                         />
-                        {changeStatus.activity &&
-                            ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
-                                return (
-                                    <Button
-                                        weight="700"
-                                        style={{ margin: 3, width: 100, fontSize: 18 }}
-                                        key={index}
-                                        onPress={() =>
-                                            setChangeStatus({ ...changeStatus, status: items })
-                                        }
-                                        btnName={items}
-                                    />
-                                );
-                            })}
+                        <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                            {changeStatus.activity &&
+                                ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
+                                    return (
+                                        <Button
+                                            weight="200"
+                                            style={{
+                                                margin: 3,
+                                                width: 100,
+                                                // fontSize: 10,
+                                                paddingVertical: 5,
+                                                borderRadius: 30,
+                                                backgroundColor:
+                                                    changeStatus.status === items
+                                                        ? "#0d054b"
+                                                        : "#1D0ECC"
+                                            }}
+                                            key={index}
+                                            onPress={() =>
+                                                setChangeStatus({ ...changeStatus, status: items })
+                                            }
+                                            btnName={items}
+                                        />
+                                    );
+                                })}
+                        </View>
                         {changeStatus.status !== "" && (
                             <>
-                                <Text>{`Change Complaint status to ${changeStatus.status}`}</Text>
-                                <Button weight="200" btnName="Yes" onPress={handleChangeStatus} />
-                                <Button
+                                <Text
                                     weight="200"
-                                    btnName="No"
-                                    onPress={() =>
-                                        setChangeStatus({
-                                            activity: false,
-                                            status: ""
-                                        })
-                                    }
-                                />
+                                    color="#FFF"
+                                >{`Change Complaint status to ${changeStatus.status}`}</Text>
                                 <View
                                     style={{
                                         flexDirection: "row",
@@ -262,11 +266,13 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                     }}
                                 >
                                     <Button
+                                        weight="200"
                                         style={{ width: "45%" }}
                                         btnName="Yes"
                                         onPress={handleChangeStatus}
                                     />
                                     <Button
+                                        weight="200"
                                         style={{ width: "45%" }}
                                         btnName="No"
                                         onPress={() =>

@@ -40,7 +40,7 @@ export default function Button({
 
 const styles = StyleSheet.create({
     button: {
-        paddingVertical: 13,
+        paddingVertical: 10,
         textAlign: "center",
         width: "100%",
         borderRadius: 10,
