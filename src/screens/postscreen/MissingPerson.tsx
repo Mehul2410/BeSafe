@@ -8,7 +8,9 @@ import {
     LocationLoader,
     ImageInputList,
     MediumText,
-    LightText
+    LightText,
+    CheckBox,
+    Text
 } from "@components";
 import { createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
@@ -24,16 +26,19 @@ export function MissingPerson() {
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
+    const [check, setCheck] = React.useState("");
     const [complaint, setComplaint] = React.useState({
-        complaintAgainstName: "",
-        complaintAgainst: "",
-        reason: "",
-        complaintType: "",
-        locationName: "",
-        locationAddress: "",
-        currentSituation: "",
-        nearestPoliceStation: "",
-        nearestPoliceStationAddress: ""
+        dateForm: "",
+        dateTo: "",
+        name: "",
+        fatherName: "",
+        height: "",
+        religion: "",
+        sex: "",
+        locName: "",
+        locAddress: "",
+        stationName: "",
+        stationAddress: ""
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
 
@@ -47,7 +52,7 @@ export function MissingPerson() {
 
     async function locationAddress() {
         const loc = await fetch(
-            `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.locationName}&language=en`,
+            `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.locName}&language=en`,
             {
                 method: "GET",
                 headers: {
@@ -64,7 +69,7 @@ export function MissingPerson() {
         }, 1000);
     }
     async function nearByPoliceStation() {
-        setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
+        setComplaint({ ...complaint, stationName: "", stationAddress: "" });
         const station = await fetch(
             `https://trueway-places.p.rapidapi.com/FindPlacesNearby?location=${latlng?.latitude},${latlng?.longitude}&type=police_station&language=en`,
             {
@@ -165,7 +170,6 @@ export function MissingPerson() {
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
                         btnName={details.dob}
-                        weight="400"
                         numberOfLines={1}
                         onPress={showDatePicker}
                         bgColor="#FFF"
@@ -175,7 +179,6 @@ export function MissingPerson() {
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
                         btnName={details.dob}
-                        weight="400"
                         numberOfLines={1}
                         onPress={showDatePicker}
                         bgColor="#FFF"
@@ -183,17 +186,47 @@ export function MissingPerson() {
                     />
                 </View>
 
-                <CustomInput placeholder="Name" />
-                <CustomInput placeholder="Father Name" />
-                <CustomInput placeholder="height" />
+                <CustomInput
+                    placeholder="Name"
+                    onChangeText={text => setComplaint({ ...complaint, name: text })}
+                />
+                <CustomInput
+                    placeholder="Father Name"
+                    onChangeText={text => setComplaint({ ...complaint, fatherName: text })}
+                />
+                <CustomInput
+                    placeholder="height"
+                    onChangeText={text => setComplaint({ ...complaint, height: text })}
+                />
                 <LightText textalign="center" string="Eg.20-25" />
-                <CustomInput placeholder="Religion" />
+                <CustomInput
+                    placeholder="Religion"
+                    onChangeText={text => setComplaint({ ...complaint, religion: text })}
+                />
 
-                <CustomInput placeholder="Sex" />
+                <Text weight="200" color="#FFF">
+                    Sex
+                </Text>
+                <View
+                    style={{
+                        flexDirection: "row"
+                    }}
+                >
+                    {["Male", "Female", "Other"].map((items, index) => {
+                        return (
+                            <CheckBox
+                                btnName={items}
+                                key={index}
+                                check={check}
+                                onPress={() => setCheck(items)}
+                            />
+                        );
+                    })}
+                </View>
 
                 <CustomInput
-                    onChangeText={text => setComplaint({ ...complaint, locationName: text })}
-                    editable={complaint.locationAddress ? false : true}
+                    onChangeText={text => setComplaint({ ...complaint, locName: text })}
+                    editable={complaint.locAddress ? false : true}
                     placeholder="Location Name"
                 />
                 {locationLoading && <PostLoader />}
@@ -202,42 +235,33 @@ export function MissingPerson() {
                     <>
                         <Button
                             btnName={
-                                complaint.locationAddress
-                                    ? "Saved Address"
-                                    : "Check location Address"
+                                complaint.locAddress ? "Saved Address" : "Check location Address"
                             }
-                            weight="400"
                             onPress={locationAddress}
                         />
-                        {complaint.locationAddress !== "" && (
+                        {complaint.locAddress !== "" && (
                             <Button
                                 btnName="Change Address"
-                                weight="400"
-                                onPress={() => setComplaint({ ...complaint, locationAddress: "" })}
+                                onPress={() => setComplaint({ ...complaint, locAddress: "" })}
                             />
                         )}
                     </>
                 ) : (
                     <Button
                         btnName="Approve Address"
-                        weight="400"
                         onPress={() => {
                             setComplaint({
                                 ...complaint,
-                                locationAddress: location
+                                locAddress: location
                             });
                             setLocation("");
                         }}
                     />
                 )}
 
-                <Button
-                    weight="400"
-                    btnName="Get Near by Police Station"
-                    onPress={nearByPoliceStation}
-                />
+                <Button btnName="Get Near by Police Station" onPress={nearByPoliceStation} />
                 {policeLoading && <LocationLoader />}
-                {complaint.nearestPoliceStation === "" ? (
+                {complaint.stationName === "" ? (
                     nearbyStation &&
                     nearbyStation.map((item: any, index) => {
                         return (
@@ -246,8 +270,8 @@ export function MissingPerson() {
                                 onPress={() => {
                                     setComplaint({
                                         ...complaint,
-                                        nearestPoliceStation: item.name,
-                                        nearestPoliceStationAddress: item.address
+                                        stationName: item.name,
+                                        stationAddress: item.address
                                     });
                                 }}
                             >
@@ -286,13 +310,9 @@ export function MissingPerson() {
                         );
                     })
                 ) : (
-                    <Button
-                        weight="400"
-                        btnName="Saved Police Station"
-                        onPress={nearByPoliceStation}
-                    />
+                    <Button btnName="Saved Police Station" onPress={nearByPoliceStation} />
                 )}
-                <RegularText color="#FFF" string="Image Proof" vmargin={8} size={18} />
+                <RegularText color="#FFF" string="Image of Missing Person" vmargin={8} size={18} />
                 <ImageInputList
                     imageUri={imageUris}
                     onAddImage={handleAdd}

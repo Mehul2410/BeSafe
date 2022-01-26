@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     text: {
         backgroundColor: "#FFF",
         color: colors.quatnary,
-        height: 50,
+        height: 45,
         width: "100%",
         fontFamily: "Chillax-Regular",
         fontSize: 15,
