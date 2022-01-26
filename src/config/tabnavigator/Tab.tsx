@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { ReactNode, useEffect, useState } from "react";
-import { Home, Profile, Post, ComplaintGroup } from "@screens";
+import { Home, Profile, Post, ComplaintGroup, AllComplaints } from "@screens";
 import {
     View,
     Image,
@@ -81,7 +81,7 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="Post"
+                name="ComplaintTypes"
                 component={PostNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (

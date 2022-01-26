@@ -18,6 +18,7 @@ import { getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ListItem } from "react-native-elements";
 
 export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -225,17 +226,15 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         {changeStatus.activity &&
                             ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
                                 return (
-                                    <Text
+                                    <Button
+                                        weight="700"
+                                        style={{ margin: 3, width: 100, fontSize: 18 }}
                                         key={index}
                                         onPress={() =>
-                                            setChangeStatus({
-                                                ...changeStatus,
-                                                status: items
-                                            })
+                                            setChangeStatus({ ...changeStatus, status: items })
                                         }
-                                    >
-                                        {items}
-                                    </Text>
+                                        btnName={items}
+                                    />
                                 );
                             })}
                         {changeStatus.status !== "" && (
@@ -252,6 +251,25 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                                         })
                                     }
                                 />
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        justifyContent: "space-around"
+                                    }}
+                                >
+                                    <Button
+                                        style={{ width: "45%" }}
+                                        btnName="Yes"
+                                        onPress={handleChangeStatus}
+                                    />
+                                    <Button
+                                        style={{ width: "45%" }}
+                                        btnName="No"
+                                        onPress={() =>
+                                            setChangeStatus({ activity: false, status: "" })
+                                        }
+                                    />
+                                </View>
                             </>
                         )}
                     </>

@@ -11,6 +11,7 @@ interface Props {
     align?: "auto" | FlexAlignType | undefined;
     size?: number;
     textalign?: "auto" | "left" | "right" | "center" | "justify";
+    width?: number | string;
 }
 
 export const RegularText = ({
@@ -37,12 +38,24 @@ export const RegularText = ({
     );
 };
 
-export const MediumText = ({ string, color, align = "center", vmargin = 0, size }: Props) => {
+export const MediumText = ({
+    string,
+    color,
+    align = "center",
+    vmargin = 0,
+    size,
+    width
+}: Props) => {
     return (
         <Text
             weight="700"
             color="#FFF"
-            style={{ alignSelf: align, marginVertical: vmargin, fontSize: size }}
+            style={{
+                alignSelf: align,
+                marginVertical: vmargin,
+                fontSize: size ? size : 24,
+                width: width
+            }}
         >
             {string}
         </Text>
@@ -55,9 +68,9 @@ export const LargeText = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const LightText = ({ string, color, bgcolor }: Props) => {
+export const LightText = ({ string, color, bgcolor, textalign }: Props) => {
     return (
-        <Text weight="200" color="#FFF" style={{ textAlign: "justify" }}>
+        <Text weight="200" color="#FFF" style={{ textAlign: textalign ? textalign : "justify" }}>
             {string}
         </Text>
     );

@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Post } from "@screens";
+import { AllComplaints, Post, CyberCrime, MissingPerson, MSLF, Wanted, UnidPerson } from "@screens";
 
 import { StackNavigatorParams } from "@types";
 
@@ -14,9 +14,13 @@ export default function PostNavigator(): ReactElement {
                 headerShown: false
             }}
         >
-            {/* <Stack.Screen name="AllComplaints" component={AllComplaints} /> new screen */}
-            <Stack.Screen name="PostForm" component={Post} />
-            {/* <Stack.Screen name="Missing" component={Post} /> */}
+            <Stack.Screen name="AllComplaints" component={AllComplaints} />
+            <Stack.Screen name="Post" component={Post} />
+            <Stack.Screen name="CyberCrime" component={CyberCrime} />
+            <Stack.Screen name="MissingPerson" component={MissingPerson} />
+            <Stack.Screen name="MSLF" component={MSLF} />
+            <Stack.Screen name="Wanted" component={Wanted} />
+            <Stack.Screen name="UnidPerson" component={UnidPerson} />
         </Stack.Navigator>
     );
 }

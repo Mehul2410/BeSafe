@@ -18,3 +18,4 @@ export { default as CustomInput } from "./CustomInput/CustomInput";
 export { default as ImageInput } from "./ImagePicker/ImageInput";
 export { default as ImageInputList } from "./ImagePicker/ImageInputList";
 export { PostLoader, Normalloader, LocationLoader, ComplaintLoader } from "./Loader/Loader";
+export { default as Complaint } from "./Complaint/Complaint";

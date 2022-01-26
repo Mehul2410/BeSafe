@@ -42,6 +42,12 @@ export type StackNavigatorParams = {
     PostForm: undefined;
     Help: undefined;
     Post: undefined;
+    Wanted: undefined;
+    CyberCrime: undefined;
+    MissingPerson: undefined;
+    MSLF: undefined;
+    UnidPerson: undefined;
+    Exam: undefined;
     AllComplaints: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;

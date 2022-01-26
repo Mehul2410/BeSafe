@@ -24,71 +24,84 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                         padding: 20
                     }}
                 >
-                    <ScrollView>
-                        <Image
-                            style={{
-                                height: 150,
-                                width: 150,
-                                borderRadius: 95,
-                                borderColor: "#FFF",
-                                borderWidth: 5,
-                                alignSelf: "center"
-                            }}
-                            source={
-                                route.params.avatar
-                                    ? { uri: route.params.avatar }
-                                    : require("@assets/img.png")
-                            }
-                        />
-
-                        {route.params.role === 3000 ? (
-                            <View>
-                                <MediumText vmargin={10} color="#FFF" string="citizen" />
-                                <RegularText
-                                    size={18}
-                                    align="flex-start"
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Name: ${route.params.name}`}
-                                />
-                                <RegularText
-                                    size={18}
-                                    align="flex-start"
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Email: ${route.params.email}`}
-                                />
-                                <RegularText
-                                    size={18}
-                                    align="flex-start"
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`DOB: ${
-                                        route.params.userDetails && route.params.userDetails.dob
-                                    }`}
-                                />
-                                <RegularText
-                                    size={18}
-                                    align="flex-start"
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Address: ${
-                                        route.params.userDetails && route.params.userDetails.address
-                                    }`}
-                                />
-                                <RegularText
-                                    size={18}
-                                    align="flex-start"
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Occupation: ${
-                                        route.params.userDetails &&
-                                        route.params.userDetails.occupation
-                                    }`}
-                                />
-                            </View>
-                        ) : (
+                    {route.params.role === 3000 ? (
+                        <View style={{ height: "100%", width: "100%" }}>
+                            <Image
+                                style={{
+                                    height: 150,
+                                    width: 150,
+                                    borderRadius: 95,
+                                    borderColor: "#FFF",
+                                    borderWidth: 3,
+                                    alignSelf: "center"
+                                }}
+                                source={
+                                    route.params.avatar
+                                        ? { uri: route.params.avatar }
+                                        : require("@assets/img.png")
+                                }
+                            />
+                            <MediumText vmargin={10} color="#FFF" string="citizen" />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`Name: ${route.params.name}`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`Email: ${route.params.email}`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`DOB: ${
+                                    route.params.userDetails && route.params.userDetails.dob
+                                }`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`Address: ${
+                                    route.params.userDetails && route.params.userDetails.address
+                                }`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`Occupation: ${
+                                    route.params.userDetails && route.params.userDetails.occupation
+                                }`}
+                            />
+                        </View>
+                    ) : (
+                        <ScrollView>
                             <View style={{ height: "90%" }}>
+                                <Image
+                                    style={{
+                                        height: 150,
+                                        width: 150,
+                                        borderRadius: 95,
+                                        borderColor: "#FFF",
+                                        borderWidth: 3,
+                                        alignSelf: "center"
+                                    }}
+                                    source={
+                                        route.params.avatar
+                                            ? { uri: route.params.avatar }
+                                            : require("@assets/police.png")
+                                    }
+                                />
                                 <MediumText vmargin={10} color="#FFF" string="police" />
                                 <RegularText
                                     size={18}
@@ -161,6 +174,15 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                     color="#FFF"
                                     string={`Posting Area: ${route.params.userDetails.postingAreaAddress}`}
                                 />
+                                {paper && (
+                                    <Image
+                                        style={{ height: 300, width: 300, alignSelf: "center" }}
+                                        resizeMode="contain"
+                                        source={{
+                                            uri: route.params.userDetails.verificationPaper
+                                        }}
+                                    />
+                                )}
                                 <TouchableWithoutFeedback>
                                     <Button
                                         btnName="verification paper view"
@@ -171,18 +193,9 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                         onPress={() => setPaper(!paper)}
                                     />
                                 </TouchableWithoutFeedback>
-                                {paper && (
-                                    <Image
-                                        style={{ height: 300, width: 300, alignSelf: "center" }}
-                                        resizeMode="contain"
-                                        source={{
-                                            uri: route.params.userDetails.verificationPaper
-                                        }}
-                                    />
-                                )}
                             </View>
-                        )}
-                    </ScrollView>
+                        </ScrollView>
+                    )}
                 </View>
             </View>
         </Background>

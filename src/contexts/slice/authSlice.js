@@ -12,7 +12,8 @@ const initialState = {
     avatar: "",
     active: false,
     complaints: [],
-    userDetails: undefined
+    userDetails: undefined,
+    notificationToken: ""
 };
 
 export const authSlice = createSlice({
@@ -36,6 +37,7 @@ export const authSlice = createSlice({
         },
         userData: (state, action) => {
             const user = action.payload;
+            state.notificationToken = user.notificationToken;
             state._id = user._id;
             state.email = user.email;
             state.name = user.name;
