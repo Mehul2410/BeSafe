@@ -10,8 +10,6 @@ import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
 import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
-import { View } from "react-native";
-import { colors } from "./utils/colors/colors";
 import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
 
 function Navigation(): ReactElement {

@@ -194,11 +194,13 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                               } `
                     }
                 />
-                <Button
-                    btnName="Assign Complaint"
-                    weight="200"
-                    onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                />
+                {role === 4000 && (
+                    <Button
+                        btnName="Assign Complaint"
+                        weight="200"
+                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
+                    />
+                )}
             </>
         );
     };
@@ -206,11 +208,13 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
     const flatListFooter = () => {
         return (
             <>
-                <Button
-                    btnName="Assign Complaint"
-                    weight="200"
-                    onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                />
+                {role === 4000 && (
+                    <Button
+                        btnName="Assign Complaint"
+                        weight="200"
+                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
+                    />
+                )}
                 {role === 5000 && (
                     <>
                         <Button
@@ -298,16 +302,14 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         width: "100%"
                     }}
                 >
-                    {role === 4000 && (
-                        <FlatList
-                            data={police && police}
-                            renderItem={assignComplaint ? Police : null}
-                            keyExtractor={item => item._id}
-                            ListHeaderComponent={flatListHead}
-                            ListFooterComponent={flatListFooter}
-                            extraData={selectedId}
-                        />
-                    )}
+                    <FlatList
+                        data={police && police}
+                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
+                        keyExtractor={item => item._id}
+                        ListHeaderComponent={flatListHead}
+                        ListFooterComponent={flatListFooter}
+                        extraData={selectedId}
+                    />
                 </View>
                 <View
                     style={{
