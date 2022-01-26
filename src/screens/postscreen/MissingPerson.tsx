@@ -15,9 +15,11 @@ import { allUsers, createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
 import React from "react";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { TextInput, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native";
 import { date } from "yup/lib/locale";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Icon } from "react-native-elements";
+import { setUseProxies } from "immer";
 
 export function MissingPerson() {
     const [loading, setLoading] = React.useState(false);
@@ -136,7 +138,7 @@ export function MissingPerson() {
         }, 1000);
     }
     const [details, setDetails] = React.useState({
-        dob: "(MM-DD-YYYY)"
+        dob: "Date & Time"
     });
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
@@ -190,6 +192,7 @@ export function MissingPerson() {
                 <CustomInput placeholder="height" />
                 <LightText textalign="center" string="Eg.20-25" />
                 <CustomInput placeholder="Religion" />
+
                 <CustomInput placeholder="Sex" />
 
                 <CustomInput
