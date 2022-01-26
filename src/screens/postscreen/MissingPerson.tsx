@@ -12,10 +12,11 @@ import {
     CheckBox,
     Text
 } from "@components";
-import { createPost, sendNotification } from "@contexts/api/client";
+import { missingPerson, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
-import React from "react";
+import React, { useEffect } from "react";
+import * as Location from "expo-location";
 import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -26,10 +27,9 @@ export function MissingPerson() {
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
-    const [check, setCheck] = React.useState("");
     const [complaint, setComplaint] = React.useState({
-        dateForm: "",
-        dateTo: "",
+        dateFrom: "Date & Time",
+        dateTo: "Date & Time",
         name: "",
         fatherName: "",
         height: "",
@@ -38,7 +38,8 @@ export function MissingPerson() {
         locName: "",
         locAddress: "",
         stationName: "",
-        stationAddress: ""
+        stationAddress: "",
+        age: ""
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
 
@@ -50,6 +51,21 @@ export function MissingPerson() {
         setImageUris(imageUris.filter(imageUris => imageUris !== uri));
     };
 
+    async function latLong() {
+        try {
+            const { granted } = await Location.requestForegroundPermissionsAsync();
+            if (!granted) return;
+            const {
+                coords: { latitude, longitude }
+            } = await Location.getCurrentPositionAsync();
+            setlatlng({ latitude, longitude });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        latLong();
+    }, []);
     async function locationAddress() {
         const loc = await fetch(
             `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.locName}&language=en`,
@@ -105,7 +121,7 @@ export function MissingPerson() {
         formData.append("data", JSON.stringify(complaint));
         const creds = await getCredentials();
         try {
-            const submit = await fetch(createPost, {
+            const submit = await fetch(missingPerson, {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -132,28 +148,34 @@ export function MissingPerson() {
         }
     }
 
-    function handleLoading() {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-    }
-    const [details, setDetails] = React.useState({
-        dob: "Date & Time"
+    const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
+        from: false,
+        to: false
     });
-    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
+    const showDatePicker = (show: string) => {
+        if (show === "to") {
+            setDatePickerVisibility({ ...isDatePickerVisible, to: true });
+        } else {
+            setDatePickerVisibility({ ...isDatePickerVisible, from: true });
+        }
     };
 
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
+    const hideDatePicker = (show: string) => {
+        if (show === "to") {
+            setDatePickerVisibility({ ...isDatePickerVisible, to: false });
+        } else {
+            setDatePickerVisibility({ ...isDatePickerVisible, from: false });
+        }
     };
 
-    const handleConfirm = (date: any) => {
-        setDetails({ ...details, dob: date.toString("en-IN") });
-        hideDatePicker();
+    const handleConfirmfrom = (date: any) => {
+        setComplaint({ ...complaint, dateFrom: date.toString("en-IN") });
+        hideDatePicker("from");
+    };
+    const handleConfirmto = (date: any) => {
+        setComplaint({ ...complaint, dateTo: date.toString("en-IN") });
+        hideDatePicker("to");
     };
 
     return (
@@ -169,18 +191,18 @@ export function MissingPerson() {
                 >
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
-                        btnName={details.dob}
+                        btnName={complaint.dateFrom}
                         numberOfLines={1}
-                        onPress={showDatePicker}
+                        onPress={() => showDatePicker("from")}
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
                     <LightText string="-" />
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
-                        btnName={details.dob}
+                        btnName={complaint.dateTo}
                         numberOfLines={1}
-                        onPress={showDatePicker}
+                        onPress={() => showDatePicker("to")}
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
@@ -199,7 +221,10 @@ export function MissingPerson() {
                     onChangeText={text => setComplaint({ ...complaint, height: text })}
                 />
                 <LightText textalign="center" string="Eg.5-6 feet OR in Cm" />
-                <CustomInput placeholder="Expected Age" />
+                <CustomInput
+                    placeholder="Expected Age"
+                    onChangeText={text => setComplaint({ ...complaint, age: text })}
+                />
                 <LightText textalign="center" string="Eg.20-25" />
                 <CustomInput
                     placeholder="Religion"
@@ -219,8 +244,10 @@ export function MissingPerson() {
                             <CheckBox
                                 btnName={items}
                                 key={index}
-                                check={check}
-                                onPress={() => setCheck(items)}
+                                check={complaint.sex}
+                                onPress={() => {
+                                    setComplaint({ ...complaint, sex: items });
+                                }}
                             />
                         );
                     })}
@@ -326,10 +353,16 @@ export function MissingPerson() {
                     onPress={submitComplaint}
                 />
                 <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
+                    isVisible={isDatePickerVisible.from}
                     mode="datetime"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
+                    onConfirm={handleConfirmfrom}
+                    onCancel={() => hideDatePicker("from")}
+                />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible.to}
+                    mode="datetime"
+                    onConfirm={handleConfirmto}
+                    onCancel={() => hideDatePicker("to")}
                 />
             </Complaint>
         </Background>

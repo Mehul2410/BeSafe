@@ -53,7 +53,9 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
     }
 
     useEffect(() => {
+        const ac = new AbortController();
         getComplaints();
+        return () => ac.abort();
     }, []);
     return (
         <Background>
