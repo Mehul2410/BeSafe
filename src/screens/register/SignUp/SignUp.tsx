@@ -75,7 +75,12 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                 <View style={styles.box1}>
                     <Image style={styles.img} source={route.params.uri} />
                     <Text style={{ color: "#FFF", marginTop: 15 }}>
-                        Sign-up as {route.params.role === 5000 ? "Police" : "Citizen"}
+                        Sign-Up as{" "}
+                        {route.params.role === 5000
+                            ? "Police"
+                            : route.params.role === 4000
+                            ? "Station Admin"
+                            : "Citizen"}
                     </Text>
                 </View>
                 <View style={styles.box2}>

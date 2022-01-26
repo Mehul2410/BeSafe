@@ -105,7 +105,7 @@ export const DateAndTime = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const Reason = ({ string, color, vmargin }: Props) => {
+export const Heading = ({ string, color, vmargin }: Props) => {
     return (
         <Text
             weight="700"

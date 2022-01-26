@@ -8,7 +8,7 @@ export {
     MediumText,
     StatusDetail,
     DateAndTime,
-    Reason
+    Heading
 } from "./text/Typography";
 export { default as Background } from "./background/Background";
 export { default as Button } from "./Button/Button";

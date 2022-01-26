@@ -58,7 +58,12 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
                     <Text style={{ color: colors.white }}>
-                        Sign-in as {route.params.role === 5000 ? "Police" : "Citizen"}
+                        Sign-in as{" "}
+                        {route.params.role === 5000
+                            ? "Police"
+                            : route.params.role === 4000
+                            ? "Station Admin"
+                            : "Citizen"}
                     </Text>
                 </View>
                 <View style={styles.box2}>
