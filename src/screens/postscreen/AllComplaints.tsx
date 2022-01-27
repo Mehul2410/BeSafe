@@ -31,17 +31,26 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             uri: require("@assets/police.png"),
             navi: "MSLF"
         },
+
         {
             id: 4,
-            name: "Economic & cybercrime",
-            uri: require("@assets/police.png"),
-            navi: "CyberCrime"
-        },
-        {
-            id: 5,
             name: "Wanted Criminals",
             uri: require("@assets/police.png"),
             navi: "Wanted"
+        },
+
+        {
+            id: 5,
+            name: "Mobile Apps Report",
+            uri: require("@assets/police.png"),
+            navi: "MobileApp"
+        },
+
+        {
+            id: 6,
+            name: "Bank related",
+            uri: require("@assets/police.png"),
+            navi: "Bank"
         }
     ];
 
@@ -84,6 +93,7 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
                     paddingHorizontal: 10,
                     width: "100%",
                     height: "100%",
+                    alignItems: "center",
                     justifyContent: "space-evenly"
                 }}
             >

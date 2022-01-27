@@ -2,6 +2,7 @@ import React, { Children, ReactNode } from "react";
 import Text from "../text/Text";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import CustomInput from "../CustomInput/CustomInput";
 
 interface complaintProps {
     children?: ReactNode;
@@ -44,7 +45,10 @@ function Complaint({ children }: complaintProps) {
                     borderRadius: 15
                 }}
             >
-                <ScrollView>{children}</ScrollView>
+                <ScrollView>
+                    <CustomInput placeholder="explaining the complete incidence" />
+                    {children}
+                </ScrollView>
             </View>
         </View>
     );
