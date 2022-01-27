@@ -9,18 +9,17 @@ import {
     LocationLoader,
     ImageInputList,
     MediumText,
-    LightText
+    LightText,
+    CheckBox
 } from "@components";
 import { NavigationProps } from "@types";
-import { allUsers, createPost, sendNotification, updateStatus } from "@contexts/api/client";
+import { createPost, mslf, sendNotification, updateStatus } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
 import React from "react";
-import { TextInput, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native";
-import { date } from "yup/lib/locale";
+import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { Icon } from "react-native-elements";
-import { setUseProxies } from "immer";
+import * as Location from "expo-location";
 
 export function MSLF({ route }: NavigationProps<"MSLF">) {
     const [loading, setLoading] = React.useState(false);
@@ -30,15 +29,15 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
-        complaintAgainstName: "",
-        complaintAgainst: "",
-        reason: "",
-        complaintType: "",
-        locationName: "",
-        locationAddress: "",
-        currentSituation: "",
-        nearestPoliceStation: "",
-        nearestPoliceStationAddress: ""
+        dateFrom: "Date & Time",
+        dateTo: "Date & Time",
+        stationName: "",
+        stationAddress: "",
+        reportFor: "",
+        lostLocName: "",
+        lostLocAddress: "",
+        thingDesc: "",
+        thingName: ""
     });
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
 
@@ -50,9 +49,9 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
         setImageUris(imageUris.filter(imageUris => imageUris !== uri));
     };
 
-    async function locationAddress() {
+    async function locAddress() {
         const loc = await fetch(
-            `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.locationName}&language=en`,
+            `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.lostLocName}&language=en`,
             {
                 method: "GET",
                 headers: {
@@ -69,7 +68,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
         }, 1000);
     }
     async function nearByPoliceStation() {
-        setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
+        setComplaint({ ...complaint, stationName: "", stationAddress: "" });
         const station = await fetch(
             `https://trueway-places.p.rapidapi.com/FindPlacesNearby?location=${latlng?.latitude},${latlng?.longitude}&type=police_station&language=en`,
             {
@@ -105,7 +104,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
         formData.append("data", JSON.stringify(complaint));
         const creds = await getCredentials();
         try {
-            const submit = await fetch(createPost, {
+            const submit = await fetch(mslf, {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -132,29 +131,50 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
         }
     }
 
-    function handleLoading() {
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
+    async function latLong() {
+        try {
+            const { granted } = await Location.requestForegroundPermissionsAsync();
+            if (!granted) return;
+            const {
+                coords: { latitude, longitude }
+            } = await Location.getCurrentPositionAsync();
+            setlatlng({ latitude, longitude });
+        } catch (error) {
+            console.log(error);
+        }
     }
+    React.useEffect(() => {
+        latLong();
+    }, []);
 
-    const [details, setDetails] = React.useState({
-        dob: "Date & Time"
+    const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
+        from: false,
+        to: false
     });
-    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
+    const showDatePicker = (show: string) => {
+        if (show === "to") {
+            setDatePickerVisibility({ ...isDatePickerVisible, to: true });
+        } else {
+            setDatePickerVisibility({ ...isDatePickerVisible, from: true });
+        }
     };
 
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
+    const hideDatePicker = (show: string) => {
+        if (show === "to") {
+            setDatePickerVisibility({ ...isDatePickerVisible, to: false });
+        } else {
+            setDatePickerVisibility({ ...isDatePickerVisible, from: false });
+        }
     };
 
-    const handleConfirm = (date: any) => {
-        setDetails({ ...details, dob: date.toString("en-IN") });
-        hideDatePicker();
+    const handleConfirmfrom = (date: any) => {
+        setComplaint({ ...complaint, dateFrom: date.toString("en-IN") });
+        hideDatePicker("from");
+    };
+    const handleConfirmto = (date: any) => {
+        setComplaint({ ...complaint, dateTo: date.toString("en-IN") });
+        hideDatePicker("to");
     };
 
     const [changeStatus, setChangeStatus] = React.useState({
@@ -178,20 +198,14 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     {changeStatus.activity &&
                         ["Missing", "Stolen", "Lost", "Found"].map((items, index) => {
                             return (
-                                <Button
+                                <CheckBox
                                     weight="200"
-                                    style={{
-                                        margin: 3,
-                                        width: 90,
-                                        paddingVertical: 5,
-                                        borderRadius: 30,
-                                        backgroundColor:
-                                            changeStatus.status === items ? "#0d054b" : "#1D0ECC"
-                                    }}
+                                    check={complaint.reportFor}
                                     key={index}
-                                    onPress={() =>
-                                        setChangeStatus({ ...changeStatus, status: items })
-                                    }
+                                    onPress={() => {
+                                        setChangeStatus({ ...changeStatus, status: items });
+                                        setComplaint({ ...complaint, reportFor: items });
+                                    }}
                                     btnName={items}
                                 />
                             );
@@ -229,30 +243,34 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                 >
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
-                        btnName={details.dob}
-                        weight="400"
+                        btnName={complaint.dateFrom}
                         numberOfLines={1}
-                        onPress={showDatePicker}
+                        onPress={() => showDatePicker("from")}
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
                     <LightText string="-" />
                     <Button
                         style={{ fontSize: 13, width: "45%" }}
-                        btnName={details.dob}
-                        weight="400"
+                        btnName={complaint.dateTo}
                         numberOfLines={1}
-                        onPress={showDatePicker}
+                        onPress={() => showDatePicker("to")}
                         bgColor="#FFF"
                         textColor={colors.quatnary}
                     />
                 </View>
 
-                <CustomInput placeholder={`${changeStatus.status} Thing name`} />
-                <CustomInput placeholder={`${changeStatus.status} Description of Thing`} />
                 <CustomInput
-                    onChangeText={text => setComplaint({ ...complaint, locationName: text })}
-                    editable={complaint.locationAddress ? false : true}
+                    onChangeText={text => setComplaint({ ...complaint, thingName: text })}
+                    placeholder={`${changeStatus.status} Thing name`}
+                />
+                <CustomInput
+                    onChangeText={text => setComplaint({ ...complaint, thingDesc: text })}
+                    placeholder={`${changeStatus.status} Description of Thing`}
+                />
+                <CustomInput
+                    onChangeText={text => setComplaint({ ...complaint, lostLocName: text })}
+                    editable={complaint.lostLocAddress ? false : true}
                     placeholder={`${changeStatus.status} Location Name`}
                 />
                 {locationLoading && <PostLoader />}
@@ -261,18 +279,18 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     <>
                         <Button
                             btnName={
-                                complaint.locationAddress
+                                complaint.lostLocAddress
                                     ? "Saved Address"
                                     : "Check location Address"
                             }
                             weight="400"
-                            onPress={locationAddress}
+                            onPress={locAddress}
                         />
-                        {complaint.locationAddress !== "" && (
+                        {complaint.lostLocAddress !== "" && (
                             <Button
                                 btnName="Change Address"
                                 weight="400"
-                                onPress={() => setComplaint({ ...complaint, locationAddress: "" })}
+                                onPress={() => setComplaint({ ...complaint, lostLocAddress: "" })}
                             />
                         )}
                     </>
@@ -283,7 +301,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                         onPress={() => {
                             setComplaint({
                                 ...complaint,
-                                locationAddress: location
+                                lostLocAddress: location
                             });
                             setLocation("");
                         }}
@@ -296,7 +314,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     onPress={nearByPoliceStation}
                 />
                 {policeLoading && <LocationLoader />}
-                {complaint.nearestPoliceStation === "" ? (
+                {complaint.stationName === "" ? (
                     nearbyStation &&
                     nearbyStation.map((item: any, index) => {
                         return (
@@ -305,8 +323,8 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                                 onPress={() => {
                                     setComplaint({
                                         ...complaint,
-                                        nearestPoliceStation: item.name,
-                                        nearestPoliceStationAddress: item.address
+                                        stationName: item.name,
+                                        stationAddress: item.address
                                     });
                                 }}
                             >
@@ -363,10 +381,16 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     onPress={submitComplaint}
                 />
                 <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
+                    isVisible={isDatePickerVisible.from}
                     mode="datetime"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
+                    onConfirm={handleConfirmfrom}
+                    onCancel={() => hideDatePicker("from")}
+                />
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible.to}
+                    mode="datetime"
+                    onConfirm={handleConfirmto}
+                    onCancel={() => hideDatePicker("to")}
                 />
             </Complaint>
         </Background>
