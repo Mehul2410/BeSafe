@@ -18,9 +18,10 @@ import { getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { ListItem } from "react-native-elements";
+// import { ListItem } from "react-native-elements";
+// import { subscribeToChat } from "../../service/socketio.service";
 
-export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">) {
+export function ComplaintsLayout({ route }: any) {
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
@@ -37,7 +38,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
     const [view, setView] = React.useState(false);
     const { _id, role } = useSelector((state: RootStateOrAny) => state.auth);
 
-    const images = route.params.images?.map((img, index) => {
+    const images = route.images?.map((img, index) => {
         return { url: img };
     });
 
@@ -49,7 +50,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                     method: "PUT",
                     body: JSON.stringify({
                         status: changeStatus.status,
-                        _id: route.params._id
+                        _id: route._id
                     }),
                     headers: {
                         "Content-Type": "application/json",
@@ -160,7 +161,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             marginBottom: 10
                         }}
                     >
-                        <StatusDetail string={route.params.status && route.params.status} />
+                        <StatusDetail string={route.status && route.status} />
                         <View
                             style={{
                                 flexDirection: "column",
@@ -169,14 +170,10 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                             }}
                         >
                             <DateAndTime
-                                string={new Date(route.params.createdAt!).toLocaleDateString(
-                                    "en-IN"
-                                )}
+                                string={new Date(route.createdAt!).toLocaleDateString("en-IN")}
                             />
                             <DateAndTime
-                                string={new Date(route.params.createdAt!).toLocaleTimeString(
-                                    "en-IN"
-                                )}
+                                string={new Date(route.createdAt!).toLocaleTimeString("en-IN")}
                             />
                         </View>
                     </View>
@@ -185,11 +182,10 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                     size={19}
                     align="flex-start"
                     string={
-                        route.params.complaintAgainst === _id
+                        route.complaintAgainst === _id
                             ? "You are involved in this complaint"
                             : `Your complaint is raised against: ${
-                                  route.params.complaintAgainstName &&
-                                  route.params.complaintAgainstName
+                                  route.complaintAgainstName && route.complaintAgainstName
                               } `
                     }
                 />
@@ -284,7 +280,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                 )}
                 <View style={{ marginBottom: 80 }}>
                     <Heading string="Reason" />
-                    <LightText string={route.params.reason} />
+                    <LightText string={route.reason} />
                 </View>
             </>
         );
@@ -341,7 +337,7 @@ export function ComplaintsLayout({ route }: NavigationProps<"ComplaintsLayout">)
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.params.assignTo}`}
+                        btnName={`Assigned to: ${route.assignTo}`}
                     />
                 </View>
             </View>

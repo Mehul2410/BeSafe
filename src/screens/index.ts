@@ -18,6 +18,7 @@ export { UnidPerson } from "./postscreen/UnidPerson";
 export { Bank } from "./postscreen/Bank";
 export { MobileApp } from "./postscreen/MobileApp";
 export { AllComplaints } from "./postscreen/AllComplaints";
+export { default as ViewAllComplaints } from "./homescreen/ViewAllComplaints";
 export { Exam } from "./profile/Exam";
 // export { Complaints } from "./homescreen/Complaints";
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, ScrollView, TouchableWithoutFeedback } from "react-native";
+import { View, Image, ScrollView, TouchableWithoutFeedback, Modal } from "react-native";
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
@@ -7,6 +7,8 @@ import { complaints } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
+import { AllComplaints, subscribeToChat } from "../../service/socketio.service";
+import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -25,7 +27,7 @@ import { userComplaints } from "@contexts/slice/authSlice";
 // type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">) {
+export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
@@ -42,21 +44,24 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
-                const user = await res.json();
-                if (user.myComplaints) {
-                    dispatch(userComplaints(user));
-                }
                 //active status to be send from backend to login police
             }
-            setLoading(true);
         }
     }
 
     useEffect(() => {
-        const ac = new AbortController();
         getComplaints();
-        return () => ac.abort();
+        AllComplaints((err, data) => {
+            dispatch(userComplaints(data));
+            setLoading(true);
+        });
+        subscribeToChat((err, data) => {
+            if (data.success) {
+                getComplaints();
+            }
+        });
     }, []);
+    const [x, setX] = React.useState({ state: false, id: "" });
     return (
         <Background>
             <View
@@ -80,7 +85,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                         <TouchableWithoutFeedback
                                             key={index}
                                             onPress={() => {
-                                                navigation.navigate("ComplaintsLayout", item);
+                                                setX({ state: true, id: item._id });
                                             }}
                                         >
                                             <View
@@ -93,6 +98,16 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ComplaintGroup">
                                                     elevation: 3
                                                 }}
                                             >
+                                                <Modal
+                                                    transparent={true}
+                                                    animationType="slide"
+                                                    visible={x.state && item._id === x.id}
+                                                    onRequestClose={() => {
+                                                        setX({ state: false, id: "" });
+                                                    }}
+                                                >
+                                                    <ComplaintsLayout route={item} />
+                                                </Modal>
                                                 <View
                                                     style={{
                                                         flexDirection: "row",

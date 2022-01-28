@@ -230,7 +230,6 @@ export function MissingPerson() {
                     placeholder="Religion"
                     onChangeText={text => setComplaint({ ...complaint, religion: text })}
                 />
-
                 <Text weight="200" color="#FFF">
                     Sex
                 </Text>

@@ -48,10 +48,18 @@ export type StackNavigatorParams = {
     MSLF: undefined;
     UnidPerson: undefined;
     Bank: undefined;
-
     MobileApp: undefined;
-
     Exam: undefined;
+    ViewPost: undefined;
+    ViewWanted: undefined;
+    ViewCyberCrime: undefined;
+    ViewMissingPerson: undefined;
+    ViewMSLF: undefined;
+    ViewUnidPerson: undefined;
+    ViewBank: undefined;
+    ViewMobileApp: undefined;
+    ViewExam: undefined;
+    ViewAllComplaints: undefined;
     AllComplaints: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
