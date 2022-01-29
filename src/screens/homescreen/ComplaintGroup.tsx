@@ -51,11 +51,11 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
 
     useEffect(() => {
         getComplaints();
-        AllComplaints((err, data) => {
+        AllComplaints((err: any, data: any) => {
             dispatch(userComplaints(data));
             setLoading(true);
         });
-        subscribeToChat((err, data) => {
+        subscribeToChat((err: any, data: any) => {
             if (data.success) {
                 getComplaints();
             }
