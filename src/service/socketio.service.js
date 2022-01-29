@@ -22,3 +22,8 @@ export const AllComplaints = cb => {
         return cb(null, msg);
     });
 };
+export const AllMSLF = cb => {
+    socket.on("getmslf", msg => {
+        return cb(null, msg);
+    });
+};

@@ -5,7 +5,6 @@ export { default as SignIn } from "./register/SignIn/SignIn";
 export { default as SignUp } from "./register/SignUp/SignUp";
 export { PoliceDetail } from "./register/police/detail/PoliceDetail";
 export { DetailFilled } from "./register/police/detailfilled/DetailFilled";
-export { Home } from "./homescreen/Home";
 export { Profile } from "./profile/Profile";
 export { EditProfile } from "./profile/EditProfile";
 export { ViewProfile } from "./profile/ViewProfile";
