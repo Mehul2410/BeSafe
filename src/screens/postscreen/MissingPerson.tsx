@@ -28,6 +28,7 @@ export function MissingPerson() {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
+        incidenceDesc: "",
         dateFrom: "Date & Time",
         dateTo: "Date & Time",
         name: "",
@@ -181,6 +182,10 @@ export function MissingPerson() {
     return (
         <Background>
             <Complaint>
+                <CustomInput
+                    placeholder="explaining the complete incidence"
+                    onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
+                />
                 <MediumText size={18} string="Missing Date Range" />
                 <View
                     style={{

@@ -12,19 +12,19 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
             id: 1,
             name: "Missing person search",
             uri: require("@assets/police.png"),
-            navi: "ViewPost"
+            navi: "ViewMissingPerson"
         },
         {
             id: 2,
             name: "Un-identified person found",
             uri: require("@assets/police.png"),
-            navi: "UnidPerson"
+            navi: "ViewUnidentifiedPerson"
         },
         {
             id: 3,
             name: "Missing/stolen/lost/found",
             uri: require("@assets/police.png"),
-            navi: "MSLF"
+            navi: "ViewMSLF"
         },
 
         {

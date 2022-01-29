@@ -3,12 +3,13 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { GETMSLF } from "@contexts/api/client";
+import { getMissingPerson } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { AllMSLF, subscribeToChat } from "../../service/socketio.service";
+import { AllMSLF, subscribeToChat, AllMissingPerson } from "../../service/socketio.service";
 import { ComplaintsLayout } from "./ComplaintsLayout";
-import { userMslf } from "@contexts/slice/complaintsSlice";
+import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
+import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -27,17 +28,18 @@ import { userMslf } from "@contexts/slice/complaintsSlice";
 // type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
+export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPerson">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.mslf
+        (state: RootStateOrAny) => state.complaints.missingPerson
     );
+
     const dispatch = useDispatch();
     async function getComplaints() {
         const data = await getCredentials();
         if (data) {
             if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(GETMSLF, {
+                const res = await fetch(getMissingPerson, {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -51,8 +53,8 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
 
     useEffect(() => {
         getComplaints();
-        AllMSLF((err: any, data: any) => {
-            dispatch(userMslf(data));
+        AllMissingPerson((err: any, data: any) => {
+            dispatch(userMissingPerson(data));
             setLoading(true);
         });
         subscribeToChat((err: any, data: any) => {
@@ -61,6 +63,7 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
             }
         });
     }, []);
+    console.log(getAllComplaints);
     const [x, setX] = React.useState({ state: false, id: "" });
     return (
         <Background>
@@ -80,7 +83,8 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
                     <ScrollView>
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
-                                return allData.complaints.map((item: any, index: any) => {
+                                console.log(allData);
+                                return allData.missingPerson.map((item: any, index: any) => {
                                     return (
                                         <TouchableWithoutFeedback
                                             key={index}
@@ -106,7 +110,7 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
                                                         setX({ state: false, id: "" });
                                                     }}
                                                 >
-                                                    <ComplaintsLayout route={item} />
+                                                    <MissingPersonLayout route={item} />
                                                 </Modal>
                                                 <View
                                                     style={{
@@ -158,10 +162,9 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Reason
+                                                    Missing Person Report
                                                 </Text>
                                                 <Text
-                                                    numberOfLines={4}
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,
@@ -169,7 +172,7 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
                                                         paddingTop: 5
                                                     }}
                                                 >
-                                                    {item.reason}
+                                                    {`Name: ${item.name}`}
                                                 </Text>
                                             </View>
                                         </TouchableWithoutFeedback>

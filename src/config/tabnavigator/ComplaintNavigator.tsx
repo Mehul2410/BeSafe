@@ -1,6 +1,14 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { ComplaintGroup, ComplaintsLayout, ViewAllComplaints } from "@screens";
+import {
+    ComplaintGroup,
+    ComplaintsLayout,
+    Getstarted,
+    ViewAllComplaints,
+    ViewMissingPerson,
+    ViewMSLF,
+    ViewUnidentifiedPerson
+} from "@screens";
 
 import { StackNavigatorParams } from "@types";
 
@@ -17,6 +25,9 @@ export default function ComplaintNavigator(): ReactElement {
             <Stack.Screen name="ViewAllComplaints" component={ViewAllComplaints} />
             <Stack.Screen name="ViewPost" component={ComplaintGroup} />
             <Stack.Screen name="ComplaintsLayout" component={ComplaintsLayout} />
+            <Stack.Screen name="ViewMSLF" component={ViewMSLF} />
+            <Stack.Screen name="ViewUnidentifiedPerson" component={ViewUnidentifiedPerson} />
+            <Stack.Screen name="ViewMissingPerson" component={ViewMissingPerson} />
         </Stack.Navigator>
     );
 }

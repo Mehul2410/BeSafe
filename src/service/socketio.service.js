@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 let socket;
 
 export const initiateSocketConnection = () => {
-    socket = io("http://192.168.0.109:5000");
+    socket = io("https://besaferestapi.herokuapp.com");
     console.log(`Connecting socket...`);
 };
 
@@ -24,6 +24,16 @@ export const AllComplaints = cb => {
 };
 export const AllMSLF = cb => {
     socket.on("getmslf", msg => {
+        return cb(null, msg);
+    });
+};
+export const AllMissingPerson = cb => {
+    socket.on("getMissingPerson", msg => {
+        return cb(null, msg);
+    });
+};
+export const AllUnIdPerson = cb => {
+    socket.on("getUnIdPerson", msg => {
         return cb(null, msg);
     });
 };

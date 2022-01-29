@@ -56,6 +56,7 @@ export type StackNavigatorParams = {
     ViewMissingPerson: undefined;
     ViewMSLF: undefined;
     ViewUnidPerson: undefined;
+    ViewUnidentifiedPerson: undefined;
     ViewBank: undefined;
     ViewMobileApp: undefined;
     ViewExam: undefined;

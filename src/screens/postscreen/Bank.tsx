@@ -160,6 +160,7 @@ export function Bank({ route }: NavigationProps<"Bank">) {
     return (
         <Background>
             <Complaint>
+                <CustomInput placeholder="explaining the complete incidence" />
                 <Button
                     btnName="Select Report Type"
                     weight="200"
