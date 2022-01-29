@@ -22,5 +22,6 @@ export { Exam } from "./profile/Exam";
 // export { Complaints } from "./homescreen/Complaints";
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";
 export { ComplaintsLayout } from "./homescreen/ComplaintsLayout";
+export { ViewMSLF } from "./homescreen/ViewMSLF";
 export { Setting } from "./profile/Setting";
 export { Help } from "./profile/Help";

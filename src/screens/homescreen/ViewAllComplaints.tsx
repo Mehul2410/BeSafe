@@ -24,7 +24,7 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
             id: 3,
             name: "Missing/stolen/lost/found",
             uri: require("@assets/police.png"),
-            navi: "MSLF"
+            navi: "ViewMSLF"
         },
 
         {

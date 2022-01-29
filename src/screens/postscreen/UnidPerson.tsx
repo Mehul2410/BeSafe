@@ -28,6 +28,7 @@ export function UnidPerson() {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
+        incidenceDesc: "",
         dateFrom: "Date & Time",
         dateTo: "Date & Time",
         height: "",
@@ -188,6 +189,10 @@ export function UnidPerson() {
     return (
         <Background>
             <Complaint>
+                <CustomInput
+                    placeholder="explaining the complete incidence"
+                    onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
+                />
                 <Button
                     btnName="Report Type"
                     weight="200"

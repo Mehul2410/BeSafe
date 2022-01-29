@@ -45,10 +45,7 @@ function Complaint({ children }: complaintProps) {
                     borderRadius: 15
                 }}
             >
-                <ScrollView>
-                    <CustomInput placeholder="explaining the complete incidence" />
-                    {children}
-                </ScrollView>
+                <ScrollView>{children}</ScrollView>
             </View>
         </View>
     );

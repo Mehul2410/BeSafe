@@ -29,6 +29,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
+        incidenceDesc: "",
         dateFrom: "Date & Time",
         dateTo: "Date & Time",
         stationName: "",
@@ -184,6 +185,10 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
     return (
         <Background>
             <Complaint>
+                <CustomInput
+                    placeholder="explaining the complete incidence"
+                    onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
+                />
                 <Button
                     btnName="Report Type"
                     weight="200"

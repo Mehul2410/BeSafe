@@ -21,13 +21,9 @@ export function MobileApp({ route }: NavigationProps<"MobileApp">) {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
-        complaintAgainstName: "",
-        complaintAgainst: "",
-        reason: "",
-        complaintType: "",
+        incidenceDesc: "",
         locationName: "",
         locationAddress: "",
-        currentSituation: "",
         nearestPoliceStation: "",
         nearestPoliceStationAddress: ""
     });
@@ -137,6 +133,10 @@ export function MobileApp({ route }: NavigationProps<"MobileApp">) {
     return (
         <Background>
             <Complaint>
+                <CustomInput
+                    placeholder="explaining the complete incidence"
+                    onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
+                />
                 {/* <Button
                     btnName="Report Type"
                     weight="200"
