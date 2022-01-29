@@ -51,11 +51,11 @@ export function GetMSLF({ navigation }: NavigationProps<"ViewPost">) {
 
     useEffect(() => {
         getComplaints();
-        AllMSLF((err, data) => {
+        AllMSLF((err: any, data: any) => {
             dispatch(userMslf(data));
             setLoading(true);
         });
-        subscribeToChat((err, data) => {
+        subscribeToChat((err: any, data: any) => {
             if (data.success) {
                 getComplaints();
             }

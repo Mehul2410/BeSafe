@@ -38,7 +38,7 @@ export function ComplaintsLayout({ route }: any) {
     const [view, setView] = React.useState(false);
     const { _id, role } = useSelector((state: RootStateOrAny) => state.auth);
 
-    const images = route.images?.map((img, index) => {
+    const images = route.images?.map((img: any, index: any) => {
         return { url: img };
     });
 
