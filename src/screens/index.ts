@@ -24,6 +24,7 @@ export { MobileApp } from "./postscreen/MobileApp";
 export { AllComplaints } from "./postscreen/AllComplaints";
 
 export { default as ViewAllComplaints } from "./homescreen/ViewAllComplaints";
+export { default as HistoryAllComplaints } from "./history/HistoryAllComplaints";
 export { Exam } from "./profile/Exam";
 
 export { ComplaintGroup } from "./homescreen/ComplaintGroup";
@@ -31,5 +32,9 @@ export { ComplaintsLayout } from "./homescreen/ComplaintsLayout";
 export { ViewMSLF } from "./homescreen/ViewMSLF";
 export { ViewUnidentifiedPerson } from "./homescreen/ViewUnIdentifedPerson";
 export { ViewMissingPerson } from "./homescreen/ViewMissingPerson";
+export { HistoryReport } from "./history/HistoryReport";
+export { HistoryMSLF } from "./history/HistoryMSLF";
+export { HistoryUnIdentifedPerson } from "./history/HistoryUnIdentifedPerson";
+export { HistoryMissingPerson } from "./history/HistoryMissingPerson";
 
 // export { Complaints } from "./homescreen/Complaints";

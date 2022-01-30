@@ -5,26 +5,31 @@ import { Background, LightText } from "@components";
 
 type Props = {};
 
-const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">) => {
+const HistoryAllComplaints = ({ navigation }: NavigationProps<"HistoryAllComplaints">) => {
     const complaints = [
-        { id: 0, name: "Report complaint", uri: require("@assets/police.png"), navi: "ViewPost" },
+        {
+            id: 0,
+            name: "Report complaint",
+            uri: require("@assets/police.png"),
+            navi: "HistoryPost"
+        },
         {
             id: 1,
             name: "Missing person search",
             uri: require("@assets/police.png"),
-            navi: "ViewMissingPerson"
+            navi: "HistoryMissingPerson"
         },
         {
             id: 2,
             name: "Un-identified person found",
             uri: require("@assets/police.png"),
-            navi: "ViewUnidentifiedPerson"
+            navi: "HistoryUnidentifiedPerson"
         },
         {
             id: 3,
             name: "Missing/stolen/lost/found",
             uri: require("@assets/police.png"),
-            navi: "ViewMSLF"
+            navi: "HistoryMSLF"
         },
 
         {
@@ -103,4 +108,4 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
     );
 };
 
-export default ViewAllComplaints;
+export default HistoryAllComplaints;

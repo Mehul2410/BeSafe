@@ -63,10 +63,11 @@ function Navigation(): ReactElement {
         }
     }
     React.useEffect(() => {
+        const ac = new AbortController();
         getData();
-        initiateSocketConnection();
-        return () => {
-            disconnectSocket();
+
+        return function cleanup() {
+            ac.abort();
         };
     }, []);
     const user = useSelector((state: RootStateOrAny) => state.auth);

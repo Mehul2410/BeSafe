@@ -7,7 +7,13 @@ import { complaints } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
-import { AllComplaints, subscribeToChat } from "../../service/socketio.service";
+import {
+    AllComplaints,
+    closeSocket,
+    disconnectSocket,
+    initiateSocketConnection,
+    subscribeToChat
+} from "../../service/socketio.service";
 import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 
 // interface complaintProps {
@@ -50,16 +56,26 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
     }
 
     useEffect(() => {
-        getComplaints();
-        AllComplaints((err: any, data: any) => {
-            dispatch(userComplaints(data));
-            setLoading(true);
-        });
-        subscribeToChat((err: any, data: any) => {
-            if (data.success) {
+        const ac = new AbortController();
+        initiateSocketConnection(data => {
+            console.log(data);
+            if (data) {
                 getComplaints();
+                AllComplaints((err: any, data: any) => {
+                    dispatch(userComplaints(data));
+                });
+                subscribeToChat((err: any, data: any) => {
+                    if (data.success) {
+                        getComplaints();
+                    }
+                });
+                setLoading(true);
             }
         });
+        return function cleanup() {
+            ac.abort();
+            closeSocket();
+        };
     }, []);
     const [x, setX] = React.useState({ state: false, id: "" });
     return (

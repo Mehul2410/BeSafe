@@ -6,7 +6,12 @@ import { colors } from "@utils";
 import { GETMSLF } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { AllMSLF, subscribeToChat } from "../../service/socketio.service";
+import {
+    AllMSLF,
+    closeSocket,
+    initiateSocketConnection,
+    subscribeToChat
+} from "../../service/socketio.service";
 import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userMslf } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
@@ -52,16 +57,25 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
     }
 
     useEffect(() => {
-        getComplaints();
-        AllMSLF((err: any, data: any) => {
-            dispatch(userMslf(data));
-            setLoading(true);
-        });
-        subscribeToChat((err: any, data: any) => {
-            if (data.success) {
+        const ac = new AbortController();
+        initiateSocketConnection((data: boolean) => {
+            if (data) {
                 getComplaints();
+                AllMSLF((err: any, data: any) => {
+                    dispatch(userMslf(data));
+                });
+                subscribeToChat((err: any, data: any) => {
+                    if (data.success) {
+                        getComplaints();
+                    }
+                });
+                setLoading(true);
             }
         });
+        return function cleanup() {
+            ac.abort();
+            closeSocket();
+        };
     }, []);
     console.log(getAllComplaints);
     const [x, setX] = React.useState({ state: false, id: "" });

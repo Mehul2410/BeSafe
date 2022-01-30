@@ -3,17 +3,13 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { getUnIdPerson } from "@contexts/api/client";
+import { GETMSLF, mslfHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import {
-    AllUnIdPerson,
-    closeSocket,
-    initiateSocketConnection,
-    subscribeToChat
-} from "../../service/socketio.service";
-import { ComplaintsLayout } from "./ComplaintsLayout";
-import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
+import { MSLFHistory, closeSocket, subscribeToChat } from "../../service/socketio.service";
+import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
+import { userMslf } from "@contexts/slice/complaintsSlice";
+import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -32,10 +28,10 @@ import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
 // type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnidentifiedPerson">) {
+export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.UnidentifiedPerson
+        (state: RootStateOrAny) => state.complaints.mslf
     );
 
     const dispatch = useDispatch();
@@ -43,7 +39,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
         const data = await getCredentials();
         if (data) {
             if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(getUnIdPerson, {
+                const res = await fetch(mslfHistory, {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -57,18 +53,14 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
 
     useEffect(() => {
         const ac = new AbortController();
-        initiateSocketConnection((data: boolean) => {
-            if (data) {
+        getComplaints();
+        MSLFHistory((err: any, data: any) => {
+            dispatch(userMslf(data));
+            setLoading(true);
+        });
+        subscribeToChat((err: any, data: any) => {
+            if (data.success) {
                 getComplaints();
-                AllUnIdPerson((err: any, data: any) => {
-                    dispatch(userUnidentifiedPerson(data));
-                });
-                subscribeToChat((err: any, data: any) => {
-                    if (data.success) {
-                        getComplaints();
-                    }
-                });
-                setLoading(true);
             }
         });
         return function cleanup() {
@@ -97,7 +89,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
                                 console.log(allData);
-                                return allData.unIdPerson.map((item: any, index: any) => {
+                                return allData.mslf.map((item: any, index: any) => {
                                     return (
                                         <TouchableWithoutFeedback
                                             key={index}
@@ -123,7 +115,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                         setX({ state: false, id: "" });
                                                     }}
                                                 >
-                                                    <ComplaintsLayout route={item} />
+                                                    <MissingPersonLayout route={item} />
                                                 </Modal>
                                                 <View
                                                     style={{

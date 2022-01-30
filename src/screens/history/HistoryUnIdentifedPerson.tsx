@@ -3,16 +3,16 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { getUnIdPerson } from "@contexts/api/client";
+import { getUnIdPerson, unIdPersonHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
     AllUnIdPerson,
     closeSocket,
-    initiateSocketConnection,
-    subscribeToChat
+    subscribeToChat,
+    UnIdPersonHistory
 } from "../../service/socketio.service";
-import { ComplaintsLayout } from "./ComplaintsLayout";
+import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
 import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
 
 // interface complaintProps {
@@ -32,7 +32,9 @@ import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
 // type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnidentifiedPerson">) {
+export function HistoryUnIdentifedPerson({
+    navigation
+}: NavigationProps<"HistoryUnidentifiedPerson">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.UnidentifiedPerson
@@ -43,7 +45,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
         const data = await getCredentials();
         if (data) {
             if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(getUnIdPerson, {
+                const res = await fetch(unIdPersonHistory, {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -57,18 +59,14 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
 
     useEffect(() => {
         const ac = new AbortController();
-        initiateSocketConnection((data: boolean) => {
-            if (data) {
+        getComplaints();
+        UnIdPersonHistory((err: any, data: any) => {
+            dispatch(userUnidentifiedPerson(data));
+            setLoading(true);
+        });
+        subscribeToChat((err: any, data: any) => {
+            if (data.success) {
                 getComplaints();
-                AllUnIdPerson((err: any, data: any) => {
-                    dispatch(userUnidentifiedPerson(data));
-                });
-                subscribeToChat((err: any, data: any) => {
-                    if (data.success) {
-                        getComplaints();
-                    }
-                });
-                setLoading(true);
             }
         });
         return function cleanup() {
