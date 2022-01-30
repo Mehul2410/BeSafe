@@ -190,7 +190,7 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
                 />
                 <Button
-                    btnName="Report Type"
+                    btnName="Select Report Type"
                     weight="200"
                     onPress={() =>
                         setChangeStatus({

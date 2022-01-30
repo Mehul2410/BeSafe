@@ -14,6 +14,7 @@ import {
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
+import { UnidPersonLayout } from "./viewlayout/UnidPersonLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -123,7 +124,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                         setX({ state: false, id: "" });
                                                     }}
                                                 >
-                                                    <ComplaintsLayout route={item} />
+                                                    <UnidPersonLayout route={item} />
                                                 </Modal>
                                                 <View
                                                     style={{
@@ -175,10 +176,10 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Reason
+                                                    Unidentifed Person Report
                                                 </Text>
                                                 <Text
-                                                    numberOfLines={4}
+                                                    numberOfLines={3}
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,
@@ -186,7 +187,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                         paddingTop: 5
                                                     }}
                                                 >
-                                                    {item.reportFor}
+                                                    {item.incidenceDesc}
                                                 </Text>
                                             </View>
                                         </TouchableWithoutFeedback>

@@ -339,41 +339,6 @@ export function MissingPersonLayout({ route }: any) {
                         </View>
                     </View>
                 </View>
-                {/* dateFrom :
-                "Wed Jan 26 2022 23:26:00 GMT+0530 (IST)"
-dateTo
-:
-"Sat Jan 29 2022 16:26:00 GMT+0530 (IST)"
-name
-:
-"Mehul naresh Gawhale"
-fatherName
-:
-"Naresh"
-height
-:
-"7"
-religion
-:
-"Marathi"
-sex
-:
-"Male"
-locName
-:
-"Smith apartment Kalamboli"
-locAddress
-:
-"23HX+PG4, Sector 4, Kalamboli, Panvel, Navi Mumbai, Maharashtra 410218..."
-stationName
-:
-"Police Aid Booth"
-stationAddress
-:
-"24G2+FFP, Sector 16, Sector 2, Kalamboli, Panvel, Navi Mumbai, Maharas..."
-age
-:
-"22" */}
             </>
         );
     };

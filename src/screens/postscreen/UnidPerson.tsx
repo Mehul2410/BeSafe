@@ -12,7 +12,7 @@ import {
     LightText,
     CheckBox
 } from "@components";
-import { createPost, sendNotification, unIdPerson } from "@contexts/api/client";
+import { complaints, createPost, sendNotification, unIdPerson } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { colors } from "@utils";
 import React, { useEffect } from "react";
@@ -186,6 +186,7 @@ export function UnidPerson() {
         activity: false,
         status: ""
     });
+
     return (
         <Background>
             <Complaint>
@@ -194,7 +195,7 @@ export function UnidPerson() {
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
                 />
                 <Button
-                    btnName="Report Type"
+                    btnName="Select Report Type"
                     weight="200"
                     onPress={() =>
                         setChangeStatus({

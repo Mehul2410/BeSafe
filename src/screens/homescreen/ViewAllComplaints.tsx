@@ -7,44 +7,44 @@ type Props = {};
 
 const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">) => {
     const complaints = [
-        { id: 0, name: "Report complaint", uri: require("@assets/police.png"), navi: "ViewPost" },
+        { id: 0, name: "Report complaint", uri: require("@assets/report.png"), navi: "ViewPost" },
         {
             id: 1,
             name: "Missing person search",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/missing.png"),
             navi: "ViewMissingPerson"
         },
         {
             id: 2,
             name: "Un-identified person found",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/unid.png"),
             navi: "ViewUnidentifiedPerson"
         },
         {
             id: 3,
             name: "Missing/stolen/lost/found",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/stolen.png"),
             navi: "ViewMSLF"
         },
 
         {
             id: 4,
             name: "Wanted Criminals",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/Wanted.png"),
             navi: "Wanted"
         },
 
         {
             id: 5,
             name: "Mobile Apps Report",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/cyber.png"),
             navi: "MobileApp"
         },
 
         {
             id: 6,
             name: "Bank related",
-            uri: require("@assets/police.png"),
+            uri: require("@assets/bank.png"),
             navi: "Bank"
         }
     ];
