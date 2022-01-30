@@ -165,6 +165,7 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
                                                     Missing Person Report
                                                 </Text>
                                                 <Text
+                                                    numberOfLines={2}
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,

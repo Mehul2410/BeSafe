@@ -278,10 +278,102 @@ export function MissingPersonLayout({ route }: any) {
                         )}
                     </>
                 )}
-                <View style={{ marginBottom: 80 }}>
-                    <Heading string="Incidence Detail" />
+                <View style={{ marginBottom: 20 }}>
+                    <Heading string="Incidence Detail :" />
                     <LightText string={route.incidenceDesc} />
+                    <View style={{ marginTop: 15, justifyContent: "space-evenly" }}>
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Date: ${route.dateFrom} - ${route.dateTo}`}
+                        />
+                        <MediumText align="flex-start" size={18} string={`Name: ${route.name}`} />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Father Name: ${route.fatherName}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Height: ${route.height}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Religion: ${route.religion}`}
+                        />
+                        <MediumText align="flex-start" size={18} string={`Gender: ${route.sex}`} />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Last Location or Address: ${route.locName},${route.locAddress}`}
+                        />
+                        {/* <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`Name: ${route.locAddress}`}
+                        /> */}
+                        <View
+                            style={{
+                                width: "100%",
+                                flexDirection: "column",
+                                backgroundColor: "#FFF",
+                                borderRadius: 5,
+                                padding: 5,
+                                marginVertical: 4
+                            }}
+                        >
+                            <RegularText
+                                align="flex-start"
+                                size={15}
+                                color="#000"
+                                string={`Station Name: ${route.stationName && route.stationName}`}
+                            />
+                            <RegularText
+                                size={15}
+                                color="#000"
+                                textalign="justify"
+                                string={`Address: ${route.stationAddress && route.stationAddress}`}
+                            />
+                        </View>
+                    </View>
                 </View>
+                {/* dateFrom :
+                "Wed Jan 26 2022 23:26:00 GMT+0530 (IST)"
+dateTo
+:
+"Sat Jan 29 2022 16:26:00 GMT+0530 (IST)"
+name
+:
+"Mehul naresh Gawhale"
+fatherName
+:
+"Naresh"
+height
+:
+"7"
+religion
+:
+"Marathi"
+sex
+:
+"Male"
+locName
+:
+"Smith apartment Kalamboli"
+locAddress
+:
+"23HX+PG4, Sector 4, Kalamboli, Panvel, Navi Mumbai, Maharashtra 410218..."
+stationName
+:
+"Police Aid Booth"
+stationAddress
+:
+"24G2+FFP, Sector 16, Sector 2, Kalamboli, Panvel, Navi Mumbai, Maharas..."
+age
+:
+"22" */}
             </>
         );
     };
