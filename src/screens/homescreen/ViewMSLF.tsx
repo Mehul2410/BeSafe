@@ -10,6 +10,7 @@ import { AllMSLF, subscribeToChat } from "../../service/socketio.service";
 import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userMslf } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
+import { MSLFLayout } from "./viewlayout/MSLFLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -110,7 +111,7 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                                                         setX({ state: false, id: "" });
                                                     }}
                                                 >
-                                                    <MissingPersonLayout route={item} />
+                                                    <MSLFLayout route={item} />
                                                 </Modal>
                                                 <View
                                                     style={{
@@ -162,10 +163,10 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Reason
+                                                    {item.reportFor}
                                                 </Text>
                                                 <Text
-                                                    numberOfLines={4}
+                                                    numberOfLines={3}
                                                     weight="400"
                                                     style={{
                                                         color: colors.white,
@@ -173,7 +174,7 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                                                         paddingTop: 5
                                                     }}
                                                 >
-                                                    {item.reportFor}
+                                                    {item.incidenceDesc}
                                                 </Text>
                                             </View>
                                         </TouchableWithoutFeedback>
