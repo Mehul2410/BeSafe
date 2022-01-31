@@ -1,4 +1,4 @@
-import { Background, Button, CustomInput, Text, TextCheckBox } from "@components";
+import { Background, Button, CustomInput, Password, Text, TextCheckBox } from "@components";
 import { NavigationProps } from "@types";
 import React, { ReactElement } from "react";
 import { View, Image } from "react-native";
@@ -69,6 +69,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         }
     };
 
+    const [hidePass, setHidePass] = React.useState(true);
     return (
         <Background>
             <View style={styles.view}>
@@ -113,12 +114,11 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             placeholder="Email"
                                             style={{ marginVertical: 12 }}
                                         />
-                                        <CustomInput
+                                        <Password
                                             value={password}
                                             error={touched.password && errors.password}
                                             onChangeText={handleChange("password")}
                                             onBlur={handleBlur("password")}
-                                            secureTextEntry={true}
                                             placeholder="Password"
                                             style={{ marginVertical: 12 }}
                                         />
@@ -158,4 +158,20 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             </View>
         </Background>
     );
+}
+
+{
+    /* <CustomInput
+                                                value={password}
+                                                error={touched.password && errors.password}
+                                                onChangeText={handleChange("password")}
+                                                onBlur={handleBlur("password")}
+                                                secureTextEntry={hidePass ? true : false}
+                                                placeholder="Password"
+                                                style={{
+                                                    width: "89%",
+                                                    marginVertical: 12
+                                                    // position: "relative"
+                                                }}
+                                            /> */
 }

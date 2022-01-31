@@ -1,4 +1,4 @@
-import { Background, Button, CustomInput, Text } from "@components";
+import { Background, Button, CustomInput, LightText, Password, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import React, { ReactElement } from "react";
@@ -10,6 +10,8 @@ import { myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
 import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
+import { string } from "yup/lib/locale";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 interface signInProps {
     email: string;
@@ -52,6 +54,8 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         }
     };
 
+    const [hidePass, setHidePass] = React.useState(true);
+
     return (
         <Background>
             <View style={styles.view}>
@@ -86,18 +90,15 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         onBlur={handleBlur("email")}
                                         autoCapitalize="none"
                                         placeholder="User Id"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        style={{ marginVertical: 12 }}
                                     />
-                                    <CustomInput
+                                    <Password
                                         value={password}
                                         error={touched.password && errors.password}
                                         onChangeText={handleChange("password")}
                                         onBlur={handleBlur("password")}
-                                        autoCapitalize="none"
-                                        textContentType={"password"}
-                                        secureTextEntry={true}
                                         placeholder="Password"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        style={{ marginVertical: 12 }}
                                     />
                                     <Text weight="200" style={{ color: "#FFF" }}>
                                         Forget Password ?
