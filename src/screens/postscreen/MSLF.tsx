@@ -21,7 +21,7 @@ import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from "expo-location";
 
-export function MSLF({ route }: NavigationProps<"MSLF">) {
+export function MSLF({ navigation }: NavigationProps<"MSLF">) {
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -114,7 +114,10 @@ export function MSLF({ route }: NavigationProps<"MSLF">) {
                     authorization: `Bearer ${creds.access_token}`
                 }
             });
-            console.log(await submit.json());
+            const res = await submit.json();
+            if (res.success) {
+                navigation.navigate("ViewMSLF");
+            }
             const token = await fetch(sendNotification, {
                 method: "POST",
                 body: JSON.stringify({

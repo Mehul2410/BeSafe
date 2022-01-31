@@ -1,7 +1,7 @@
-import { View, Text, TouchableWithoutFeedback, Image, FlatList } from "react-native";
+import { View, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
-import { Background, LightText } from "@components";
+import { Background, LightText, Text } from "@components";
 
 type Props = {};
 
@@ -97,6 +97,17 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
                     keyExtractor={(item, index) => item.name}
                     numColumns={2}
                     bounces={true}
+                    stickyHeaderIndices={[0]}
+                    ListHeaderComponentStyle={{
+                        width: "50%",
+                        backgroundColor: "#130e5c",
+                        paddingBottom: 5
+                    }}
+                    ListHeaderComponent={
+                        <Text color="#FFF" style={{ textAlign: "center" }}>
+                            View Complaints
+                        </Text>
+                    }
                 />
             </View>
         </Background>

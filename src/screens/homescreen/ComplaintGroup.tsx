@@ -58,7 +58,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
     useEffect(() => {
         const ac = new AbortController();
         initiateSocketConnection(data => {
-            console.log(data);
             if (data) {
                 getComplaints();
                 AllComplaints((err: any, data: any) => {
