@@ -4,13 +4,24 @@ import { Modal, Pressable, ScrollView, View } from "react-native";
 import { Button } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import emailjs from "@emailjs/browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { resetPass } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { signUp } from "@contexts/slice/authSlice";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
+    const dispatch = useDispatch();
     const user = useSelector((state: RootStateOrAny) => state.auth);
-    const [changePassword, setChangePassword] = useState(false);
+    const [changePassword, setChangePassword] = useState({
+        activity: false,
+        currentPass: "",
+        newPass: "",
+        confPass: "",
+        error: ""
+    });
+
     const [language, setLanguage] = useState(false);
     const [account, setAccount] = useState(false);
 
@@ -29,6 +40,38 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
             console.log(err);
         }
     };
+    async function handleChangePass() {
+        const creds = await getCredentials();
+        if (creds) {
+            const res = await fetch(resetPass, {
+                method: "POST",
+                body: JSON.stringify({
+                    password: changePassword.currentPass,
+                    newPass: changePassword.newPass,
+                    confirmPass: changePassword.confPass
+                })
+            });
+            const changed = await res.json();
+            if (changed.success) {
+                dispatch(signUp(user));
+                setChangePassword({
+                    activity: false,
+                    confPass: "",
+                    currentPass: "",
+                    newPass: "",
+                    error: ""
+                });
+            } else {
+                setChangePassword({
+                    activity: false,
+                    confPass: "",
+                    currentPass: "",
+                    newPass: "",
+                    error: "Something went wrong try again later"
+                });
+            }
+        }
+    }
     return (
         <Background>
             <View
@@ -46,9 +89,9 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Modal
                         animationType="slide"
                         transparent={true}
-                        visible={changePassword}
+                        visible={changePassword.activity}
                         onRequestClose={() => {
-                            setChangePassword(!changePassword);
+                            setChangePassword({ ...changePassword, activity: false });
                         }}
                     >
                         <View
@@ -78,10 +121,31 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     Password
                                 </Text>
                                 <View style={{ width: "100%" }}>
-                                    <CustomInput placeholder="Old Password" />
-                                    <CustomInput placeholder="New Password" />
-                                    <CustomInput placeholder="Confirm New Password" />
-                                    <Pressable onPress={() => setChangePassword(!changePassword)}>
+                                    {changePassword.error !== "" && (
+                                        <Text>{changePassword.error}</Text>
+                                    )}
+                                    <CustomInput
+                                        placeholder="Old Password"
+                                        onChangeText={text =>
+                                            setChangePassword({
+                                                ...changePassword,
+                                                currentPass: text
+                                            })
+                                        }
+                                    />
+                                    <CustomInput
+                                        placeholder="New Password"
+                                        onChangeText={text =>
+                                            setChangePassword({ ...changePassword, newPass: text })
+                                        }
+                                    />
+                                    <CustomInput
+                                        placeholder="Confirm New Password"
+                                        onChangeText={text =>
+                                            setChangePassword({ ...changePassword, confPass: text })
+                                        }
+                                    />
+                                    <Pressable onPress={handleChangePass}>
                                         <Button
                                             bgColor="#130e5c"
                                             btnName="Change Password"
@@ -96,7 +160,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                         <Button
                             weight="400"
                             btnName="Change Password"
-                            onPress={() => setChangePassword(true)}
+                            onPress={handleChangePass}
                             bgColor="#FFF"
                             textColor="#130e5c"
                         />
