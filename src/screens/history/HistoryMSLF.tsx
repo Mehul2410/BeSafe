@@ -6,7 +6,12 @@ import { colors } from "@utils";
 import { GETMSLF, mslfHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { MSLFHistory, closeSocket, subscribeToChat } from "../../service/socketio.service";
+import {
+    MSLFHistory,
+    closeSocket,
+    subscribeToChat,
+    initiateSocketConnection
+} from "../../service/socketio.service";
 import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
 import { userMslf } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
@@ -53,14 +58,18 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
 
     useEffect(() => {
         const ac = new AbortController();
-        getComplaints();
-        MSLFHistory((err: any, data: any) => {
-            dispatch(userMslf(data));
-            setLoading(true);
-        });
-        subscribeToChat((err: any, data: any) => {
-            if (data.success) {
+        initiateSocketConnection((data: boolean) => {
+            if (data) {
                 getComplaints();
+                MSLFHistory((err: any, data: any) => {
+                    dispatch(userMslf(data));
+                });
+                subscribeToChat((err: any, data: any) => {
+                    if (data.success) {
+                        getComplaints();
+                    }
+                });
+                setLoading(true);
             }
         });
         return function cleanup() {

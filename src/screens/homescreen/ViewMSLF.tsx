@@ -63,6 +63,7 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
             if (data) {
                 getComplaints();
                 AllMSLF((err: any, data: any) => {
+                    console.log(data);
                     dispatch(userMslf(data));
                 });
                 subscribeToChat((err: any, data: any) => {

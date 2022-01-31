@@ -7,7 +7,12 @@ import { complaints, complaintsHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
-import { ComplaintsHistory, closeSocket, subscribeToChat } from "../../service/socketio.service";
+import {
+    ComplaintsHistory,
+    closeSocket,
+    subscribeToChat,
+    initiateSocketConnection
+} from "../../service/socketio.service";
 import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 
 // interface complaintProps {
@@ -51,14 +56,18 @@ export function HistoryReport({ navigation }: NavigationProps<"HistoryPost">) {
 
     useEffect(() => {
         const ac = new AbortController();
-        getComplaints();
-        ComplaintsHistory((err: any, data: any) => {
-            setLoading(true);
-            dispatch(userComplaints(data));
-        });
-        subscribeToChat((err: any, data: any) => {
-            if (data.success) {
+        initiateSocketConnection((data: boolean) => {
+            if (data) {
                 getComplaints();
+                ComplaintsHistory((err: any, data: any) => {
+                    dispatch(userComplaints(data));
+                });
+                subscribeToChat((err: any, data: any) => {
+                    if (data.success) {
+                        getComplaints();
+                    }
+                });
+                setLoading(true);
             }
         });
         return function cleanup() {

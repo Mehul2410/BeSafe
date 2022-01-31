@@ -9,6 +9,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
     AllUnIdPerson,
     closeSocket,
+    initiateSocketConnection,
     subscribeToChat,
     UnIdPersonHistory
 } from "../../service/socketio.service";
@@ -59,14 +60,19 @@ export function HistoryUnIdentifedPerson({
 
     useEffect(() => {
         const ac = new AbortController();
-        getComplaints();
-        UnIdPersonHistory((err: any, data: any) => {
-            dispatch(userUnidentifiedPerson(data));
-            setLoading(true);
-        });
-        subscribeToChat((err: any, data: any) => {
-            if (data.success) {
+        initiateSocketConnection((data: boolean) => {
+            if (data) {
                 getComplaints();
+
+                UnIdPersonHistory((err: any, data: any) => {
+                    dispatch(userUnidentifiedPerson(data));
+                });
+                subscribeToChat((err: any, data: any) => {
+                    if (data.success) {
+                        getComplaints();
+                    }
+                });
+                setLoading(true);
             }
         });
         return function cleanup() {
