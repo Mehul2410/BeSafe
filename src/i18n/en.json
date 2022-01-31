@@ -1,0 +1,11 @@
+{
+    "translation": {
+        "start": "Get Started",
+        "lang": "Select your Language",
+        "selRole": "Select your role",
+        "signAs": "Sign-in as",
+        "police": "Police",
+        "citizen": "Citizen",
+        "station": "Station Admin"
+    }
+}

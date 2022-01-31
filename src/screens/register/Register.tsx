@@ -3,6 +3,7 @@ import { ImageSourcePropType, Modal, Pressable, View } from "react-native";
 import { Background, Text, CharRole, Button } from "@components";
 import styles from "./register.styles";
 import { NavigationProps } from "@types";
+import { useTranslation } from "react-i18next";
 
 interface rolesProps {
     police: { uri: ImageSourcePropType; role: number; agree: string };
@@ -11,6 +12,7 @@ interface rolesProps {
 }
 
 export default function Register({ navigation }: NavigationProps<"Register">) {
+    const { t } = useTranslation();
     const [police, setPolice] = React.useState(false);
     const roles: rolesProps = {
         police: {
@@ -32,7 +34,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
         <Background>
             <View style={styles.view}>
                 <Text weight="700" style={{ color: "#FFF" }}>
-                    Select your role
+                    {t("selRole")}
                 </Text>
                 <Modal
                     transparent={true}
@@ -51,7 +53,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                         }}
                     >
                         <CharRole
-                            role="Police"
+                            role={t("police")}
                             uri={require("@assets/police.png")}
                             onPress={() => {
                                 navigation.navigate("SignIn", roles.police);
@@ -59,7 +61,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                             }}
                         />
                         <CharRole
-                            role="Station Admin"
+                            role={t("station")}
                             uri={require("@assets/admin.png")}
                             onPress={() => {
                                 navigation.navigate("SignIn", roles.stationAdmin);
@@ -82,13 +84,13 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                 </Modal>
                 <Pressable>
                     <CharRole
-                        role="Police"
+                        role={t("police")}
                         uri={require("@assets/police.png")}
                         onPress={() => setPolice(true)}
                     />
                 </Pressable>
                 <CharRole
-                    role="Citizen"
+                    role={t("citizen")}
                     uri={require("@assets/citizen.png")}
                     onPress={() => {
                         navigation.navigate("SignIn", roles.citizen);

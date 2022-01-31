@@ -10,6 +10,7 @@ import { myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
 import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
+import { useTranslation } from "react-i18next";
 
 interface signInProps {
     email: string;
@@ -23,6 +24,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         password: "",
         role: route.params.role
     };
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [signInError, setSignInError] = React.useState("");
     const SignInUser = async (values: signInProps, formikActions: FormikHelpers<signInProps>) => {
@@ -58,12 +60,12 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
                     <Text style={{ color: colors.white }}>
-                        Sign-in as{" "}
+                        {t("signAs")}
                         {route.params.role === 5000
-                            ? "Police"
+                            ? ` ${t("police")}`
                             : route.params.role === 4000
-                            ? "Station Admin"
-                            : "Citizen"}
+                            ? ` ${t("station")}`
+                            : ` ${t("citizen")}`}
                     </Text>
                 </View>
                 <View style={styles.box2}>

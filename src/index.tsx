@@ -11,11 +11,9 @@ import { getTokens, userData } from "@contexts/slice/authSlice";
 import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
 import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
-import {
-    disconnectSocket,
-    initiateSocketConnection,
-    subscribeToChat
-} from "./service/socketio.service";
+import i18n from "./i18n/i18n";
+
+const initI18n = i18n;
 
 function Navigation(): ReactElement {
     const [loading, setLoading] = React.useState(false);
@@ -38,7 +36,6 @@ function Navigation(): ReactElement {
                         }
                     });
                     const statusChange = await token.json();
-                    console.log(statusChange);
                     const res = await fetch(myDetails, {
                         method: "GET",
                         headers: {
@@ -65,7 +62,6 @@ function Navigation(): ReactElement {
     React.useEffect(() => {
         const ac = new AbortController();
         getData();
-
         return function cleanup() {
             ac.abort();
         };
