@@ -2,25 +2,21 @@ import React, { Children, ReactNode } from "react";
 import {
     Background,
     CustomInput,
-    Text,
     Button,
-    ImageInput,
     ImageInputList,
     RegularText,
     PostLoader,
     LocationLoader,
     Complaint
 } from "@components";
-import { View, Image, ActivityIndicator } from "react-native";
-import { ScrollView } from "react-native";
-import useSWR from "swr";
+import { View, Image } from "react-native";
 import { allUsers, createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import * as Location from "expo-location";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { NavigationProps } from "@types";
 
-export function Post({}: NavigationProps<"Post">) {
+export function Post({ navigation }: NavigationProps<"Post">) {
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -32,7 +28,6 @@ export function Post({}: NavigationProps<"Post">) {
         complaintAgainstName: "",
         complaintAgainst: "",
         reason: "",
-        complaintType: "",
         locationName: "",
         locationAddress: "",
         currentSituation: "",
@@ -73,7 +68,14 @@ export function Post({}: NavigationProps<"Post">) {
         }
         return true;
     }
-    const { data, error } = useSWR(allUsers, fetcher);
+
+    React.useEffect(() => {
+        const ac = new AbortController();
+        fetcher(allUsers);
+        return function cleanup() {
+            ac.abort();
+        };
+    }, []);
     const handleAdd = (uri: string) => {
         setImageUris([...imageUris, uri]);
     };
@@ -146,7 +148,11 @@ export function Post({}: NavigationProps<"Post">) {
                     authorization: `Bearer ${creds.access_token}`
                 }
             });
-            console.log(await submit.json());
+            const res = await submit.json();
+            console.log(res);
+            if (res.success) {
+                navigation.navigate("ViewPost");
+            }
             const token = await fetch(sendNotification, {
                 method: "POST",
                 body: JSON.stringify({

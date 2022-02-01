@@ -1,6 +1,6 @@
-import { View, Text, Image, FlatList } from "react-native";
+import { View, Image, FlatList } from "react-native";
 import React from "react";
-import { Background, LightText, MediumText } from "@components";
+import { Background, LightText, MediumText, Text } from "@components";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { NavigationProps } from "@types";
@@ -31,21 +31,18 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             uri: require("@assets/stolen.png"),
             navi: "MSLF"
         },
-
         {
             id: 4,
             name: "Wanted Criminals",
             uri: require("@assets/Wanted.png"),
             navi: "Wanted"
         },
-
         {
             id: 5,
             name: "Mobile Apps Report",
             uri: require("@assets/cyber.png"),
             navi: "MobileApp"
         },
-
         {
             id: 6,
             name: "Bank related",
@@ -87,7 +84,6 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
     };
     return (
         <Background>
-            {/* <ScrollView> */}
             <View
                 style={{
                     paddingHorizontal: 10,
@@ -99,13 +95,23 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             >
                 <FlatList
                     data={complaints}
+                    style={{}}
                     renderItem={Btn}
                     keyExtractor={(item, index) => item.name}
                     numColumns={2}
                     bounces={true}
+                    stickyHeaderIndices={[0]}
+                    ListHeaderComponent={
+                        <View
+                            style={{ width: "100%", backgroundColor: "#130e5c", paddingBottom: 5 }}
+                        >
+                            <Text color="#FFF" style={{ textAlign: "center" }}>
+                                Post Complaints
+                            </Text>
+                        </View>
+                    }
                 />
             </View>
-            {/* </ScrollView> */}
         </Background>
     );
 }

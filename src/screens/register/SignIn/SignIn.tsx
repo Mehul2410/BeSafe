@@ -43,7 +43,6 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
             body: JSON.stringify({ ...values })
         });
         const user = await res.json();
-        console.log(user);
         if (user.success) {
             if (!isTokenExpired(user.access_token)) {
                 dispatch(userData(user.result));

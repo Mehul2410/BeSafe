@@ -53,7 +53,6 @@ export type StackNavigatorParams = {
     ViewCyberCrime: undefined;
     ViewMissingPerson: undefined;
     ViewMSLF: undefined;
-    ViewUnidPerson: undefined;
     ViewUnidentifiedPerson: undefined;
     HistoryPost: undefined;
     HistoryWanted: undefined;
