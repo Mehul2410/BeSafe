@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Image, Modal, FlatList } from "react-native";
+import {
+    View,
+    Image,
+    Modal,
+    FlatList,
+    ScrollView,
+    Touchable,
+    TouchableOpacity
+} from "react-native";
 import {
     Text,
     DateAndTime,
@@ -14,13 +22,50 @@ import {
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignReport, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 // import { ListItem } from "react-native-elements";
 // import { subscribeToChat } from "../../service/socketio.service";
 
+function Police({ item, select }: any) {
+    return (
+        <View
+            style={{
+                width: "100%",
+                flexDirection: "row",
+                borderWidth: 1,
+                borderColor: "#FFFFFF",
+                paddingHorizontal: 20,
+                paddingVertical: 8,
+                borderRadius: 10,
+                alignItems: "center",
+                backgroundColor: item._id === select ? "#27224dc7" : "#281B89"
+            }}
+        >
+            <Image
+                style={{
+                    width: 45,
+                    height: 40,
+                    marginRight: 10,
+                    borderRadius: 100
+                }}
+                resizeMode="contain"
+                source={item.avatar ? { uri: item.avatar } : require("@assets/img.png")}
+            />
+            <View>
+                <RegularText color="#FFF" textalign="left" align="center" string={item.name} />
+                <RegularText
+                    color="#FFF"
+                    align="center"
+                    textalign="left"
+                    string={item.userDetails && item.userDetails.policePost}
+                />
+            </View>
+        </View>
+    );
+}
 export function ComplaintsLayout({ route }: any) {
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
@@ -30,9 +75,7 @@ export function ComplaintsLayout({ route }: any) {
     const [assignComplaint, setAssignComplaint] = React.useState({
         activity: false,
         _id: "",
-        name: "",
-        avatar: "",
-        policePost: ""
+        name: ""
     });
 
     const [view, setView] = React.useState(false);
@@ -90,58 +133,48 @@ export function ComplaintsLayout({ route }: any) {
         }
     }
 
+    async function handleAssignPolice() {
+        if (assignComplaint.name !== "" && assignComplaint._id !== "") {
+            const cred = await getCredentials();
+            if (cred) {
+                if (!isTokenExpired(cred.access_token)) {
+                    try {
+                        const res = await fetch(assignReport, {
+                            method: "PUT",
+                            body: JSON.stringify({
+                                assignName: assignComplaint.name,
+                                assignTo: assignComplaint._id,
+                                _id: route._id
+                            }),
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                authorization: `Bearer ${cred.access_token}`
+                            }
+                        });
+                        // const data = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    //active status to be send from backend to login police
+                }
+            }
+        } else {
+            setAssignComplaint({ _id: "", activity: false, name: "" });
+        }
+    }
+
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
 
     const [selectedId, setSelectedId] = React.useState(null);
 
-    function Police({ item }: any) {
-        return (
-            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
-                <View
-                    style={{
-                        width: "100%",
-                        flexDirection: "row",
-                        borderWidth: 1,
-                        borderColor: "#FFFFFF",
-                        paddingHorizontal: 20,
-                        paddingVertical: 8,
-                        borderRadius: 10,
-                        alignItems: "center",
-                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
-                    }}
-                >
-                    <Image
-                        style={{
-                            width: 45,
-                            height: 40,
-                            marginRight: 10,
-                            borderRadius: 100
-                        }}
-                        resizeMode="contain"
-                        source={item.avatar ? { uri: item.avatar } : require("@assets/img.png")}
-                    />
-                    <View>
-                        <RegularText
-                            color="#FFF"
-                            textalign="left"
-                            align="center"
-                            string={item.name}
-                        />
-                        <RegularText
-                            color="#FFF"
-                            align="center"
-                            textalign="left"
-                            string={item.userDetails && item.userDetails.policePost}
-                        />
-                    </View>
-                </View>
-            </TouchableWithoutFeedback>
-        );
-    }
-
-    const flatListHead = () => {
+    const FlatListHead = () => {
         return (
             <>
                 <View
@@ -200,15 +233,11 @@ export function ComplaintsLayout({ route }: any) {
         );
     };
 
-    const flatListFooter = () => {
+    const FlatListFooter = () => {
         return (
             <>
                 {role === 4000 && (
-                    <Button
-                        btnName="Update Complaint"
-                        weight="200"
-                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                    />
+                    <Button btnName="Update Complaint" weight="200" onPress={handleAssignPolice} />
                 )}
                 {role === 5000 && (
                     <>
@@ -302,14 +331,26 @@ export function ComplaintsLayout({ route }: any) {
                         width: "100%"
                     }}
                 >
-                    <FlatList
-                        data={police && police}
-                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
-                        keyExtractor={item => item._id}
-                        ListHeaderComponent={flatListHead}
-                        ListFooterComponent={flatListFooter}
-                        extraData={selectedId}
-                    />
+                    <ScrollView>
+                        <FlatListHead />
+                        {assignComplaint.activity &&
+                            role === 4000 &&
+                            police?.map(item => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        setAssignComplaint({
+                                            ...assignComplaint,
+                                            _id: item._id,
+                                            name: item.name
+                                        });
+                                    }}
+                                    key={item._id}
+                                >
+                                    <Police item={item} select={assignComplaint._id} />
+                                </TouchableOpacity>
+                            ))}
+                        <FlatListFooter />
+                    </ScrollView>
                 </View>
                 <View
                     style={{
@@ -337,7 +378,7 @@ export function ComplaintsLayout({ route }: any) {
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.assignTo}`}
+                        btnName={`Assigned to: ${route.assignName}`}
                     />
                 </View>
             </View>

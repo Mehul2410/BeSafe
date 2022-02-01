@@ -12,7 +12,6 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
@@ -91,7 +90,11 @@ export function MSLFLayout({ route }: any) {
     }
 
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
 
     const [selectedId, setSelectedId] = React.useState(null);

@@ -12,14 +12,11 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
-// import { ListItem } from "react-native-elements";
-// import { subscribeToChat } from "../../service/socketio.service";
 
 export function UnidPersonLayout({ route }: any) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -91,7 +88,11 @@ export function UnidPersonLayout({ route }: any) {
     }
 
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
 
     const [selectedId, setSelectedId] = React.useState(null);

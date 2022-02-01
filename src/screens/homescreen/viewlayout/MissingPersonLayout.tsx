@@ -91,7 +91,11 @@ export function MissingPersonLayout({ route }: any) {
     }
 
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
 
     const [selectedId, setSelectedId] = React.useState(null);
