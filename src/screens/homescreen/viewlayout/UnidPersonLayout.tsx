@@ -235,11 +235,7 @@ export function UnidPersonLayout({ route }: any) {
         return (
             <>
                 {role === 4000 && (
-                    <Button
-                        btnName="Update Complaint"
-                        weight="200"
-                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                    />
+                    <Button btnName="Update Complaint" weight="200" onPress={handleAssignPolice} />
                 )}
                 {role === 5000 && (
                     <>
