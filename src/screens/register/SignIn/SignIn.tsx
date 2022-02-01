@@ -1,4 +1,4 @@
-import { Background, Button, CustomInput, Text } from "@components";
+import { Background, Button, CustomInput, LightText, Password, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
 import React, { ReactElement } from "react";
@@ -10,6 +10,8 @@ import { myDetails, signInUser } from "@contexts/api/client";
 import { useDispatch } from "react-redux";
 import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
+import { string } from "yup/lib/locale";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 import { useTranslation } from "react-i18next";
 
 interface signInProps {
@@ -53,18 +55,20 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         }
     };
 
+    const [hidePass, setHidePass] = React.useState(true);
+
     return (
         <Background>
             <View style={styles.view}>
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
                     <Text style={{ color: colors.white }}>
-                        {t("signAs")}
+                        {t("signAs")}{" "}
                         {route.params.role === 5000
-                            ? ` ${t("police")}`
+                            ? `${t("police")}`
                             : route.params.role === 4000
-                            ? ` ${t("station")}`
-                            : ` ${t("citizen")}`}
+                            ? `${t("station")}`
+                            : `${t("citizen")}`}
                     </Text>
                 </View>
                 <View style={styles.box2}>
@@ -86,25 +90,22 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         onChangeText={handleChange("email")}
                                         onBlur={handleBlur("email")}
                                         autoCapitalize="none"
-                                        placeholder="User Id"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        placeholder={t("userId")}
+                                        style={{ marginVertical: 12 }}
                                     />
-                                    <CustomInput
+                                    <Password
                                         value={password}
                                         error={touched.password && errors.password}
                                         onChangeText={handleChange("password")}
                                         onBlur={handleBlur("password")}
-                                        autoCapitalize="none"
-                                        textContentType={"password"}
-                                        secureTextEntry={true}
-                                        placeholder="Password"
-                                        style={{ width: "80%", marginVertical: 12 }}
+                                        placeholder={`${t("pass")}`}
+                                        style={{ marginVertical: 12 }}
                                     />
                                     <Text weight="200" style={{ color: "#FFF" }}>
-                                        Forget Password ?
+                                        {`${t("forgetPass")}`}
                                     </Text>
                                     <Button
-                                        btnName="SignIn"
+                                        btnName={t("signIn")}
                                         weight="400"
                                         style={{
                                             width: "80%",
@@ -122,7 +123,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                         style={{ color: "#FFF", fontSize: 18 }}
                         onPress={() => navigation.navigate("SignUp", route.params)}
                     >
-                        Create your account
+                        {t("createAc")}
                     </Text>
                 </View>
             </View>

@@ -72,7 +72,7 @@ export default function Register({ navigation }: NavigationProps<"Register">) {
                             <Button
                                 weight="700"
                                 size={18}
-                                btnName="back"
+                                btnName={t("back")}
                                 style={{
                                     width: "80%",
                                     justifyContent: "center",

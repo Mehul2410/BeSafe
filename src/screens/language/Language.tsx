@@ -44,7 +44,7 @@ export function Language({ navigation }: NavigationProps<"Language">) {
                                 style={{ backgroundColor: colors.white, color: colors.quatnary }}
                                 onPress={() => {
                                     i18n.changeLanguage(item.code);
-                                    navigation.navigate("Register", { langauge: item.language });
+                                    navigation.navigate("Register");
                                 }}
                             />
                         )}
