@@ -6,9 +6,7 @@ export type StackNavigatorParams = {
     Home: undefined;
     Getstarted: undefined;
     Language: undefined;
-    Register: {
-        langauge: string;
-    };
+    Register: undefined;
     PoliceSignin: undefined;
     PoliceSignup: undefined;
     PoliceDetail: {

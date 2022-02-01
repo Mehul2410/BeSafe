@@ -4,8 +4,11 @@ import styles from "./home.styles";
 import { Background, Button, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
+import { useTranslation } from "react-i18next";
 
 export function Getstarted({ navigation }: NavigationProps<"Getstarted">) {
+    const { t } = useTranslation();
+
     return (
         <Background>
             <View style={styles.screenview}>
@@ -18,7 +21,7 @@ export function Getstarted({ navigation }: NavigationProps<"Getstarted">) {
                 </Text>
                 <Button
                     weight="700"
-                    btnName="Get Started"
+                    btnName={t("start")}
                     onPress={() => navigation.navigate("Language")}
                     style={{ backgroundColor: colors.tertiary, width: "80%" }}
                 />

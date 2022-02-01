@@ -12,6 +12,7 @@ import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
 import { string } from "yup/lib/locale";
 import { Icon } from "react-native-elements/dist/icons/Icon";
+import { useTranslation } from "react-i18next";
 
 interface signInProps {
     email: string;
@@ -25,6 +26,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
         password: "",
         role: route.params.role
     };
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [signInError, setSignInError] = React.useState("");
     const SignInUser = async (values: signInProps, formikActions: FormikHelpers<signInProps>) => {
@@ -62,12 +64,12 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                 <View style={styles.box1}>
                     <Image resizeMode="center" style={styles.img} source={route.params.uri} />
                     <Text style={{ color: colors.white }}>
-                        Sign-in as{" "}
+                        {t("signAs")}{" "}
                         {route.params.role === 5000
-                            ? "Police"
+                            ? `${t("police")}`
                             : route.params.role === 4000
-                            ? "Station Admin"
-                            : "Citizen"}
+                            ? `${t("station")}`
+                            : `${t("citizen")}`}
                     </Text>
                 </View>
                 <View style={styles.box2}>
@@ -89,7 +91,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         onChangeText={handleChange("email")}
                                         onBlur={handleBlur("email")}
                                         autoCapitalize="none"
-                                        placeholder="User Id"
+                                        placeholder={t("userId")}
                                         style={{ marginVertical: 12 }}
                                     />
                                     <Password
@@ -97,14 +99,14 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         error={touched.password && errors.password}
                                         onChangeText={handleChange("password")}
                                         onBlur={handleBlur("password")}
-                                        placeholder="Password"
+                                        placeholder={`${t("pass")}`}
                                         style={{ marginVertical: 12 }}
                                     />
                                     <Text weight="200" style={{ color: "#FFF" }}>
-                                        Forget Password ?
+                                        {`${t("forgetPass")}`}
                                     </Text>
                                     <Button
-                                        btnName="SignIn"
+                                        btnName={t("signIn")}
                                         weight="400"
                                         style={{
                                             width: "80%",
@@ -122,7 +124,7 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                         style={{ color: "#FFF", fontSize: 18 }}
                         onPress={() => navigation.navigate("SignUp", route.params)}
                     >
-                        Create your account
+                        {t("createAc")}
                     </Text>
                 </View>
             </View>

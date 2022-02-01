@@ -7,8 +7,10 @@ import { colors } from "@utils";
 import { RootStateOrAny, useSelector } from "react-redux";
 import emailjs from "@emailjs/browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useTranslation } from "react-i18next";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
+    const { t, i18n } = useTranslation();
     const user = useSelector((state: RootStateOrAny) => state.auth);
     const [changePassword, setChangePassword] = useState(false);
     const [language, setLanguage] = useState(false);
@@ -29,6 +31,11 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
             console.log(err);
         }
     };
+
+    function handleLang(lang: string) {
+        i18n.changeLanguage(lang);
+        setLanguage(false);
+    }
     return (
         <Background>
             <View
@@ -102,7 +109,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                         />
                     </Pressable>
                     <Modal
-                        animationType="slide"
+                        // animationType="slide"
                         transparent={true}
                         visible={language}
                         onRequestClose={() => {
@@ -142,6 +149,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("en")}
                                     />
                                     <Button
                                         weight="400"
@@ -149,6 +157,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("hi")}
                                     />
                                     <Button
                                         weight="400"
@@ -156,15 +165,16 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("mi")}
                                     />
-                                    <Pressable>
+                                    {/* <Pressable>
                                         <Button
                                             btnName="Change language"
                                             weight="400"
                                             onPress={() => setLanguage(!language)}
                                             bgColor="#130e5c"
                                         />
-                                    </Pressable>
+                                    </Pressable> */}
                                 </View>
                             </View>
                         </View>

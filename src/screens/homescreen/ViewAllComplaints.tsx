@@ -1,7 +1,8 @@
 import { View, Text, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
-import { Background, LightText } from "@components";
+import { Background, LightText, MediumText } from "@components";
+import { t } from "i18next";
 
 type Props = {};
 
@@ -91,6 +92,7 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
                     alignItems: "center"
                 }}
             >
+                <MediumText size={18} string={t("complaintView")} />
                 <FlatList
                     data={complaints}
                     renderItem={Btn}
