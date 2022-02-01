@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, FlatList } from "react-native";
+import { View, Image, Modal, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -13,10 +13,9 @@ import {
 } from "@components";
 import { colors } from "@utils";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignUnIdPerson, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export function UnidPersonLayout({ route }: any) {
     const [changeStatus, setChangeStatus] = React.useState({
@@ -27,9 +26,7 @@ export function UnidPersonLayout({ route }: any) {
     const [assignComplaint, setAssignComplaint] = React.useState({
         activity: false,
         _id: "",
-        name: "",
-        avatar: "",
-        policePost: ""
+        name: ""
     });
 
     const [view, setView] = React.useState(false);
@@ -87,6 +84,37 @@ export function UnidPersonLayout({ route }: any) {
         }
     }
 
+    async function handleAssignPolice() {
+        if (assignComplaint.name !== "" && assignComplaint._id !== "") {
+            const cred = await getCredentials();
+            if (cred) {
+                if (!isTokenExpired(cred.access_token)) {
+                    try {
+                        const res = await fetch(assignUnIdPerson, {
+                            method: "PUT",
+                            body: JSON.stringify({
+                                assignName: assignComplaint.name,
+                                assignTo: assignComplaint._id,
+                                _id: route._id
+                            }),
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                authorization: `Bearer ${cred.access_token}`
+                            }
+                        });
+                        // const data = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    //active status to be send from backend to login police
+                }
+            }
+        } else {
+            setAssignComplaint({ _id: "", activity: false, name: "" });
+        }
+    }
+
     React.useEffect(() => {
         const ac = new AbortController();
         getAllStationPolice();
@@ -95,11 +123,13 @@ export function UnidPersonLayout({ route }: any) {
         };
     }, []);
 
-    const [selectedId, setSelectedId] = React.useState(null);
-
     function Police({ item }: any) {
         return (
-            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
+            <TouchableOpacity
+                onPress={() =>
+                    setAssignComplaint({ ...assignComplaint, _id: item._id, name: item.name })
+                }
+            >
                 <View
                     style={{
                         width: "100%",
@@ -110,7 +140,7 @@ export function UnidPersonLayout({ route }: any) {
                         paddingVertical: 8,
                         borderRadius: 10,
                         alignItems: "center",
-                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
+                        backgroundColor: item._id === assignComplaint._id ? "#27224dc7" : "#281B89"
                     }}
                 >
                     <Image
@@ -138,11 +168,11 @@ export function UnidPersonLayout({ route }: any) {
                         />
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
-    const flatListHead = () => {
+    const FlatListHead = () => {
         return (
             <>
                 <View
@@ -201,7 +231,7 @@ export function UnidPersonLayout({ route }: any) {
         );
     };
 
-    const flatListFooter = () => {
+    const FlatListFooter = () => {
         return (
             <>
                 {role === 4000 && (
@@ -392,11 +422,13 @@ export function UnidPersonLayout({ route }: any) {
                 >
                     <FlatList
                         data={police && police}
-                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
+                        renderItem={
+                            role === 4000 ? (assignComplaint.activity ? Police : null) : null
+                        }
                         keyExtractor={item => item._id}
-                        ListHeaderComponent={flatListHead}
-                        ListFooterComponent={flatListFooter}
-                        extraData={selectedId}
+                        ListHeaderComponent={FlatListHead}
+                        ListFooterComponent={FlatListFooter}
+                        extraData={assignComplaint._id}
                     />
                 </View>
                 <View

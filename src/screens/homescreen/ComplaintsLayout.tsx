@@ -172,8 +172,6 @@ export function ComplaintsLayout({ route }: any) {
         };
     }, []);
 
-    const [selectedId, setSelectedId] = React.useState(null);
-
     const FlatListHead = () => {
         return (
             <>

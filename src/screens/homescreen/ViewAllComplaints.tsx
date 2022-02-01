@@ -2,11 +2,12 @@ import { View, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
 import { Background, LightText, MediumText, Text } from "@components";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">) => {
+    const { t, i18n } = useTranslation();
     const complaints = [
         { id: 0, name: "Report complaint", uri: require("@assets/report.png"), navi: "ViewPost" },
         {

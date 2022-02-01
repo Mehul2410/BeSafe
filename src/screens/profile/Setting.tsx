@@ -11,9 +11,9 @@ import { useTranslation } from "react-i18next";
 import { resetPass } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { signUp } from "@contexts/slice/authSlice";
-import i18n from "src/i18n/i18n";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const user = useSelector((state: RootStateOrAny) => state.auth);
     const [changePassword, setChangePassword] = useState({
