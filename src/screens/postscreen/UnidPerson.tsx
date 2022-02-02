@@ -20,8 +20,11 @@ import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from "expo-location";
 import { NavigationProps } from "@types";
+import { useTranslation } from "react-i18next";
 
 export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -195,7 +198,7 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
         <Background>
             <Complaint>
                 <CustomInput
-                    placeholder="explaining the complete incidence"
+                    placeholder={t("exDetail")}
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
                 />
                 <Button
@@ -274,21 +277,21 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                     />
                 </View>
                 <CustomInput
-                    placeholder={`${changeStatus.status} Height`}
+                    placeholder={`Height`}
                     onChangeText={text => setComplaint({ ...complaint, height: text })}
                 />
                 <LightText textalign="center" string="Eg.5-6 feet OR in Cm" />
                 <CustomInput
-                    placeholder={`${changeStatus.status} Expected Age`}
+                    placeholder={`Expected Age`}
                     onChangeText={text => setComplaint({ ...complaint, expectedAge: text })}
                 />
                 <LightText textalign="center" string="Eg.21-24" />
                 <CustomInput
-                    placeholder={`${changeStatus.status} Upper Dress with Color `}
+                    placeholder={`Upper Dress with Color `}
                     onChangeText={text => setComplaint({ ...complaint, upperDressColor: text })}
                 />
                 <CustomInput
-                    placeholder={`${changeStatus.status} Lower Dress with Color`}
+                    placeholder={`Lower Dress with Color`}
                     onChangeText={text => setComplaint({ ...complaint, lowerDressColor: text })}
                 />
                 <LightText textalign="center" string="Eg.shirt-red OR jeans-blue" />

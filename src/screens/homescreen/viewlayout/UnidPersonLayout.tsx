@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, FlatList } from "react-native";
+import { View, Image, Modal, FlatList, TouchableOpacity, ScrollView } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -12,16 +12,15 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignUnIdPerson, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
-// import { ListItem } from "react-native-elements";
-// import { subscribeToChat } from "../../service/socketio.service";
+import { useTranslation } from "react-i18next";
 
 export function UnidPersonLayout({ route }: any) {
+    const { t } = useTranslation();
+
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
@@ -30,9 +29,7 @@ export function UnidPersonLayout({ route }: any) {
     const [assignComplaint, setAssignComplaint] = React.useState({
         activity: false,
         _id: "",
-        name: "",
-        avatar: "",
-        policePost: ""
+        name: ""
     });
 
     const [view, setView] = React.useState(false);
@@ -90,15 +87,52 @@ export function UnidPersonLayout({ route }: any) {
         }
     }
 
-    React.useEffect(() => {
-        getAllStationPolice();
-    }, []);
+    async function handleAssignPolice() {
+        if (assignComplaint.name !== "" && assignComplaint._id !== "") {
+            const cred = await getCredentials();
+            if (cred) {
+                if (!isTokenExpired(cred.access_token)) {
+                    try {
+                        const res = await fetch(assignUnIdPerson, {
+                            method: "PUT",
+                            body: JSON.stringify({
+                                assignName: assignComplaint.name,
+                                assignTo: assignComplaint._id,
+                                _id: route._id
+                            }),
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                authorization: `Bearer ${cred.access_token}`
+                            }
+                        });
+                        // const data = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    //active status to be send from backend to login police
+                }
+            }
+        } else {
+            setAssignComplaint({ _id: "", activity: false, name: "" });
+        }
+    }
 
-    const [selectedId, setSelectedId] = React.useState(null);
+    React.useEffect(() => {
+        const ac = new AbortController();
+        getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
+    }, []);
 
     function Police({ item }: any) {
         return (
-            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
+            <TouchableOpacity
+                onPress={() =>
+                    setAssignComplaint({ ...assignComplaint, _id: item._id, name: item.name })
+                }
+            >
                 <View
                     style={{
                         width: "100%",
@@ -109,7 +143,7 @@ export function UnidPersonLayout({ route }: any) {
                         paddingVertical: 8,
                         borderRadius: 10,
                         alignItems: "center",
-                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
+                        backgroundColor: item._id === assignComplaint._id ? "#27224dc7" : "#281B89"
                     }}
                 >
                     <Image
@@ -137,11 +171,11 @@ export function UnidPersonLayout({ route }: any) {
                         />
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
-    const flatListHead = () => {
+    const FlatListHead = () => {
         return (
             <>
                 <View
@@ -200,15 +234,11 @@ export function UnidPersonLayout({ route }: any) {
         );
     };
 
-    const flatListFooter = () => {
+    const FlatListFooter = () => {
         return (
             <>
                 {role === 4000 && (
-                    <Button
-                        btnName="Update Complaint"
-                        weight="200"
-                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                    />
+                    <Button btnName="Update Complaint" weight="200" onPress={handleAssignPolice} />
                 )}
                 {role === 5000 && (
                     <>
@@ -290,54 +320,54 @@ export function UnidPersonLayout({ route }: any) {
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Report type: ${route.reportFor}`}
+                            string={`${t("type")} ${route.reportFor}`}
                         />
-                        <MediumText align="flex-start" size={18} string="Incidence Detail :" />
+                        <MediumText align="flex-start" size={18} string={t("inDetail")} />
                         <LightText string={route.incidenceDesc} />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Date: ${route.dateFrom} - ${route.dateTo}`}
+                            string={`${t("date")} ${route.dateFrom} - ${route.dateTo}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Height: ${route.height}`}
+                            string={`${t("height")} ${route.height}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Expected Age: ${route.expectedAge}`}
+                            string={`${t("exAge")}${route.expectedAge}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Upper Dress: ${route.upperDressColor}`}
+                            string={`${t("up")} ${route.upperDressColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Lower Dress: ${route.lowerDressColor}`}
+                            string={`${t("low")} ${route.lowerDressColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`FaceCut with Color: ${route.faceCutWithColor}`}
+                            string={`${t("face")} ${route.faceCutWithColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`HairCut with Color: ${route.hairCutWithColor}`}
+                            string={`${t("hair")} ${route.hairCutWithColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`eyes color: ${route.eyes}`}
+                            string={`${t("eye")} ${route.eyes}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Location or Address: ${route.locName},${route.locAddress}`}
+                            string={`${t("lastLoc")} ${route.locName},${route.locAddress}`}
                         />
                         {/* <MediumText
                             align="flex-start"
@@ -358,13 +388,15 @@ export function UnidPersonLayout({ route }: any) {
                                 align="flex-start"
                                 size={15}
                                 color="#000"
-                                string={`Station Name: ${route.stationName}`}
+                                string={`${t("stationName")} ${route.stationName}`}
                             />
                             <RegularText
                                 size={15}
                                 color="#000"
                                 textalign="justify"
-                                string={`Address: ${route.stationAddress && route.stationAddress}`}
+                                string={`${t("add")}: ${
+                                    route.stationAddress && route.stationAddress
+                                }`}
                             />
                         </View>
                     </ScrollView>
@@ -391,11 +423,13 @@ export function UnidPersonLayout({ route }: any) {
                 >
                     <FlatList
                         data={police && police}
-                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
+                        renderItem={
+                            role === 4000 ? (assignComplaint.activity ? Police : null) : null
+                        }
                         keyExtractor={item => item._id}
-                        ListHeaderComponent={flatListHead}
-                        ListFooterComponent={flatListFooter}
-                        extraData={selectedId}
+                        ListHeaderComponent={FlatListHead}
+                        ListFooterComponent={FlatListFooter}
+                        extraData={assignComplaint._id}
                     />
                 </View>
                 <View
@@ -417,14 +451,14 @@ export function UnidPersonLayout({ route }: any) {
                             backgroundColor="#281B89"
                         />
                     </Modal>
-                    <Button weight="200" btnName="View Case Images" onPress={() => setView(true)} />
+                    <Button weight="200" btnName={t("viewImages")} onPress={() => setView(true)} />
                     <Button
                         bgColor="#DC143C"
                         weight="200"
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignTo}`}
                     />
                 </View>
             </View>

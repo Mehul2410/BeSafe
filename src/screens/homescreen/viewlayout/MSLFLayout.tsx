@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, FlatList } from "react-native";
+import { View, Image, Modal, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -12,16 +12,17 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignMSLF, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 // import { ListItem } from "react-native-elements";
 // import { subscribeToChat } from "../../service/socketio.service";
 
 export function MSLFLayout({ route }: any) {
+    const { t } = useTranslation();
+
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
@@ -30,9 +31,7 @@ export function MSLFLayout({ route }: any) {
     const [assignComplaint, setAssignComplaint] = React.useState({
         activity: false,
         _id: "",
-        name: "",
-        avatar: "",
-        policePost: ""
+        name: ""
     });
 
     const [view, setView] = React.useState(false);
@@ -89,16 +88,51 @@ export function MSLFLayout({ route }: any) {
             }
         }
     }
-
+    async function handleAssignPolice() {
+        if (assignComplaint.name !== "" && assignComplaint._id !== "") {
+            const cred = await getCredentials();
+            if (cred) {
+                if (!isTokenExpired(cred.access_token)) {
+                    try {
+                        const res = await fetch(assignMSLF, {
+                            method: "PUT",
+                            body: JSON.stringify({
+                                assignName: assignComplaint.name,
+                                assignTo: assignComplaint._id,
+                                _id: route._id
+                            }),
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                authorization: `Bearer ${cred.access_token}`
+                            }
+                        });
+                        // const data = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    //active status to be send from backend to login police
+                }
+            }
+        } else {
+            setAssignComplaint({ _id: "", activity: false, name: "" });
+        }
+    }
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
-
-    const [selectedId, setSelectedId] = React.useState(null);
 
     function Police({ item }: any) {
         return (
-            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
+            <TouchableOpacity
+                onPress={() =>
+                    setAssignComplaint({ ...assignComplaint, _id: item._id, name: item.name })
+                }
+            >
                 <View
                     style={{
                         width: "100%",
@@ -109,7 +143,7 @@ export function MSLFLayout({ route }: any) {
                         paddingVertical: 8,
                         borderRadius: 10,
                         alignItems: "center",
-                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
+                        backgroundColor: item._id === assignComplaint._id ? "#27224dc7" : "#281B89"
                     }}
                 >
                     <Image
@@ -137,7 +171,7 @@ export function MSLFLayout({ route }: any) {
                         />
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
@@ -204,11 +238,7 @@ export function MSLFLayout({ route }: any) {
         return (
             <>
                 {role === 4000 && (
-                    <Button
-                        btnName="Update Complaint"
-                        weight="200"
-                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                    />
+                    <Button btnName="Update Complaint" weight="200" onPress={handleAssignPolice} />
                 )}
                 {role === 5000 && (
                     <>
@@ -287,28 +317,28 @@ export function MSLFLayout({ route }: any) {
                     }}
                 >
                     <ScrollView>
-                        <Heading string={`Report type: ${route.reportFor}`} />
-                        <Heading string="Incidence Detail :" />
+                        <Heading string={`${t("type")} ${route.reportFor}`} />
+                        <Heading string={t("inDetail")} />
                         <LightText string={route.incidenceDesc} />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Date: ${route.dateFrom} - ${route.dateTo}`}
+                            string={`${t("date")}: ${route.dateFrom} - ${route.dateTo}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Thing Name: ${route.thingName}`}
+                            string={`${t("thingName")} ${route.thingName}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Thing Description: ${route.thingDesc}`}
+                            string={`${t("thingDes")} ${route.thingDesc}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Lost Location or Address: ${route.lostLocName},${route.lostLocAddress}`}
+                            string={`${t("lastLoc")} ${route.lostLocName},${route.lostLocAddress}`}
                         />
                         {/* <MediumText
                             align="flex-start"
@@ -329,13 +359,17 @@ export function MSLFLayout({ route }: any) {
                                 align="flex-start"
                                 size={15}
                                 color="#000"
-                                string={`Station Name: ${route.stationName && route.stationName}`}
+                                string={`${t("stationName")} ${
+                                    route.stationName && route.stationName
+                                }`}
                             />
                             <RegularText
                                 size={15}
                                 color="#000"
                                 textalign="justify"
-                                string={`Address: ${route.stationAddress && route.stationAddress}`}
+                                string={`${t("add")}: ${
+                                    route.stationAddress && route.stationAddress
+                                }`}
                             />
                         </View>
                     </ScrollView>
@@ -362,11 +396,13 @@ export function MSLFLayout({ route }: any) {
                 >
                     <FlatList
                         data={police && police}
-                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
+                        renderItem={
+                            role === 4000 ? (assignComplaint.activity ? Police : null) : null
+                        }
                         keyExtractor={item => item._id}
                         ListHeaderComponent={flatListHead}
                         ListFooterComponent={flatListFooter}
-                        extraData={selectedId}
+                        extraData={assignComplaint._id}
                     />
                 </View>
                 <View
@@ -388,14 +424,14 @@ export function MSLFLayout({ route }: any) {
                             backgroundColor="#281B89"
                         />
                     </Modal>
-                    <Button weight="200" btnName="View Case Images" onPress={() => setView(true)} />
+                    <Button weight="200" btnName={t("viewImages")} onPress={() => setView(true)} />
                     <Button
                         bgColor="#DC143C"
                         weight="200"
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignTo}`}
                     />
                 </View>
             </View>

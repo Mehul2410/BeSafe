@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 type Props = {};
 
 const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const complaints = [
         { id: 0, name: `${t("reportCom")}`, uri: require("@assets/report.png"), navi: "ViewPost" },
         {
@@ -33,7 +33,7 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
             id: 4,
             name: `${t("wanted")}`,
             uri: require("@assets/Wanted.png"),
-            navi: "Wanted"
+            navi: "ViewWanted"
         },
 
         {

@@ -26,3 +26,7 @@ export const allUsers = "https://besaferestapi.herokuapp.com/api/allusers";
 export const getStationPolice = "https://besaferestapi.herokuapp.com/api/getStationPolice";
 export const expoTokens = "https://besaferestapi.herokuapp.com/api/expoTokens";
 export const sendNotification = "https://besaferestapi.herokuapp.com/api/sendNoti";
+export const assignReport = "https://besaferestapi.herokuapp.com/api/assignReport";
+export const assignMissing = "https://besaferestapi.herokuapp.com/api/assignMissing";
+export const assignMSLF = "https://besaferestapi.herokuapp.com/api/assignMSLF";
+export const assignUnIdPerson = "https://besaferestapi.herokuapp.com/api/assignUnIdPerson";

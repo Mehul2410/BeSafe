@@ -16,6 +16,7 @@ import {
 import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -35,6 +36,7 @@ import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 type multiProps = any[];
 
 export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPerson">) {
+    const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.missingPerson
@@ -91,7 +93,7 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {`${t("missPerson")} ${t("complaint")}`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -177,7 +179,7 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Missing Person Report
+                                                    {`${t("missPerson")} ${t("report")}`}
                                                 </Text>
                                                 <Text
                                                     numberOfLines={2}
@@ -188,7 +190,7 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
                                                         paddingTop: 5
                                                     }}
                                                 >
-                                                    {`Name: ${item.name}`}
+                                                    {`${t("name")}: ${item.name}`}
                                                 </Text>
                                             </View>
                                         </TouchableWithoutFeedback>

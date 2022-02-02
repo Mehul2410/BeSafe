@@ -16,6 +16,7 @@ import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userMslf } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 import { MSLFLayout } from "./viewlayout/MSLFLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -35,6 +36,8 @@ import { MSLFLayout } from "./viewlayout/MSLFLayout";
 type multiProps = any[];
 
 export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.mslf
@@ -92,7 +95,7 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {`${t("mslf")} ${t("complaint")}`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>

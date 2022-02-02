@@ -290,7 +290,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                 >
                                     {t("deleteAc")}
                                 </Text>
-                                <CustomInput placeholder={t("reason")} />
+                                <CustomInput placeholder={`${t("reason")} ${"?"}`} />
                                 <View style={{ width: "100%" }}>
                                     <Pressable
                                         onPress={async () => {

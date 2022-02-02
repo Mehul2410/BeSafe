@@ -15,6 +15,7 @@ import {
     subscribeToChat
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -34,6 +35,8 @@ import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 type multiProps = any[];
 
 export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
@@ -57,7 +60,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
 
     useEffect(() => {
         const ac = new AbortController();
-        initiateSocketConnection(data => {
+        initiateSocketConnection((data: any) => {
             if (data) {
                 getComplaints();
                 AllComplaints((err: any, data: any) => {
@@ -88,7 +91,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {t("reportCom")}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -173,7 +176,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Reason
+                                                    {t("reason")}
                                                 </Text>
                                                 <Text
                                                     numberOfLines={4}

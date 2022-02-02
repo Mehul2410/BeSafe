@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Modal, FlatList } from "react-native";
+import { View, Image, Modal, FlatList, TouchableOpacity } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -14,14 +14,15 @@ import {
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignMissing, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 // import { ListItem } from "react-native-elements";
 // import { subscribeToChat } from "../../service/socketio.service";
 
 export function MissingPersonLayout({ route }: any) {
+    const { t } = useTranslation();
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
@@ -30,9 +31,7 @@ export function MissingPersonLayout({ route }: any) {
     const [assignComplaint, setAssignComplaint] = React.useState({
         activity: false,
         _id: "",
-        name: "",
-        avatar: "",
-        policePost: ""
+        name: ""
     });
 
     const [view, setView] = React.useState(false);
@@ -89,16 +88,51 @@ export function MissingPersonLayout({ route }: any) {
             }
         }
     }
-
+    async function handleAssignPolice() {
+        if (assignComplaint.name !== "" && assignComplaint._id !== "") {
+            const cred = await getCredentials();
+            if (cred) {
+                if (!isTokenExpired(cred.access_token)) {
+                    try {
+                        const res = await fetch(assignMissing, {
+                            method: "PUT",
+                            body: JSON.stringify({
+                                assignName: assignComplaint.name,
+                                assignTo: assignComplaint._id,
+                                _id: route._id
+                            }),
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json",
+                                authorization: `Bearer ${cred.access_token}`
+                            }
+                        });
+                        // const data = await res.json();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    //active status to be send from backend to login police
+                }
+            }
+        } else {
+            setAssignComplaint({ _id: "", activity: false, name: "" });
+        }
+    }
     React.useEffect(() => {
+        const ac = new AbortController();
         getAllStationPolice();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
-
-    const [selectedId, setSelectedId] = React.useState(null);
 
     function Police({ item }: any) {
         return (
-            <TouchableWithoutFeedback onPress={() => setSelectedId(item._id)}>
+            <TouchableOpacity
+                onPress={() =>
+                    setAssignComplaint({ ...assignComplaint, _id: item._id, name: item.name })
+                }
+            >
                 <View
                     style={{
                         width: "100%",
@@ -109,7 +143,7 @@ export function MissingPersonLayout({ route }: any) {
                         paddingVertical: 8,
                         borderRadius: 10,
                         alignItems: "center",
-                        backgroundColor: item._id === selectedId ? "#27224dc7" : "#281B89"
+                        backgroundColor: item._id === assignComplaint._id ? "#27224dc7" : "#281B89"
                     }}
                 >
                     <Image
@@ -137,7 +171,7 @@ export function MissingPersonLayout({ route }: any) {
                         />
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
         );
     }
 
@@ -204,11 +238,7 @@ export function MissingPersonLayout({ route }: any) {
         return (
             <>
                 {role === 4000 && (
-                    <Button
-                        btnName="Update Complaint"
-                        weight="200"
-                        onPress={() => setAssignComplaint({ ...assignComplaint, activity: true })}
-                    />
+                    <Button btnName="Update Complaint" weight="200" onPress={handleAssignPolice} />
                 )}
                 {role === 5000 && (
                     <>
@@ -224,7 +254,7 @@ export function MissingPersonLayout({ route }: any) {
                         />
                         <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                             {changeStatus.activity &&
-                                ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
+                                ["inProcess", "Hold", "Solved", "Closed"].map((items, index) => {
                                     return (
                                         <Button
                                             weight="200"
@@ -279,35 +309,43 @@ export function MissingPersonLayout({ route }: any) {
                     </>
                 )}
                 <View style={{ marginBottom: 20 }}>
-                    <Heading string="Incidence Detail :" />
+                    <Heading string={t("inDetail")} />
                     <LightText string={route.incidenceDesc} />
                     <View style={{ marginTop: 15, justifyContent: "space-evenly" }}>
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Date: ${route.dateFrom} - ${route.dateTo}`}
-                        />
-                        <MediumText align="flex-start" size={18} string={`Name: ${route.name}`} />
-                        <MediumText
-                            align="flex-start"
-                            size={18}
-                            string={`Father Name: ${route.fatherName}`}
+                            string={`${t("date")} ${route.dateFrom} - ${route.dateTo}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Height: ${route.height}`}
+                            string={`${t("name")}: ${route.name}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Religion: ${route.religion}`}
+                            string={`${t("father")} ${route.fatherName}`}
                         />
-                        <MediumText align="flex-start" size={18} string={`Gender: ${route.sex}`} />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Last Location or Address: ${route.locName},${route.locAddress}`}
+                            string={`${t("height")} ${route.height}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`${t("religion")} ${route.religion}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`${t("gender")} ${route.sex}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
+                            string={`${t("lastLoc")} ${route.locName},${route.locAddress}`}
                         />
                         {/* <MediumText
                             align="flex-start"
@@ -328,13 +366,17 @@ export function MissingPersonLayout({ route }: any) {
                                 align="flex-start"
                                 size={15}
                                 color="#000"
-                                string={`Station Name: ${route.stationName && route.stationName}`}
+                                string={`${t("stationName")} ${
+                                    route.stationName && route.stationName
+                                }`}
                             />
                             <RegularText
                                 size={15}
                                 color="#000"
                                 textalign="justify"
-                                string={`Address: ${route.stationAddress && route.stationAddress}`}
+                                string={`${t("add")}: ${
+                                    route.stationAddress && route.stationAddress
+                                }`}
                             />
                         </View>
                     </View>
@@ -361,11 +403,13 @@ export function MissingPersonLayout({ route }: any) {
                 >
                     <FlatList
                         data={police && police}
-                        renderItem={role === 4000 ? (assignComplaint ? Police : null) : null}
+                        renderItem={
+                            role === 4000 ? (assignComplaint.activity ? Police : null) : null
+                        }
                         keyExtractor={item => item._id}
                         ListHeaderComponent={flatListHead}
                         ListFooterComponent={flatListFooter}
-                        extraData={selectedId}
+                        extraData={assignComplaint._id}
                     />
                 </View>
                 <View
@@ -387,14 +431,14 @@ export function MissingPersonLayout({ route }: any) {
                             backgroundColor="#281B89"
                         />
                     </Modal>
-                    <Button weight="200" btnName="View Case Images" onPress={() => setView(true)} />
+                    <Button weight="200" btnName={t("viewImages")} onPress={() => setView(true)} />
                     <Button
                         bgColor="#DC143C"
                         weight="200"
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignName}`}
                     />
                 </View>
             </View>

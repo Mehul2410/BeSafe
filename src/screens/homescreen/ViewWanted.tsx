@@ -4,7 +4,7 @@ import React from "react";
 import { FlatList, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-export function Wanted({ navigation }: NavigationProps<"Wanted">) {
+export function ViewWanted({ navigation }: NavigationProps<"ViewWanted">) {
     const wantedTips = [
         {
             tip: "Protect yourself",

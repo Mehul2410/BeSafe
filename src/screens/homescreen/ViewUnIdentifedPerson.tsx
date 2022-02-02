@@ -15,6 +15,7 @@ import {
 import { ComplaintsLayout } from "./ComplaintsLayout";
 import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
 import { UnidPersonLayout } from "./viewlayout/UnidPersonLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -34,6 +35,8 @@ import { UnidPersonLayout } from "./viewlayout/UnidPersonLayout";
 type multiProps = any[];
 
 export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnidentifiedPerson">) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.UnidentifiedPerson
@@ -90,7 +93,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {`${t("unidPerson")} ${t("complaint")}`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -176,7 +179,7 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                         marginTop: 5
                                                     }}
                                                 >
-                                                    Unidentifed Person Report
+                                                    {`${t("unidPerson")} ${t("report")}`}
                                                 </Text>
                                                 <Text
                                                     numberOfLines={3}
