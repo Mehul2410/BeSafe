@@ -1,55 +1,57 @@
-import { View, Text, TouchableWithoutFeedback, Image, FlatList } from "react-native";
+import { View, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
-import { Background, LightText } from "@components";
+import { Background, LightText, Text } from "@components";
+import { useTranslation } from "react-i18next";
 
 type Props = {};
 
 const HistoryAllComplaints = ({ navigation }: NavigationProps<"HistoryAllComplaints">) => {
+    const { t } = useTranslation();
     const complaints = [
         {
             id: 0,
-            name: "Report complaint",
-            uri: require("@assets/police.png"),
+            name: `${t("reportCom")}`,
+            uri: require("@assets/report.png"),
             navi: "HistoryPost"
         },
         {
             id: 1,
-            name: "Missing person search",
-            uri: require("@assets/police.png"),
+            name: `${t("missPerson")}`,
+            uri: require("@assets/missing.png"),
             navi: "HistoryMissingPerson"
         },
         {
             id: 2,
-            name: "Un-identified person found",
-            uri: require("@assets/police.png"),
+            name: `${t("unidPerson")}`,
+            uri: require("@assets/unid.png"),
             navi: "HistoryUnidentifiedPerson"
         },
         {
             id: 3,
-            name: "Missing/stolen/lost/found",
-            uri: require("@assets/police.png"),
+            name: `${t("mslf")}`,
+            uri: require("@assets/stolen.png"),
             navi: "HistoryMSLF"
         },
 
         {
             id: 4,
-            name: "Wanted Criminals",
-            uri: require("@assets/police.png"),
+            name: `${t("wanted")}`,
+            uri: require("@assets/Wanted.png"),
             navi: "Wanted"
         },
 
         {
             id: 5,
-            name: "Mobile Apps Report",
-            uri: require("@assets/police.png"),
+            name: `${t("mobApp")}`,
+            uri: require("@assets/cyber.png"),
             navi: "MobileApp"
         },
 
         {
             id: 6,
-            name: "Bank related",
-            uri: require("@assets/police.png"),
+            name: `${t("bank")}`,
+            uri: require("@assets/bank.png"),
             navi: "Bank"
         }
     ];
@@ -102,6 +104,17 @@ const HistoryAllComplaints = ({ navigation }: NavigationProps<"HistoryAllComplai
                     keyExtractor={(item, index) => item.name}
                     numColumns={2}
                     bounces={true}
+                    stickyHeaderIndices={[0]}
+                    ListHeaderComponentStyle={{
+                        width: "50%",
+                        backgroundColor: "#130e5c",
+                        paddingBottom: 5
+                    }}
+                    ListHeaderComponent={
+                        <Text color="#FFF" style={{ textAlign: "center" }}>
+                            {t("history")}
+                        </Text>
+                    }
                 />
             </View>
         </Background>

@@ -7,11 +7,10 @@ import { colors } from "@utils";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import emailjs from "@emailjs/browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useTranslation } from "react-i18next";
 import { resetPass } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { signUp } from "@contexts/slice/authSlice";
-import i18n from "src/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
     const dispatch = useDispatch();
@@ -42,7 +41,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
             console.log(err);
         }
     };
-
+    const { t, i18n } = useTranslation();
     function handleLang(lang: string) {
         i18n.changeLanguage(lang);
         setLanguage(false);
@@ -90,7 +89,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     padding: 20
                 }}
             >
-                <Button weight="400" btnName="Setting" />
+                <Button weight="400" btnName={t("setting")} />
 
                 <View style={{ marginTop: 25, width: "100%", height: "100%" }}>
                     <Modal
@@ -132,7 +131,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         <Text>{changePassword.error}</Text>
                                     )}
                                     <CustomInput
-                                        placeholder="Old Password"
+                                        placeholder={t("oldPass")}
                                         onChangeText={text =>
                                             setChangePassword({
                                                 ...changePassword,
@@ -141,13 +140,13 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         }
                                     />
                                     <CustomInput
-                                        placeholder="New Password"
+                                        placeholder={t("newPass")}
                                         onChangeText={text =>
                                             setChangePassword({ ...changePassword, newPass: text })
                                         }
                                     />
                                     <CustomInput
-                                        placeholder="Confirm New Password"
+                                        placeholder={t("confirmPass")}
                                         onChangeText={text =>
                                             setChangePassword({ ...changePassword, confPass: text })
                                         }
@@ -155,7 +154,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     <Pressable onPress={handleChangePass}>
                                         <Button
                                             bgColor="#130e5c"
-                                            btnName="Change Password"
+                                            btnName={t("chanPass")}
                                             weight="400"
                                         />
                                     </Pressable>
@@ -166,14 +165,14 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable>
                         <Button
                             weight="400"
-                            btnName="Change Password"
+                            btnName={t("chanPass")}
                             onPress={handleChangePass}
                             bgColor="#FFF"
                             textColor="#130e5c"
                         />
                     </Pressable>
                     <Modal
-                        // animationType="slide"
+                        animationType="slide"
                         transparent={true}
                         visible={language}
                         onRequestClose={() => {
@@ -204,7 +203,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                 }}
                             >
                                 <Text weight="700" style={{ fontSize: 20, color: colors.white }}>
-                                    Language
+                                    {t("Lang")}
                                 </Text>
                                 <View style={{ width: "100%", marginTop: 10 }}>
                                     <Button
@@ -246,7 +245,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable onPress={() => setLanguage(!language)}>
                         <Button
                             weight="400"
-                            btnName="change Language"
+                            btnName={t("chanLang")}
                             bgColor="#FFF"
                             textColor="#130e5c"
                         />
@@ -289,9 +288,9 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         fontSize: 20
                                     }}
                                 >
-                                    Delete Account
+                                    {t("deleteAc")}
                                 </Text>
-                                <CustomInput placeholder="Reason?" />
+                                <CustomInput placeholder={t("reason")} />
                                 <View style={{ width: "100%" }}>
                                     <Pressable
                                         onPress={async () => {
@@ -302,7 +301,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     >
                                         <Button
                                             weight="400"
-                                            btnName="Confirm"
+                                            btnName={t("confirm")}
                                             bgColor="#FFF"
                                             textColor="#130e5c"
                                         />
@@ -314,7 +313,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable>
                         <Button
                             weight="400"
-                            btnName="Delete Account"
+                            btnName={t("deleteAc")}
                             onPress={() => setAccount(true)}
                             bgColor="#FFF"
                             textColor="#130e5c"

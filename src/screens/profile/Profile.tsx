@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getTokens } from "@contexts/slice/authSlice";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ViewProfile } from "./ViewProfile";
+import { useTranslation } from "react-i18next";
 
 interface profileBtnProps {
     navigate:
@@ -22,6 +23,7 @@ interface profileBtnProps {
 }
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
+    const { t } = useTranslation();
     const { userDetails, id, name, role, avatar, email } = useSelector(
         (state: RootStateOrAny) => state.auth
     );
@@ -75,16 +77,18 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                                 navigation.navigate("ViewProfile", userData);
                             }}
                         >
-                            <RegularText string="View" size={17} />
+                            <RegularText string={t("view")} size={17} />
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={styles.probtn}>
-                    {role === 3000 && <ProfileText name="Edit Profile" navigate="EditProfile" />}
+                    {role === 3000 && (
+                        <ProfileText name={t("editProfile")} navigate="EditProfile" />
+                    )}
                     {/* history */}
-                    <ProfileText name="History" navigate="HistoryAllComplaints" />
-                    <ProfileText name="Setting" navigate="Setting" />
-                    <ProfileText name="Help" navigate="Help" />
+                    <ProfileText name={t("history")} navigate="HistoryAllComplaints" />
+                    <ProfileText name={t("setting")} navigate="Setting" />
+                    <ProfileText name={t("help")} navigate="Help" />
                     <Text
                         style={styles.btn}
                         weight="400"
@@ -94,7 +98,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                             dispatch(getTokens({ access_token: "" }));
                         }}
                     >
-                        logout
+                        {t("logout")}
                     </Text>
                 </View>
             </View>

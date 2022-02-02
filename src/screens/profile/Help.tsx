@@ -4,7 +4,9 @@ import { View } from "react-native";
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import { Form } from "formik";
+import { useTranslation } from "react-i18next";
 export function Help({ navigation }: NavigationProps<"Help">) {
+    const { t } = useTranslation();
     return (
         <Background>
             <View
@@ -16,14 +18,14 @@ export function Help({ navigation }: NavigationProps<"Help">) {
                     padding: 20
                 }}
             >
-                <Button btnName="Help ?" weight="400" />
+                <Button btnName={t("help")} weight="400" />
                 <View style={{ width: "100%" }}>
-                    <CustomInput placeholder="Name" />
-                    <CustomInput placeholder="Email" />
-                    <CustomInput placeholder="Message" numberOfLines={4} />
-                    <CustomInput placeholder="query" />
+                    <CustomInput placeholder={t("name")} />
+                    <CustomInput placeholder={t("email")} />
+                    <CustomInput placeholder={t("msg")} numberOfLines={4} />
+                    <CustomInput placeholder={t("query")} />
                     <Button
-                        btnName="Submit"
+                        btnName={t("submit")}
                         // onPress={() => {
                         //     navigation.navigate("Profile");
                         // }}

@@ -4,6 +4,7 @@ import { Background, LightText, MediumText, Text } from "@components";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Post } from "./Post";
 import { NavigationProps } from "@types";
+import { useTranslation } from "react-i18next";
 
 interface profileBtnProps {
     navigate: "Post";
@@ -11,41 +12,42 @@ interface profileBtnProps {
 }
 
 export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) {
+    const { t } = useTranslation();
     const complaints = [
-        { id: 0, name: "Report complaint", uri: require("@assets/report.png"), navi: "Post" },
+        { id: 0, name: `${t("reportCom")}`, uri: require("@assets/report.png"), navi: "Post" },
         {
             id: 1,
-            name: "Missing person search",
+            name: `${t("missPerson")}`,
             uri: require("@assets/missing.png"),
             navi: "MissingPerson"
         },
         {
             id: 2,
-            name: "Un-identified person found",
+            name: `${t("unidPerson")}`,
             uri: require("@assets/unid.png"),
             navi: "UnidPerson"
         },
         {
             id: 3,
-            name: "Missing/stolen/lost/found",
+            name: `${t("mslf")}`,
             uri: require("@assets/stolen.png"),
             navi: "MSLF"
         },
         {
             id: 4,
-            name: "Wanted Criminals",
+            name: `${t("wanted")}`,
             uri: require("@assets/Wanted.png"),
             navi: "Wanted"
         },
         {
             id: 5,
-            name: "Mobile Apps Report",
+            name: `${t("mobApp")}`,
             uri: require("@assets/cyber.png"),
             navi: "MobileApp"
         },
         {
             id: 6,
-            name: "Bank related",
+            name: `${t("bank")}`,
             uri: require("@assets/bank.png"),
             navi: "Bank"
         }
@@ -106,7 +108,7 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
                             style={{ width: "100%", backgroundColor: "#130e5c", paddingBottom: 5 }}
                         >
                             <Text color="#FFF" style={{ textAlign: "center" }}>
-                                Post Complaints
+                                {t("postView")}
                             </Text>
                         </View>
                     }

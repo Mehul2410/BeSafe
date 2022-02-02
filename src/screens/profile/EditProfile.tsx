@@ -8,11 +8,13 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { citizenDetails, uploadImage } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { userData } from "@contexts/slice/authSlice";
+import { useTranslation } from "react-i18next";
 
 export function EditProfile({ navigation, route }: NavigationProps<"EditProfile">) {
+    const { t } = useTranslation();
     const [imageUri, setImageUri] = React.useState<string>();
     const [details, setDetails] = React.useState({
-        dob: "Birth Date(MM-DD-YYYY)",
+        dob: `${t("dob")}(MM-DD-YYYY)`,
         adhaarCard: "",
         panCard: "",
         address: "",
@@ -100,7 +102,7 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                     justifyContent: "center"
                 }}
             >
-                <Button weight="400" btnName="Edit Profile" />
+                <Button weight="400" btnName={t("editProfile")} />
                 <View
                     style={{
                         marginTop: 25,
@@ -131,21 +133,21 @@ export function EditProfile({ navigation, route }: NavigationProps<"EditProfile"
                         />
                         <CustomInput
                             onChangeText={text => setDetails({ ...details, adhaarCard: text })}
-                            placeholder="Adharcard"
+                            placeholder={t("adhar")}
                         />
                         <CustomInput
                             onChangeText={text => setDetails({ ...details, panCard: text })}
-                            placeholder="Pancard"
+                            placeholder={t("pan")}
                         />
                         <CustomInput
                             onChangeText={text => setDetails({ ...details, address: text })}
-                            placeholder="Address"
+                            placeholder={t("add")}
                         />
                         <CustomInput
                             onChangeText={text => setDetails({ ...details, occupation: text })}
-                            placeholder="Occupation"
+                            placeholder={t("occupation")}
                         />
-                        <Button btnName="save" onPress={SubmitEditProfile} />
+                        <Button btnName={t("Save")} onPress={SubmitEditProfile} />
                     </ScrollView>
                 </View>
                 <DateTimePickerModal
