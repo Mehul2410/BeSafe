@@ -9,12 +9,13 @@ import { policeDetails, uploadPaper } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { userData } from "@contexts/slice/authSlice";
+import { useTranslation } from "react-i18next";
 
 export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetail">) {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [imageUri, setImageUri] = React.useState<string>();
     const [error, setError] = React.useState<string>("");
-
     const [verificationDetails, setVerificationDetails] = React.useState({
         adhaarCard: "",
         panCard: "",
@@ -112,7 +113,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             color: colors.white
                         }}
                     >
-                        Verification Details
+                        {t("verDetail")}
                     </Text>
                 </View>
                 <View style={styles.box2}>
@@ -122,19 +123,19 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, adhaarCard: text })
                             }
-                            placeholder="Adhaar Card No."
+                            placeholder={t("adhar")}
                         />
                         <CustomInput
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, panCard: text })
                             }
-                            placeholder="Pan Card No."
+                            placeholder={t("pan")}
                         />
                         <CustomInput
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, policeID: text })
                             }
-                            placeholder="Police Id"
+                            placeholder={t("policeId")}
                         />
                         <CustomInput
                             onChangeText={text =>
@@ -143,7 +144,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                                     postingArea: text
                                 })
                             }
-                            placeholder="Posting Area"
+                            placeholder={t("postArea")}
                         />
                         {postingArea !== "" && <RegularText string={postingArea} />}
                         {postingArea === "" ? (
@@ -151,8 +152,8 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                                 style={{ backgroundColor: "#281B89" }}
                                 btnName={
                                     verificationDetails.postingAreaAddress
-                                        ? "Saved Address"
-                                        : "Check Posting Area Address"
+                                        ? `${t("save")} ${t("add")}`
+                                        : `${t("checkPost")}`
                                 }
                                 weight="400"
                                 onPress={fetchPostingArea}
@@ -160,7 +161,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                         ) : (
                             <Button
                                 style={{ backgroundColor: "#281B89" }}
-                                btnName="Approve Address"
+                                btnName={`${t("approve")} ${t("add")}`}
                                 weight="400"
                                 onPress={() => {
                                     setVerificationDetails({
@@ -175,7 +176,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, policePost: text })
                             }
-                            placeholder="Police Post"
+                            placeholder={`${t("police")} ${t("post")}`}
                         />
                         <CustomInput
                             onChangeText={text => {
@@ -184,22 +185,22 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                                     dob: text
                                 });
                             }}
-                            placeholder="DOB"
+                            placeholder={t("dob")}
                         />
                         <CustomInput
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, city: text })
                             }
-                            placeholder="City"
+                            placeholder={t("city")}
                         />
                         <CustomInput
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, address: text })
                             }
-                            placeholder="Personal Address"
+                            placeholder={`${t("prsnl")} ${t("add")}`}
                         />
                         <Text weight="700" color="#FFF">
-                            Verification paper
+                            {t("verPaper")}
                         </Text>
                         <ImageInput
                             imageUri={imageUri}
@@ -211,7 +212,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                         />
                         <Button
                             style={{ backgroundColor: "#281B89" }}
-                            btnName="verify"
+                            btnName={t("verify")}
                             weight="400"
                             onPress={SubmitForVerification}
                         />

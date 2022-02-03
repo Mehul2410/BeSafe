@@ -1,6 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import React, { ReactNode, useEffect, useState } from "react";
-import { Home, Profile, Post, ComplaintGroup } from "@screens";
+import React, { ReactNode } from "react";
 import {
     View,
     Image,
@@ -9,16 +8,14 @@ import {
     Keyboard,
     TouchableWithoutFeedback
 } from "react-native";
-import { Text } from "@components";
 import { colors } from "@utils";
 import AuthNavigator from "./AuthNavigator";
 import ComplaintNavigator from "./ComplaintNavigator";
+import PostNavigator from "./PostNavigator";
 
 type CustomTabBarButtonprops = {
     children: ReactNode;
 } & TouchableOpacityProps;
-
-// const [color, setColor] = useState(false);
 
 const Tab = createBottomTabNavigator();
 
@@ -80,8 +77,8 @@ const Tabs = () => {
                 }}
             />
             <Tab.Screen
-                name="Post"
-                component={Post}
+                name="ComplaintTypes"
+                component={PostNavigator}
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image

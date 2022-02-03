@@ -3,4 +3,4 @@
 
 # yarn run typecheck
 # yarn run lint-staged
-yarn run format:check
+# yarn run format:check

@@ -1,53 +1,86 @@
 import React, { ReactElement } from "react";
-import { AppBootstrap } from "@components";
+import { AppBootstrap, PostLoader, Normalloader } from "@components";
 import Tabs from "@config/tabnavigator/Tab";
 import { NavigationContainer } from "@react-navigation/native";
 import AuthNavigator from "@config/navigations/AuthNavigator";
 import { store } from "@contexts/store/store";
 import { Provider, RootStateOrAny, useSelector } from "react-redux";
-import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { getCredentials } from "@contexts/store/credentials";
 import { useDispatch } from "react-redux";
 import { getTokens, userData } from "@contexts/slice/authSlice";
-import { myDetails } from "@contexts/api/client";
+import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
-import useSWR from "swr";
-import { Image, View } from "react-native";
+import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
 
 function Navigation(): ReactElement {
+    const [loading, setLoading] = React.useState(false);
     const dispatch = useDispatch();
     async function getData() {
         const creds = await getCredentials();
         if (creds) {
-            const res = await fetch(myDetails, {
-                method: "GET",
-                headers: {
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
+            const expo = await registerForPushNotificationsAsync();
+            if (expo) {
+                try {
+                    const token = await fetch(expoTokens, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            notificationToken: expo
+                        }),
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                            authorization: `Bearer ${creds.access_token}`
+                        }
+                    });
+                    const statusChange = await token.json();
+                    const res = await fetch(myDetails, {
+                        method: "GET",
+                        headers: {
+                            Accept: "application/json",
+                            authorization: `Bearer ${creds.access_token}`
+                        }
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        dispatch(getTokens(creds));
+                        dispatch(userData(data.user));
+                        setLoading(true);
+                    } else {
+                        setLoading(false);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            });
-            const user = await res.json();
-            return { creds, user };
+            }
+        } else {
+            setLoading(true);
         }
     }
-    const { data, error } = useSWR("operator_key", getData);
-    if (data) {
-        dispatch(getTokens(data.creds));
-        dispatch(userData(data.user));
-    }
+    React.useEffect(() => {
+        const ac = new AbortController();
+        getData();
+        return function cleanup() {
+            ac.abort();
+        };
+    }, []);
     const user = useSelector((state: RootStateOrAny) => state.auth);
     return (
         <>
-            <NavigationContainer>
-                {user.token ? (
-                    user.active === false ? (
-                        <PoliceNavigation />
+            {!loading ? (
+                <Normalloader />
+            ) : (
+                <NavigationContainer>
+                    {user.token ? (
+                        user.active === false ? (
+                            <PoliceNavigation />
+                        ) : (
+                            <Tabs />
+                        )
                     ) : (
-                        <Tabs />
-                    )
-                ) : (
-                    <AuthNavigator />
-                )}
-            </NavigationContainer>
+                        <AuthNavigator />
+                    )}
+                </NavigationContainer>
+            )}
         </>
     );
 }

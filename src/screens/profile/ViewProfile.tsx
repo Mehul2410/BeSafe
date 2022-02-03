@@ -5,7 +5,9 @@ import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import { TabRouter } from "@react-navigation/native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile">) {
+    const { t } = useTranslation();
     const [paper, setPaper] = useState(false);
     return (
         <Background>
@@ -24,123 +26,164 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                         padding: 20
                     }}
                 >
-                    <ScrollView>
-                        <Image
-                            style={{
-                                height: 150,
-                                width: 150,
-                                borderRadius: 95,
-                                borderColor: "#FFF",
-                                borderWidth: 5,
-                                alignSelf: "center"
-                            }}
-                            source={
-                                route.params.avatar
-                                    ? { uri: route.params.avatar }
-                                    : require("@assets/img.png")
-                            }
-                        />
-
-                        {route.params.role === 3000 ? (
-                            <View>
-                                <MediumText vmargin={10} color="#FFF" string="citizen" />
-                                <RegularText
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Name: ${route.params.name}`}
-                                />
-                                <RegularText
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Email: ${route.params.email}`}
-                                />
-                                <RegularText
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`DOB: ${
-                                        route.params.userDetails && route.params.userDetails.dob
-                                    }`}
-                                />
-                                <RegularText
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Address: ${
-                                        route.params.userDetails && route.params.userDetails.address
-                                    }`}
-                                />
-                                <RegularText
-                                    vmargin={10}
-                                    color="#FFF"
-                                    string={`Occupation: ${
-                                        route.params.userDetails &&
-                                        route.params.userDetails.occupation
-                                    }`}
-                                />
-                            </View>
-                        ) : (
+                    {route.params.role === 3000 ? (
+                        <View style={{ height: "100%", width: "100%" }}>
+                            <Image
+                                style={{
+                                    height: 150,
+                                    width: 150,
+                                    borderRadius: 95,
+                                    borderColor: "#FFF",
+                                    borderWidth: 3,
+                                    alignSelf: "center"
+                                }}
+                                source={
+                                    route.params.avatar
+                                        ? { uri: route.params.avatar }
+                                        : require("@assets/img.png")
+                                }
+                            />
+                            <MediumText vmargin={10} color="#FFF" string={t("citizen")} />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`${t("name")}: ${route.params.name}`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`${t("email")}: ${route.params.email}`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`${t("dob")}: ${
+                                    route.params.userDetails && route.params.userDetails.dob
+                                }`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`${t("add")}: ${
+                                    route.params.userDetails && route.params.userDetails.address
+                                }`}
+                            />
+                            <RegularText
+                                size={18}
+                                align="flex-start"
+                                vmargin={10}
+                                color="#FFF"
+                                string={`${t("occupation")}: ${
+                                    route.params.userDetails && route.params.userDetails.occupation
+                                }`}
+                            />
+                        </View>
+                    ) : (
+                        <ScrollView>
                             <View style={{ height: "90%" }}>
-                                <MediumText vmargin={10} color="#FFF" string="police" />
+                                <Image
+                                    style={{
+                                        height: 150,
+                                        width: 150,
+                                        borderRadius: 95,
+                                        borderColor: "#FFF",
+                                        borderWidth: 3,
+                                        alignSelf: "center"
+                                    }}
+                                    source={
+                                        route.params.avatar
+                                            ? { uri: route.params.avatar }
+                                            : require("@assets/police.png")
+                                    }
+                                />
+                                <MediumText vmargin={10} color="#FFF" string={t("police")} />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Name: ${route.params.name}`}
+                                    string={`${t("name")}: ${route.params.name}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Email: ${route.params.email}`}
+                                    string={`${t("email")}: ${route.params.email}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`DOB: ${route.params.userDetails.dob}`}
+                                    string={`${t("dob")}: ${route.params.userDetails.dob}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Police ID: ${route.params.userDetails.policeID}`}
+                                    string={`${t("police")} ${t("id")}: ${
+                                        route.params.userDetails.policeID
+                                    }`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Posting Area: ${route.params.userDetails.postingArea}`}
+                                    string={`${t("postArea")}: ${
+                                        route.params.userDetails.postingArea
+                                    }`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Police Post: ${route.params.userDetails.policePost}`}
+                                    string={`${t("police")} ${t("post")}: ${
+                                        route.params.userDetails.policePost
+                                    }`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Adhaarcard: ${route.params.userDetails.adhaarCard}`}
+                                    string={`${t("adhar")}: ${route.params.userDetails.adhaarCard}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Pancard: ${route.params.userDetails.panCard}`}
+                                    string={`${t("pan")}: ${route.params.userDetails.panCard}`}
                                 />
 
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Address: ${route.params.userDetails.address}`}
+                                    string={`${t("add")}: ${route.params.userDetails.address}`}
                                 />
                                 <RegularText
+                                    size={18}
+                                    align="flex-start"
                                     vmargin={10}
                                     color="#FFF"
-                                    string={`Posting Area: ${route.params.userDetails.postingAreaAddress}`}
+                                    string={`${t("postArea")} ${t("add")}: ${
+                                        route.params.userDetails.postingAreaAddress
+                                    }`}
                                 />
-                                <TouchableWithoutFeedback>
-                                    <Button
-                                        btnName="verification paper view"
-                                        style={{
-                                            backgroundColor: "#130e5c",
-                                            paddingHorizontal: 15
-                                        }}
-                                        onPress={() => setPaper(!paper)}
-                                    />
-                                </TouchableWithoutFeedback>
                                 {paper && (
                                     <Image
                                         style={{ height: 300, width: 300, alignSelf: "center" }}
@@ -150,9 +193,19 @@ export function ViewProfile({ navigation, route }: NavigationProps<"ViewProfile"
                                         }}
                                     />
                                 )}
+                                <TouchableWithoutFeedback>
+                                    <Button
+                                        btnName={t("verPaper")}
+                                        style={{
+                                            backgroundColor: "#130e5c",
+                                            paddingHorizontal: 15
+                                        }}
+                                        onPress={() => setPaper(!paper)}
+                                    />
+                                </TouchableWithoutFeedback>
                             </View>
-                        )}
-                    </ScrollView>
+                        </ScrollView>
+                    )}
                 </View>
             </View>
         </Background>

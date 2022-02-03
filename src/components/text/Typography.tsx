@@ -9,19 +9,54 @@ interface Props {
     vmargin?: number;
     bgcolor?: string;
     align?: "auto" | FlexAlignType | undefined;
+    size?: number;
+    textalign?: "auto" | "left" | "right" | "center" | "justify";
+    width?: number | string;
 }
 
-export const RegularText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
+export const RegularText = ({
+    string,
+    color,
+    align = "center",
+    vmargin = 0,
+    size,
+    textalign
+}: Props) => {
     return (
-        <Text weight="400" color={color} style={{ marginVertical: vmargin, alignSelf: align }}>
+        <Text
+            weight="400"
+            color={color ? color : "#FFF"}
+            style={{
+                marginVertical: vmargin,
+                alignSelf: align,
+                fontSize: size,
+                textAlign: textalign
+            }}
+        >
             {string}
         </Text>
     );
 };
 
-export const MediumText = ({ string, color, align = "center", vmargin = 0 }: Props) => {
+export const MediumText = ({
+    string,
+    color,
+    align = "center",
+    vmargin = 0,
+    size,
+    width
+}: Props) => {
     return (
-        <Text weight="700" color="#FFF" style={{ alignSelf: align, marginVertical: vmargin }}>
+        <Text
+            weight="700"
+            color="#FFF"
+            style={{
+                alignSelf: align,
+                marginVertical: vmargin,
+                fontSize: size ? size : 24,
+                width: width
+            }}
+        >
             {string}
         </Text>
     );
@@ -33,9 +68,9 @@ export const LargeText = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const LightText = ({ string, color, bgcolor }: Props) => {
+export const LightText = ({ string, color, bgcolor, textalign }: Props) => {
     return (
-        <Text weight="200" color="#FFF" style={{ textAlign: "justify" }}>
+        <Text weight="200" color="#FFF" style={{ textAlign: textalign ? textalign : "justify" }}>
             {string}
         </Text>
     );
@@ -70,7 +105,7 @@ export const DateAndTime = ({ string, color }: Props) => {
         </Text>
     );
 };
-export const Reason = ({ string, color }: Props) => {
+export const Heading = ({ string, color, vmargin }: Props) => {
     return (
         <Text
             weight="700"
@@ -78,8 +113,7 @@ export const Reason = ({ string, color }: Props) => {
                 color: "#FFF",
                 marginTop: 5,
                 marginBottom: 10,
-                fontSize: 18,
-                marginStart: 3
+                fontSize: 18
             }}
         >
             {string}

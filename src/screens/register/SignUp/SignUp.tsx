@@ -1,4 +1,4 @@
-import { Background, Button, CustomInput, Text, TextCheckBox } from "@components";
+import { Background, Button, CustomInput, Password, Text, TextCheckBox } from "@components";
 import { NavigationProps } from "@types";
 import React, { ReactElement } from "react";
 import { View, Image } from "react-native";
@@ -11,8 +11,10 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { getTokens, signUp, userData } from "@contexts/slice/authSlice";
 import { isTokenExpired } from "@contexts/store/credentials";
 import emailjs from "@emailjs/browser";
+import { useTranslation } from "react-i18next";
 
 export default function SignUp({ navigation, route }: NavigationProps<"SignUp">): ReactElement {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
     const signUpInfo = {
@@ -69,13 +71,19 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
         }
     };
 
+    const [hidePass, setHidePass] = React.useState(true);
     return (
         <Background>
             <View style={styles.view}>
                 <View style={styles.box1}>
                     <Image style={styles.img} source={route.params.uri} />
                     <Text style={{ color: "#FFF", marginTop: 15 }}>
-                        Sign-up as {route.params.role === 5000 ? "Police" : "Citizen"}
+                        {t("signUpAs")}{" "}
+                        {route.params.role === 5000
+                            ? `${t("police")}`
+                            : route.params.role === 4000
+                            ? `${t("station")}`
+                            : `${t("citizen")}`}
                     </Text>
                 </View>
                 <View style={styles.box2}>
@@ -97,7 +105,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             error={touched.name && errors.name}
                                             onChangeText={handleChange("name")}
                                             onBlur={handleBlur("name")}
-                                            placeholder="Name"
+                                            placeholder={t("name")}
                                             style={{ marginVertical: 12 }}
                                         />
                                         <CustomInput
@@ -105,16 +113,15 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             error={touched.email && errors.email}
                                             onChangeText={handleChange("email")}
                                             onBlur={handleBlur("email")}
-                                            placeholder="Email"
+                                            placeholder={t("email")}
                                             style={{ marginVertical: 12 }}
                                         />
-                                        <CustomInput
+                                        <Password
                                             value={password}
                                             error={touched.password && errors.password}
                                             onChangeText={handleChange("password")}
                                             onBlur={handleBlur("password")}
-                                            secureTextEntry={true}
-                                            placeholder="Password"
+                                            placeholder={t("pass")}
                                             style={{ marginVertical: 12 }}
                                         />
                                         <CustomInput
@@ -125,7 +132,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             onChangeText={handleChange("confirmPassword")}
                                             onBlur={handleBlur("confirmPassword")}
                                             secureTextEntry={true}
-                                            placeholder="Confirm Password"
+                                            placeholder={`${t("pass")} ${t("cPass")}`}
                                             style={{ marginVertical: 12 }}
                                         />
                                         {route.params.agree && (
@@ -136,7 +143,7 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
                                             />
                                         )}
                                         <Button
-                                            btnName="SignUp"
+                                            btnName={t("signUp")}
                                             weight="400"
                                             style={{
                                                 marginVertical: 12,
@@ -153,4 +160,20 @@ export default function SignUp({ navigation, route }: NavigationProps<"SignUp">)
             </View>
         </Background>
     );
+}
+
+{
+    /* <CustomInput
+                                                value={password}
+                                                error={touched.password && errors.password}
+                                                onChangeText={handleChange("password")}
+                                                onBlur={handleBlur("password")}
+                                                secureTextEntry={hidePass ? true : false}
+                                                placeholder="Password"
+                                                style={{
+                                                    width: "89%",
+                                                    marginVertical: 12
+                                                    // position: "relative"
+                                                }}
+                                            /> */
 }

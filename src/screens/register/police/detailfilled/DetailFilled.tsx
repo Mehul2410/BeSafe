@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import { Background, Text } from "@components";
 import { Image, View } from "react-native";
 import { NavigationProps } from "@types";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export function DetailFilled({ navigation }: NavigationProps<"DetailFilled">) {
+    const { t } = useTranslation();
     function validSubmission() {}
     setTimeout(validSubmission, 3000);
     return (
@@ -17,11 +20,11 @@ export function DetailFilled({ navigation }: NavigationProps<"DetailFilled">) {
                 }}
             >
                 <Text weight="700" style={{ color: "#FFF", textAlign: "center" }}>
-                    You have sucessfully applied for the verification process.
+                    {t("verSuccess")}
                 </Text>
                 <Image style={{ marginVertical: 25 }} source={require("@assets/yayee.png")} />
                 <Text weight="200" style={{ color: "#FFF", textAlign: "center" }}>
-                    You will recieve the verification mail within 2-3 working days
+                    {t("verMail")}
                 </Text>
             </View>
         </Background>
