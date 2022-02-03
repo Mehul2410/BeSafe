@@ -23,8 +23,8 @@ import { NavigationProps } from "@types";
 import { useTranslation } from "react-i18next";
 
 export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
+    const [error, setError] = React.useState("");
     const { t } = useTranslation();
-
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -126,6 +126,11 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewUnidentifiedPerson");
+            } else {
+                setError(res.message);
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
             }
             const token = await fetch(sendNotification, {
                 method: "POST",
@@ -196,7 +201,8 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
 
     return (
         <Background>
-            <Complaint>
+            <Complaint error={error}>
+                {error !== "" && <Text>{error}</Text>}
                 <CustomInput
                     placeholder={t("exDetail")}
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}

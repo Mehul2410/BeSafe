@@ -7,7 +7,8 @@ import {
     ViewAllComplaints,
     ViewMissingPerson,
     ViewMSLF,
-    ViewUnidentifiedPerson
+    ViewUnidentifiedPerson,
+    ViewWanted
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -28,6 +29,7 @@ export default function ComplaintNavigator(): ReactElement {
             <Stack.Screen name="ViewMSLF" component={ViewMSLF} />
             <Stack.Screen name="ViewUnidentifiedPerson" component={ViewUnidentifiedPerson} />
             <Stack.Screen name="ViewMissingPerson" component={ViewMissingPerson} />
+            <Stack.Screen name="ViewWanted" component={ViewWanted} />
         </Stack.Navigator>
     );
 }

@@ -22,6 +22,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from "expo-location";
 
 export function MSLF({ navigation }: NavigationProps<"MSLF">) {
+    const [error, setError] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -117,6 +118,11 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewMSLF");
+            } else {
+                setError(res.message);
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
             }
             const token = await fetch(sendNotification, {
                 method: "POST",
@@ -187,7 +193,8 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
     });
     return (
         <Background>
-            <Complaint>
+            <Complaint error={error}>
+                {error !== "" && <Text>{error}</Text>}
                 <CustomInput
                     placeholder="explaining the complete incidence"
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}

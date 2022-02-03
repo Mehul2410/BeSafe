@@ -22,6 +22,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
 
 export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) {
+    const [error, setError] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -135,6 +136,11 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewPost");
+            } else {
+                setError(res.message);
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
             }
             const token = await fetch(sendNotification, {
                 method: "POST",
@@ -185,7 +191,8 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
 
     return (
         <Background>
-            <Complaint>
+            <Complaint error={error}>
+                {error !== "" && <Text>{error}</Text>}
                 <CustomInput
                     placeholder="explaining the complete incidence"
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
@@ -216,7 +223,6 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                         textColor={colors.quatnary}
                     />
                 </View>
-
                 <CustomInput
                     placeholder="Name"
                     onChangeText={text => setComplaint({ ...complaint, name: text })}
