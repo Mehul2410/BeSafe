@@ -16,8 +16,10 @@ import { getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useTranslation } from "react-i18next";
 
 export function UnidPersonLayout({ route }: any) {
+    const { t } = useTranslation();
     const [changeStatus, setChangeStatus] = React.useState({
         activity: false,
         status: ""
@@ -224,7 +226,12 @@ export function UnidPersonLayout({ route }: any) {
                         />
                         <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                             {changeStatus.activity &&
-                                ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
+                                [
+                                    `${t("inProcess")}`,
+                                    `${t("Hold")}`,
+                                    `${t("Solved")}`,
+                                    `${t("Closed")}`
+                                ].map((items, index) => {
                                     return (
                                         <Button
                                             weight="200"
@@ -290,54 +297,54 @@ export function UnidPersonLayout({ route }: any) {
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Report type: ${route.reportFor}`}
+                            string={`${t("type")} ${route.reportFor}`}
                         />
-                        <MediumText align="flex-start" size={18} string="Incidence Detail :" />
+                        <MediumText align="flex-start" size={18} string={t("inDetail")} />
                         <LightText string={route.incidenceDesc} />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Date: ${route.dateFrom} - ${route.dateTo}`}
+                            string={`${t("date")} ${route.dateFrom} - ${route.dateTo}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Height: ${route.height}`}
+                            string={`${t("height")} ${route.height}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Expected Age: ${route.expectedAge}`}
+                            string={`${t("exAge")}${route.expectedAge}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Upper Dress: ${route.upperDressColor}`}
+                            string={`${t("up")} ${route.upperDressColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Lower Dress: ${route.lowerDressColor}`}
+                            string={`${t("low")} ${route.lowerDressColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`FaceCut with Color: ${route.faceCutWithColor}`}
+                            string={`${t("face")} ${route.faceCutWithColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`HairCut with Color: ${route.hairCutWithColor}`}
+                            string={`${t("hair")} ${route.hairCutWithColor}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`eyes color: ${route.eyes}`}
+                            string={`${t("eye")} ${route.eyes}`}
                         />
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`Location or Address: ${route.locName},${route.locAddress}`}
+                            string={`${t("lastLoc")} ${route.locName},${route.locAddress}`}
                         />
                         {/* <MediumText
                             align="flex-start"
@@ -358,13 +365,15 @@ export function UnidPersonLayout({ route }: any) {
                                 align="flex-start"
                                 size={15}
                                 color="#000"
-                                string={`Station Name: ${route.stationName}`}
+                                string={`${t("stationName")} ${route.stationName}`}
                             />
                             <RegularText
                                 size={15}
                                 color="#000"
                                 textalign="justify"
-                                string={`Address: ${route.stationAddress && route.stationAddress}`}
+                                string={`${t("add")}: ${
+                                    route.stationAddress && route.stationAddress
+                                }`}
                             />
                         </View>
                     </ScrollView>
@@ -417,14 +426,14 @@ export function UnidPersonLayout({ route }: any) {
                             backgroundColor="#281B89"
                         />
                     </Modal>
-                    <Button weight="200" btnName="View Case Images" onPress={() => setView(true)} />
+                    <Button weight="200" btnName={t("viewImages")} onPress={() => setView(true)} />
                     <Button
                         bgColor="#DC143C"
                         weight="200"
                         style={{
                             color: colors.white
                         }}
-                        btnName={`Assigned to: ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignTo}`}
                     />
                 </View>
             </View>

@@ -94,9 +94,9 @@
         "up": "Upper Dress:",
         "thingName": "Thing Name:",
         "thingDes": "Thing Description:",
-        "Found": "पाया",
-        "Lost": "खोया",
-        "Stolen": "चुराया",
-        "Missing": "गुमशुदा"
+        "found": "Found",
+        "lost": "Lost",
+        "stolen": "Stolen",
+        "missing": "Missing"
     }
 }

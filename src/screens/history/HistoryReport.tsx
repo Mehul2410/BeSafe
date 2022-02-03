@@ -14,6 +14,7 @@ import {
     initiateSocketConnection
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -33,6 +34,7 @@ import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 type multiProps = any[];
 
 export function HistoryReport({ navigation }: NavigationProps<"HistoryPost">) {
+    const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.auth.complaints
@@ -87,7 +89,7 @@ export function HistoryReport({ navigation }: NavigationProps<"HistoryPost">) {
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {t("reportCom")}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -174,7 +176,7 @@ export function HistoryReport({ navigation }: NavigationProps<"HistoryPost">) {
                                                             marginTop: 5
                                                         }}
                                                     >
-                                                        Reason
+                                                        {t("reason")}
                                                     </Text>
                                                     <Text
                                                         numberOfLines={4}

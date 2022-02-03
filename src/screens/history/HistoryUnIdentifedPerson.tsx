@@ -15,6 +15,7 @@ import {
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
 import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -40,6 +41,7 @@ export function HistoryUnIdentifedPerson({
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.UnidentifiedPerson
     );
+    const { t } = useTranslation();
 
     const dispatch = useDispatch();
     async function getComplaints() {
@@ -93,7 +95,7 @@ export function HistoryUnIdentifedPerson({
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {`${t("unidPerson")} ${t("complaint")}`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -181,10 +183,10 @@ export function HistoryUnIdentifedPerson({
                                                             marginTop: 5
                                                         }}
                                                     >
-                                                        Reason
+                                                        {`${t("unidPerson")} ${t("report")}`}
                                                     </Text>
                                                     <Text
-                                                        numberOfLines={4}
+                                                        numberOfLines={3}
                                                         weight="400"
                                                         style={{
                                                             color: colors.white,
@@ -192,7 +194,7 @@ export function HistoryUnIdentifedPerson({
                                                             paddingTop: 5
                                                         }}
                                                     >
-                                                        {item.reportFor}
+                                                        {item.incidenceDesc}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>

@@ -254,7 +254,12 @@ export function MSLFLayout({ route }: any) {
                         />
                         <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                             {changeStatus.activity &&
-                                ["In Process", "Hold", "Solved", "Closed"].map((items, index) => {
+                                [
+                                    `${t("inProcess")}`,
+                                    `${t("Hold")}`,
+                                    `${t("Solved")}`,
+                                    `${t("Closed")}`
+                                ].map((items, index) => {
                                     return (
                                         <Button
                                             weight="200"

@@ -20,8 +20,11 @@ import React from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Location from "expo-location";
+import { useTranslation } from "react-i18next";
 
 export function MSLF({ navigation }: NavigationProps<"MSLF">) {
+    const { t } = useTranslation();
+
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -204,20 +207,22 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                 />
                 <View style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
                     {changeStatus.activity &&
-                        ["Missing", "Stolen", "Lost", "Found"].map((items, index) => {
-                            return (
-                                <CheckBox
-                                    weight="200"
-                                    check={complaint.reportFor}
-                                    key={index}
-                                    onPress={() => {
-                                        setChangeStatus({ ...changeStatus, status: items });
-                                        setComplaint({ ...complaint, reportFor: items });
-                                    }}
-                                    btnName={items}
-                                />
-                            );
-                        })}
+                        [`${t("missing")}`, `${t("stolen")}`, `${t("lost")}`, `${t("found")}`].map(
+                            (items, index) => {
+                                return (
+                                    <CheckBox
+                                        weight="200"
+                                        check={complaint.reportFor}
+                                        key={index}
+                                        onPress={() => {
+                                            setChangeStatus({ ...changeStatus, status: items });
+                                            setComplaint({ ...complaint, reportFor: items });
+                                        }}
+                                        btnName={items}
+                                    />
+                                );
+                            }
+                        )}
                 </View>
                 {changeStatus.status !== "" && (
                     <>

@@ -15,6 +15,7 @@ import {
 import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
 import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -34,6 +35,7 @@ import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 type multiProps = any[];
 
 export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMissingPerson">) {
+    const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.missingPerson
@@ -178,7 +180,7 @@ export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMis
                                                             marginTop: 5
                                                         }}
                                                     >
-                                                        Missing Person Report
+                                                        {`${t("missPerson")} ${t("report")}`}
                                                     </Text>
                                                     <Text
                                                         numberOfLines={2}
@@ -189,7 +191,7 @@ export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMis
                                                             paddingTop: 5
                                                         }}
                                                     >
-                                                        {`Name: ${item.name}`}
+                                                        {`${t("name")}: ${item.name}`}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>

@@ -90,7 +90,7 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    Complaints
+                    {`${t("mslf")} ${t("complaint")}`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
@@ -178,10 +178,10 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
                                                             marginTop: 5
                                                         }}
                                                     >
-                                                        Reason
+                                                        {item.reportFor}
                                                     </Text>
                                                     <Text
-                                                        numberOfLines={4}
+                                                        numberOfLines={3}
                                                         weight="400"
                                                         style={{
                                                             color: colors.white,
@@ -189,7 +189,7 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
                                                             paddingTop: 5
                                                         }}
                                                     >
-                                                        {item.reportFor}
+                                                        {item.incidenceDesc}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>
