@@ -1,14 +1,16 @@
-import React, { Children, ReactNode } from "react";
+import React, { Children, ReactNode, useRef } from "react";
 import Text from "../text/Text";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomInput from "../CustomInput/CustomInput";
 
 interface complaintProps {
+    error?: string;
     children?: ReactNode;
 }
 
-function Complaint({ children }: complaintProps) {
+function Complaint({ error, children }: complaintProps) {
+    const scrollView = useRef<ScrollView>(null);
     return (
         <View
             style={{
@@ -45,7 +47,14 @@ function Complaint({ children }: complaintProps) {
                     borderRadius: 15
                 }}
             >
-                <ScrollView>{children}</ScrollView>
+                <ScrollView
+                    ref={scrollView}
+                    onContentSizeChange={() =>
+                        error !== "" && scrollView?.current?.scrollTo({ y: 0, animated: true })
+                    }
+                >
+                    {children}
+                </ScrollView>
             </View>
         </View>
     );

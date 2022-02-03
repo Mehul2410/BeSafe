@@ -1,4 +1,4 @@
-import React, { Children, ReactNode } from "react";
+import React from "react";
 import {
     Background,
     CustomInput,
@@ -7,7 +7,8 @@ import {
     RegularText,
     PostLoader,
     LocationLoader,
-    Complaint
+    Complaint,
+    Text
 } from "@components";
 import { View, Image } from "react-native";
 import { allUsers, createPost, sendNotification } from "@contexts/api/client";
@@ -17,6 +18,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { NavigationProps } from "@types";
 
 export function Post({ navigation }: NavigationProps<"Post">) {
+    const [error, setError] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [locationLoading, setLocationLoading] = React.useState(false);
@@ -149,22 +151,26 @@ export function Post({ navigation }: NavigationProps<"Post">) {
                 }
             });
             const res = await submit.json();
-            console.log(res);
             if (res.success) {
                 navigation.navigate("ViewPost");
+                const token = await fetch(sendNotification, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userMessage: "Joi.string().required()"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await token.json();
+            } else {
+                setError(res.message);
+                setTimeout(() => {
+                    setError("");
+                }, 3000);
             }
-            const token = await fetch(sendNotification, {
-                method: "POST",
-                body: JSON.stringify({
-                    userMessage: "Joi.string().required()"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
-                }
-            });
-            const statusChange = await token.json();
         } catch (err) {
             console.log(err);
         }
@@ -179,7 +185,12 @@ export function Post({ navigation }: NavigationProps<"Post">) {
 
     return (
         <Background>
-            <Complaint>
+            <Complaint error={error}>
+                {error !== "" && (
+                    <Text weight="200" color="#FF4500">
+                        {error}
+                    </Text>
+                )}
                 <CustomInput
                     value={complaint.complaintAgainstName}
                     onChangeText={text => {
@@ -333,7 +344,7 @@ export function Post({ navigation }: NavigationProps<"Post">) {
                 ) : (
                     <Button
                         weight="200"
-                        btnName="Saved Police Station"
+                        btnName="Change Police Station"
                         onPress={nearByPoliceStation}
                     />
                 )}
