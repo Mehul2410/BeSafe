@@ -69,7 +69,11 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
         }
     }
     useEffect(() => {
+        const ac = new AbortController();
         latLong();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
     async function locationAddress() {
         const loc = await fetch(

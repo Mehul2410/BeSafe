@@ -162,7 +162,11 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
         }
     }
     useEffect(() => {
+        const ac = new AbortController();
         latLong();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
         from: false,
