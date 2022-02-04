@@ -66,12 +66,10 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
                     style={{
                         backgroundColor: "#281A89",
                         borderRadius: 10,
-                        flexDirection: "column",
+                        flexDirection: "row",
                         justifyContent: "space-evenly",
-                        padding: 20,
-                        width: "100%",
-                        maxWidth: 150,
-                        height: 200,
+                        padding: 5,
+                        height: 140,
                         margin: 10
                     }}
                 >
@@ -79,13 +77,12 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
                         source={item.uri}
                         resizeMode="contain"
                         style={{
-                            height: "90%",
-                            width: "100%",
-                            alignSelf: "center",
-                            marginBottom: 10
+                            height: 100,
+                            width: "40%",
+                            alignSelf: "center"
                         }}
                     />
-                    <LightText textalign="center" string={item.name} />
+                    <MediumText size={18} width={"60%"} string={item.name} />
                 </View>
             </TouchableWithoutFeedback>
         );
@@ -103,20 +100,19 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             >
                 <FlatList
                     data={complaints}
-                    style={{}}
                     renderItem={Btn}
                     keyExtractor={(item, index) => item.name}
-                    numColumns={2}
                     bounces={true}
                     stickyHeaderIndices={[0]}
+                    ListHeaderComponentStyle={{
+                        width: "100%",
+                        backgroundColor: "#130e5c",
+                        paddingBottom: 5
+                    }}
                     ListHeaderComponent={
-                        <View
-                            style={{ width: "100%", backgroundColor: "#130e5c", paddingBottom: 5 }}
-                        >
-                            <Text color="#FFF" style={{ textAlign: "center" }}>
-                                {t("postView")}
-                            </Text>
-                        </View>
+                        <Text color="#FFF" style={{ textAlign: "center" }}>
+                            {t("postView")}
+                        </Text>
                     }
                 />
             </View>

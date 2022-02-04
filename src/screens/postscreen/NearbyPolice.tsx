@@ -21,13 +21,7 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
-        complaintAgainstName: "",
-        complaintAgainst: "",
-        reason: "",
-        complaintType: "",
-        locationName: "",
         locationAddress: "",
-        currentSituation: "",
         nearestPoliceStation: "",
         nearestPoliceStationAddress: "",
         stationName: "",
@@ -59,8 +53,7 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
                     paddingHorizontal: 10,
                     width: "100%",
                     height: "100%",
-                    justifyContent: "space-evenly",
-                    alignItems: "center"
+                    justifyContent: "space-evenly"
                 }}
             >
                 <Button
