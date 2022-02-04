@@ -13,6 +13,7 @@ import { isTokenExpired } from "@contexts/store/credentials";
 import { string } from "yup/lib/locale";
 import { Icon } from "react-native-elements/dist/icons/Icon";
 import { useTranslation } from "react-i18next";
+import forgotPass from "../forgotPass/forgotPass";
 
 interface signInProps {
     email: string;
@@ -101,7 +102,11 @@ export default function SignIn({ navigation, route }: NavigationProps<"SignIn">)
                                         placeholder={`${t("pass")}`}
                                         style={{ marginVertical: 12 }}
                                     />
-                                    <Text weight="200" style={{ color: "#FFF" }}>
+                                    <Text
+                                        weight="200"
+                                        style={{ color: "#FFF" }}
+                                        onPress={() => navigation.navigate("forgotPass")}
+                                    >
                                         {`${t("forgetPass")}`}
                                     </Text>
                                     <Button

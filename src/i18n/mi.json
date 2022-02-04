@@ -59,7 +59,7 @@
         "reason": "कारण",
         "oldPass": "जुन्या पासवर्ड",
         "newPass": "नवीन पासवर्ड",
-        "confirmPass": " पुष्टी नवीन पासवर्ड",
+        "confirmPass": "पुष्टी नवीन पासवर्ड",
         "Save": "जतन करा",
         "msg": "संदेश",
         "query": "क्वेरी",
@@ -73,11 +73,11 @@
         "exDetail": "संपूर्ण घटना स्पष्ट करणे",
         "date": "तारीख:",
         "father": "वडील नाव:",
-        "height": "कद:",
+        "height": "उंची:",
         "religion": "धर्म:",
         "gender": "लिंग:",
         "lastLoc": "शेवटचे स्थान किंवा पत्ता:",
-        "stationName": "  स्थानकाचे नाव:",
+        "stationName": "स्थानकाचे नाव:",
         "viewImages": "केस प्रतिमा पहा",
         "assignTo": "नियुक्त:",
         "current": "वर्तमान स्टेशन:",
@@ -95,46 +95,49 @@
         "Found": "आढळले",
         "Lost": "हरवले",
         "Stolen": "चुराया",
-        "Missing": "गहाळ"
-        "Your details will be verified before processing":"प्रक्रिया करण्यापूर्वी तुमच्या तपशीलाची पडताळणी केली जाईल"
-        "Strict action will be taken against false complaint":"खोटी तक्रार नोंदवल्याबद्दल निवडक कारवाई केली जाईल"
-        "Explaining the complete incidence":"संपूर्ण घटना स्पष्ट करणे"
-        "Select report type":"अहवाल प्रकार निवडा"
-        "Location Name":"स्थानाचे नाव"
-        "Check Location Address":"स्थान पत्ता तपासा"
-        "Get Near by Police Station":"स्थान पत्ता तपासा"
-        "Copy of sms recieved in Screenshot":"स्क्रीनशॉटमध्ये प्राप्त झालेल्या एसएमएसची प्रत"
-        "Copy of your ID Proof and Address in Screenshot":"स्क्रीनशॉटमध्ये तुमच्या आयडी प्रूफ आणि पत्त्याची प्रत"
-        "Submit":"प्रस्तुत करणे"
-        "Screenshot of the Malicious App and the location from where it is Downloaded":"दुर्भावनापूर्ण अॅपचा स्क्रीनशॉट आणि ते जिथून डाउनलोड केले ते स्थान"
-        "Tips":"टीप"
-        "Protect Yourself":"स्वतःचे रक्षण करा"
-        "Help Others":"दुस-यांना मदत करा"
-        "Call for Help":"कॉल मदतीसाठी"
-        "Dont Touch or Move Anything":"काहीही स्पर्श करू नका किंवा हलवू नका "
-        "Pay Attention":"लक्ष द्या"
-        "Wait For Police":"पोलिसांची वाट पहा"
-        "HairCut with Color":" केसांची शैल रंगांसह"
-        "Eyes":"डोळ"
-        "Sex":"लिंग"
-        "Male":"पुरुष"
-        "Female":"स्त्री "
-        "Image Proof":"प्रतिमा पुरावा"
-        "Found Data Range":"डेटा श्रेणी सापडली"
-        "Date and Time":"तारीख आणि वेळ"
-        "Height":"उंची"
-        "Eg:5-6 feet or in Cm":"उदाहरण:५-६ फूट सेमी मध्ये"
-        "Expected Age":"अपेक्षित वय"
-        "Eg:21-24":"उदाहरण:२१-२४"
-        "Upper Dress with Color":"रंगाचा ा वरचा ड्रेस "
-        "Lower Dress with Color":"रंगाचा लोअर ड्रेस "
-        "Eg:Shirt-Red or Jeans-Blue":"उदाहरण:शर्ट-लाल किंवा जीन्स-निळा"
-        "Face cut with color":"चेहरा कट रंगासह"
-        "Complaint Against":"विरुद्ध तक्रार"
-        "Father Name":"वडीलांचे नावं"
-        "Current Situation":"वर्तमान परिस्थिती"
+        "Missing": "गहाळ",
 
-
-
+        "Image of Missing Person": "हरवलेल्या व्यक्तीची प्रतिमा",
+        "Saved Police Station": "पोलीस चौकी",
+        "Your details will be verified before processing": "प्रक्रिया करण्यापूर्वी तुमच्या तपशीलाची पडताळणी केली जाईल",
+        "Strict action will be taken against false complaint": "खोटी तक्रार नोंदवल्याबद्दल निवडक कारवाई केली जाईल",
+        "exComIn": "संपूर्ण घटना स्पष्ट करणे",
+        "Select report type": "अहवाल प्रकार निवडा",
+        "Location Name": "स्थानाचे नाव",
+        "Check Location Address": "स्थान पत्ता तपासा",
+        "Saved Address": "Saved Address",
+        "Get Near by Police Station": "स्थान पत्ता तपासा",
+        "Copy of sms recieved in Screenshot": "स्क्रीनशॉटमध्ये प्राप्त झालेल्या एसएमएसची प्रत",
+        "Copy of your ID Proof and Address in Screenshot": "स्क्री,नशॉटमध्ये तुमच्या आयडी प्रूफ आणि पत्त्याची प्रत",
+        "Submit": "प्रस्तुत करणे",
+        "Screenshot of the Malicious App and the location from where it is Downloaded": "दुर्भावनापूर्ण अॅपचा स्क्रीनशॉट आणि ते जिथून डाउनलोड केले ते स्थान",
+        "Tips": "टीप",
+        "Protect Yourself": "स्वतःचे रक्षण करा",
+        "Help Others": "दुस-यांना मदत करा",
+        "Call for Help": "कॉल मदतीसाठी",
+        "Dont Touch or Move Anything": "काहीही स्पर्श करू नका किंवा हलवू नका ",
+        "Pay Attention": "लक्ष द्या",
+        "Wait For Police": "पोलिसांची वाट पहा",
+        "HairCut with Color": " केसांची शैल रंगांसह",
+        "Eyes": "डोळ",
+        "Sex": "लिंग",
+        "male": "पुरुष",
+        "female": "स्त्री ",
+        "other": "इतर",
+        "Image Proof": "प्रतिमा पुरावा",
+        "fDateRange": "सापडलेल्या व्यक्तीची तारीख श्रेणी",
+        "mDateRange": "हरवलेल्या व्यक्तीची तारीख श्रेणी",
+        "dateTime": "तारीख आणि वेळ",
+        "Height": "उंची",
+        "Eg:5-6 feet or in Cm": "उदाहरण:५-६ फूट सेमी मध्ये",
+        "Expected Age": "अपेक्षित वय",
+        "Eg:21-24": "उदाहरण:२१-२४",
+        "Upper Dress with Color": "रंगाचा ा वरचा ड्रेस ",
+        "Lower Dress with Color": "रंगाचा लोअर ड्रेस ",
+        "Eg:Shirt-Red or Jeans-Blue": "उदाहरण:शर्ट-लाल किंवा जीन्स-निळा",
+        "Face cut with color": "चेहरा कट रंगासह",
+        "Complaint Against": "विरुद्ध तक्रार",
+        "Father Name": "वडीलांचे नावं",
+        "Current Situation": "वर्तमान परिस्थिती"
     }
 }

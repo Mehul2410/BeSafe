@@ -50,6 +50,12 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             name: `${t("bank")}`,
             uri: require("@assets/bank.png"),
             navi: "Bank"
+        },
+        {
+            id: 7,
+            name: `${t("Get Near by Police Station ")}`,
+            uri: require("@assets/bank.png"),
+            navi: "NearbyPolice"
         }
     ];
 

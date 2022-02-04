@@ -96,43 +96,49 @@
         "Found": "पाया",
         "Lost": "खोया",
         "Stolen": "चुराया",
-        "Missing": "गुमशुदा"
-        "Your details will be verified before processing":"प्रसंस्करण से पहले आपका विवरण सत्यापित किया जाएगा"
-        "Strict action will be taken against false complaint":" झूठी शिकायत दर्ज कराने पर होगी चुनिंदा कार्रवाई"
-        "Explaining the complete incidence":"पूरी घटना की व्याख्या"
-        "Select report type":"रिपोर्ट प्रकार चुनें"
-        "Location Name":"स्थान का नाम"
-        "Check Location Address":"स्थान पता जांचें"
-        "Get Near by Police Station":"पुलिस स्टेशन के पास जाओ"
-        "Copy of sms recieved in Screenshot":"स्क्रीनशॉट में प्राप्त एसएमएस की प्रति"
-        "Copy of your ID Proof and Address in Screenshot":"स्क्रीनशॉट में अपने आईडी प्रूफ और पते की कॉपी"
-        "Submit":"प्रस्तुत करणे"
-        "Screenshot of the Malicious App and the location from where it is Downloaded":"दुर्भावनापूर्ण ऐप और उस स्थान का स्क्रीनशॉट जहां से इसे डाउनलोड किया गया है"
-        "Tips":"टिप्स"
-        "Protect Yourself":"अपनी रक्षा कीजिये"
-        "Help Others":"दूसरों की मदद करो"
-        "Call for Help":"मदद के लिए पुकार"
-        "Dont Touch or Move Anything":"किसी भी चीज़ को छुएं या हिलाएं नहीं"
-        "Pay Attention":"ध्यान देना"
-        "Wait For Police":"पुलिस का इंतजार"
-        "HairCut with Color":"बाल शैली रंगों के साथ"
-        "Eyes":"आंखें"
-        "Sex":"लिंग"
-        "Male":"नर"
-        "Female":"महिला "
-        "Image Proof":"छवि प्रमाण"
-        "Found Data Range":"डेटा श्रेणी मिली"
-        "Date and Time":"तिथि और समय"
-        "Height":"कद"
-        "Eg:5-6 feet or in Cm":"उदाहरण:५-६ फीट सेमी . में"
-        "Expected Age":"अपेक्षित आयु"
-        "Eg:21-24":"उदाहरण:२१-२४"
-        "Upper Dress with Color":" रंग के साथ ऊपरी पोशाक"
-        "Lower Dress with Color":"रंग के साथ नीचे पोशाक"
-        "Eg:Shirt-Red or Jeans-Blue":"उदाहरण:शर्ट-लाल किंवा जीन्स- नीला"
-        "Face cut with color":"चेहरा कट रंगासह"
-        "Complaint Against":"शिकायत "
-        "Father Name":"पिता का नाम"
-        "Current Situation":"वर्तमान स्थिति"
+        "Missing": "गुमशुदा",
+
+        "Image of Missing Person": "गुमशुदा व्यक्ति की छवि",
+        "Saved Police Station": "सहेजा गया थाना",
+        "Your details will be verified before processing": "प्रसंस्करण से पहले आपका विवरण सत्यापित किया जाएगा",
+        "Strict action will be taken against false complaint": " झूठी शिकायत दर्ज कराने पर होगी चुनिंदा कार्रवाई",
+        "exComIn": "पूरी घटना की व्याख्या",
+        "Select report type": "रिपोर्ट प्रकार चुनें",
+        "Location Name": "स्थान का नाम",
+        "Check Location Address": "स्थान पता जांचें",
+        "Saved Address": "सहेजा गया पता",
+        "Get Near by Police Station": "पुलिस स्टेशन के पास जाओ",
+        "Copy of sms recieved in Screenshot": "स्क्रीनशॉट में प्राप्त एसएमएस की प्रति",
+        "Copy of your ID Proof and Address in Screenshot": "स्क्रीनशॉट में अपने आईडी प्रूफ और पते की कॉपी",
+        "Submit": "प्रस्तुत करणे",
+        "Screenshot of the Malicious App and the location from where it is Downloaded": "दुर्भावनापूर्ण ऐप और उस स्थान का स्क्रीनशॉट जहां से इसे डाउनलोड किया गया है",
+        "Tips": "टिप्स",
+        "Protect Yourself": "अपनी रक्षा कीजिये",
+        "Help Others": "दूसरों की मदद करो",
+        "Call for Help": "मदद के लिए पुकार",
+        "Dont Touch or Move Anything": "किसी भी चीज़ को छुएं या हिलाएं नहीं",
+        "Pay Attention": "ध्यान देना",
+        "Wait For Police": "पुलिस का इंतजार",
+        "HairCut with Color": "बाल शैली रंगों के साथ",
+        "Eyes": "आंखें",
+        "Sex": "लिंग",
+        "male": "नर",
+        "female": "महिला ",
+        "other": "अन्य",
+        "Image Proof": "छवि प्रमाण",
+        "fDateRange": "पाए गए व्यक्ति की तिथि सीमा",
+        "mDateRange": "लापता व्यक्ति की तिथि सीमा",
+        "dateTime": "तिथि और समय",
+        "Height": "कद",
+        "Eg:5-6 feet or in Cm": "उदाहरण:५-६ फीट सेमी. में",
+        "Expected Age": "अपेक्षित आयु",
+        "Eg:21-24": "उदाहरण:२१-२४",
+        "Upper Dress with Color": " रंग के साथ ऊपरी पोशाक",
+        "Lower Dress with Color": "रंग के साथ नीचे पोशाक",
+        "Eg:Shirt-Red or Jeans-Blue": "उदाहरण:शर्ट-लाल किंवा जीन्स- नीला",
+        "Face cut with color": "चेहरा कट रंगासह",
+        "Complaint Against": "शिकायत ",
+        "Father Name": "पिता का नाम",
+        "Current Situation": "वर्तमान स्थिति"
     }
 }

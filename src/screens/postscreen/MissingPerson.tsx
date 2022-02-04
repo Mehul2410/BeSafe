@@ -20,8 +20,10 @@ import * as Location from "expo-location";
 import { TouchableWithoutFeedback, View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { NavigationProps } from "@types";
+import { useTranslation } from "react-i18next";
 
 export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) {
+    const { t } = useTranslation();
     const [error, setError] = React.useState("");
     const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
@@ -31,8 +33,8 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
         incidenceDesc: "",
-        dateFrom: "Date & Time",
-        dateTo: "Date & Time",
+        dateFrom: `${t("dateTime")}`,
+        dateTo: `${t("dateTime")}`,
         name: "",
         fatherName: "",
         height: "",
@@ -194,10 +196,10 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
             <Complaint error={error}>
                 {error !== "" && <Text>{error}</Text>}
                 <CustomInput
-                    placeholder="explaining the complete incidence"
+                    placeholder={t("exComIn")}
                     onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
                 />
-                <MediumText size={18} string="Missing Date Range" />
+                <MediumText size={18} string={t("mDateRange")} />
                 <View
                     style={{
                         flexDirection: "row",
@@ -224,36 +226,36 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                     />
                 </View>
                 <CustomInput
-                    placeholder="Name"
+                    placeholder={t("name")}
                     onChangeText={text => setComplaint({ ...complaint, name: text })}
                 />
                 <CustomInput
-                    placeholder="Father Name"
+                    placeholder={t("father")}
                     onChangeText={text => setComplaint({ ...complaint, fatherName: text })}
                 />
                 <CustomInput
-                    placeholder="height"
+                    placeholder={t("height")}
                     onChangeText={text => setComplaint({ ...complaint, height: text })}
                 />
                 <LightText textalign="center" string="Eg.5-6 feet OR in Cm" />
                 <CustomInput
-                    placeholder="Expected Age"
+                    placeholder={t("exAge")}
                     onChangeText={text => setComplaint({ ...complaint, age: text })}
                 />
                 <LightText textalign="center" string="Eg.20-25" />
                 <CustomInput
-                    placeholder="Religion"
+                    placeholder={t("religion")}
                     onChangeText={text => setComplaint({ ...complaint, religion: text })}
                 />
                 <Text weight="200" color="#FFF">
-                    Sex
+                    {t("gender")}
                 </Text>
                 <View
                     style={{
                         flexDirection: "row"
                     }}
                 >
-                    {["Male", "Female", "Other"].map((items, index) => {
+                    {[`${t("male")}`, `${t("female")}`, `${t("other")}`].map((items, index) => {
                         return (
                             <CheckBox
                                 btnName={items}
@@ -270,7 +272,7 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                 <CustomInput
                     onChangeText={text => setComplaint({ ...complaint, locName: text })}
                     editable={complaint.locAddress ? false : true}
-                    placeholder="Location Name"
+                    placeholder={t("LocName")}
                 />
                 {locationLoading && <PostLoader />}
                 {location !== "" && <RegularText string={location} />}
@@ -278,7 +280,9 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                     <>
                         <Button
                             btnName={
-                                complaint.locAddress ? "Saved Address" : "Check location Address"
+                                complaint.locAddress
+                                    ? `${t("Saved Address")}`
+                                    : `${t("Check Location Address")}`
                             }
                             onPress={locationAddress}
                         />
@@ -302,7 +306,7 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                     />
                 )}
 
-                <Button btnName="Get Near by Police Station" onPress={nearByPoliceStation} />
+                <Button btnName={t("Get Near by Police Station")} onPress={nearByPoliceStation} />
                 {policeLoading && <LocationLoader />}
                 {complaint.stationName === "" ? (
                     nearbyStation &&
@@ -332,13 +336,13 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                                         align="flex-start"
                                         size={11}
                                         color="#000"
-                                        string={`Station Name: ${item.name && item.name}`}
+                                        string={`${t("stationName")} ${item.name && item.name}`}
                                     />
                                     <RegularText
                                         size={11}
                                         color="#000"
                                         textalign="justify"
-                                        string={`Address: ${item.address && item.address}`}
+                                        string={`${t("add")}: ${item.address && item.address}`}
                                     />
                                     <RegularText
                                         color="#000"
@@ -353,16 +357,21 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                         );
                     })
                 ) : (
-                    <Button btnName="Saved Police Station" onPress={nearByPoliceStation} />
+                    <Button btnName={t("Saved Police Station")} onPress={nearByPoliceStation} />
                 )}
-                <RegularText color="#FFF" string="Image of Missing Person" vmargin={8} size={18} />
+                <RegularText
+                    color="#FFF"
+                    string={t("Image of Missing Person")}
+                    vmargin={8}
+                    size={18}
+                />
                 <ImageInputList
                     imageUri={imageUris}
                     onAddImage={handleAdd}
                     onRemoveImage={(uri: string) => handleRemove(uri)}
                 />
                 <Button
-                    btnName="Submit"
+                    btnName={t("submit")}
                     style={{ fontSize: 18, marginTop: 6 }}
                     onPress={submitComplaint}
                 />

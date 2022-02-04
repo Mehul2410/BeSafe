@@ -8,7 +8,8 @@ import {
     Wanted,
     UnidPerson,
     Bank,
-    MobileApp
+    MobileApp,
+    NearbyPolice
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -31,6 +32,7 @@ export default function PostNavigator(): ReactElement {
             <Stack.Screen name="UnidPerson" component={UnidPerson} />
             <Stack.Screen name="Bank" component={Bank} />
             <Stack.Screen name="MobileApp" component={MobileApp} />
+            <Stack.Screen name="NearbyPolice" component={NearbyPolice} />
         </Stack.Navigator>
     );
 }
