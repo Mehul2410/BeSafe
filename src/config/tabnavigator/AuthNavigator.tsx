@@ -1,6 +1,18 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Profile, EditProfile, ViewProfile, Help, Setting, ComplaintGroup } from "@screens";
+import {
+    Profile,
+    EditProfile,
+    ViewProfile,
+    Help,
+    Setting,
+    ComplaintGroup,
+    Exam,
+    HistoryAllComplaints,
+    HistoryMSLF,
+    HistoryUnIdentifedPerson,
+    HistoryMissingPerson
+} from "@screens";
 
 import { StackNavigatorParams } from "@types";
 
@@ -18,6 +30,12 @@ export default function AuthNavigator(): ReactElement {
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="ViewProfile" component={ViewProfile} />
             <Stack.Screen name="ComplaintGroup" component={ComplaintGroup} />
+            <Stack.Screen name="Exam" component={Exam} />
+            <Stack.Screen name="HistoryAllComplaints" component={HistoryAllComplaints} />
+            <Stack.Screen name="HistoryPost" component={ComplaintGroup} />
+            <Stack.Screen name="HistoryMSLF" component={HistoryMSLF} />
+            <Stack.Screen name="HistoryUnidentifiedPerson" component={HistoryUnIdentifedPerson} />
+            <Stack.Screen name="HistoryMissingPerson" component={HistoryMissingPerson} />
             <Stack.Screen name="Setting" component={Setting} />
             <Stack.Screen name="Help" component={Help} />
         </Stack.Navigator>

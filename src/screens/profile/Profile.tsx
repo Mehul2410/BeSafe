@@ -8,13 +8,22 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getTokens } from "@contexts/slice/authSlice";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ViewProfile } from "./ViewProfile";
+import { useTranslation } from "react-i18next";
 
 interface profileBtnProps {
-    navigate: "ComplaintGroup" | "EditProfile" | "Setting" | "Help" | "Register" | "ViewProfile";
+    navigate:
+        | "EditProfile"
+        | "Setting"
+        | "Help"
+        | "Register"
+        | "ViewProfile"
+        | "Exam"
+        | "HistoryAllComplaints";
     name: string;
 }
 
 export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
+    const { t } = useTranslation();
     const { userDetails, id, name, role, avatar, email } = useSelector(
         (state: RootStateOrAny) => state.auth
     );
@@ -47,34 +56,39 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
             <View style={styles.view}>
                 <View style={styles.profile}>
                     <View style={{ position: "relative" }}>
-                        <Image
-                            style={styles.img}
-                            source={avatar ? { uri: avatar } : require("@assets/img.png")}
-                        />
-                        <View style={styles.edit}>
-                            <Image source={require("@assets/edit.png")} />
-                        </View>
+                        {role === 3000 ? (
+                            <Image
+                                style={styles.img}
+                                source={avatar ? { uri: avatar } : require("@assets/img.png")}
+                            />
+                        ) : (
+                            <Image
+                                style={styles.img}
+                                source={avatar ? { uri: avatar } : require("@assets/police.png")}
+                            />
+                        )}
                     </View>
                 </View>
                 <View style={styles.name}>
-                    <RegularText string={name} />
+                    <RegularText string={name} size={17} />
                     <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                        <Image source={require("@assets/percent.png")} />
                         <TouchableWithoutFeedback
                             onPress={() => {
                                 navigation.navigate("ViewProfile", userData);
                             }}
                         >
-                            <RegularText string="90%" color="#FFF" />
+                            <RegularText string={t("view")} size={17} />
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={styles.probtn}>
-                    {role === 3000 && <ProfileText name="Edit Profile" navigate="EditProfile" />}
+                    {role === 3000 && (
+                        <ProfileText name={t("editProfile")} navigate="EditProfile" />
+                    )}
                     {/* history */}
-                    <ProfileText name="Complaints" navigate="ComplaintGroup" />
-                    <ProfileText name="Setting" navigate="Setting" />
-                    <ProfileText name="Help" navigate="Help" />
+                    <ProfileText name={t("history")} navigate="HistoryAllComplaints" />
+                    <ProfileText name={t("setting")} navigate="Setting" />
+                    <ProfileText name={t("help")} navigate="Help" />
                     <Text
                         style={styles.btn}
                         weight="400"
@@ -84,7 +98,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                             dispatch(getTokens({ access_token: "" }));
                         }}
                     >
-                        logout
+                        {t("logout")}
                     </Text>
                 </View>
             </View>

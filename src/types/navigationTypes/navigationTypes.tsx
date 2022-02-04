@@ -6,9 +6,7 @@ export type StackNavigatorParams = {
     Home: undefined;
     Getstarted: undefined;
     Language: undefined;
-    Register: {
-        langauge: string;
-    };
+    Register: undefined;
     PoliceSignin: undefined;
     PoliceSignup: undefined;
     PoliceDetail: {
@@ -39,22 +37,50 @@ export type StackNavigatorParams = {
         userDetails: any;
     };
     Setting: undefined;
+    PostForm: undefined;
     Help: undefined;
     Post: undefined;
+    Wanted: undefined;
+    CyberCrime: undefined;
+    MissingPerson: undefined;
+    MSLF: undefined;
+    UnidPerson: undefined;
+    Bank: undefined;
+    MobileApp: undefined;
+    Exam: undefined;
+    ViewPost: undefined;
+    ViewWanted: undefined;
+    ViewCyberCrime: undefined;
+    ViewMissingPerson: undefined;
+    ViewMSLF: undefined;
+    ViewUnidentifiedPerson: undefined;
+    HistoryPost: undefined;
+    HistoryWanted: undefined;
+    HistoryCyberCrime: undefined;
+    HistoryMissingPerson: undefined;
+    HistoryMSLF: undefined;
+    HistoryUnidPerson: undefined;
+    HistoryUnidentifiedPerson: undefined;
+    ViewBank: undefined;
+    ViewMobileApp: undefined;
+    ViewExam: undefined;
+    ViewAllComplaints: undefined;
+    HistoryAllComplaints: undefined;
+    AllComplaints: undefined;
     Complaints: undefined;
     ComplaintGroup: undefined;
     ComplaintsLayout: {
         _id?: string;
+        complaintAgainst?: string;
+        complaintAgainstName?: string;
         complaintType?: string;
         createdAt?: Date;
-        location?: {
-            name?: string;
-        };
         proof?: string;
         reason?: string;
         status?: string;
         updatedAt?: Date;
-        image?: string[];
+        images?: string[];
+        assignTo?: string;
     };
 };
 

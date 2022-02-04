@@ -4,20 +4,25 @@ import styles from "./language.styles";
 import { Background, Button, Text } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
+import { useTranslation } from "react-i18next";
 
 export function Language({ navigation }: NavigationProps<"Language">) {
+    const { t, i18n } = useTranslation();
     const languages = [
         {
             id: 0,
-            language: "English"
+            language: "English",
+            code: "en"
         },
         {
             id: 1,
-            language: "हिंदी"
+            language: "हिंदी",
+            code: "hi"
         },
         {
             id: 2,
-            language: "मराठी"
+            language: "मराठी",
+            code: "mi"
         }
     ];
 
@@ -26,7 +31,7 @@ export function Language({ navigation }: NavigationProps<"Language">) {
             <View style={styles.screenview}>
                 <View style={styles.container1}>
                     <Image style={styles.img} source={require("@assets/lang.png")} />
-                    <Text style={{ color: colors.white }}>Select your langague</Text>
+                    <Text style={{ color: colors.white }}>{t("lang")}</Text>
                 </View>
                 <View style={styles.container2}>
                     <FlatList
@@ -37,9 +42,10 @@ export function Language({ navigation }: NavigationProps<"Language">) {
                             <Button
                                 btnName={item.language}
                                 style={{ backgroundColor: colors.white, color: colors.quatnary }}
-                                onPress={() =>
-                                    navigation.navigate("Register", { langauge: item.language })
-                                }
+                                onPress={() => {
+                                    i18n.changeLanguage(item.code);
+                                    navigation.navigate("Register");
+                                }}
                             />
                         )}
                         ItemSeparatorComponent={() => (

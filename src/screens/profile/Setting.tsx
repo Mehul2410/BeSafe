@@ -4,13 +4,25 @@ import { Modal, Pressable, ScrollView, View } from "react-native";
 import { Button } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { RootStateOrAny, useSelector } from "react-redux";
+import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import emailjs from "@emailjs/browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { resetPass } from "@contexts/api/client";
+import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
+import { signUp } from "@contexts/slice/authSlice";
+import { useTranslation } from "react-i18next";
 
 export function Setting({ navigation }: NavigationProps<"Setting">) {
+    const dispatch = useDispatch();
     const user = useSelector((state: RootStateOrAny) => state.auth);
-    const [changePassword, setChangePassword] = useState(false);
+    const [changePassword, setChangePassword] = useState({
+        activity: false,
+        currentPass: "",
+        newPass: "",
+        confPass: "",
+        error: ""
+    });
+
     const [language, setLanguage] = useState(false);
     const [account, setAccount] = useState(false);
 
@@ -29,6 +41,43 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
             console.log(err);
         }
     };
+    const { t, i18n } = useTranslation();
+    function handleLang(lang: string) {
+        i18n.changeLanguage(lang);
+        setLanguage(false);
+    }
+    async function handleChangePass() {
+        const creds = await getCredentials();
+        if (creds) {
+            const res = await fetch(resetPass, {
+                method: "POST",
+                body: JSON.stringify({
+                    password: changePassword.currentPass,
+                    newPass: changePassword.newPass,
+                    confirmPass: changePassword.confPass
+                })
+            });
+            const changed = await res.json();
+            if (changed.success) {
+                dispatch(signUp(user));
+                setChangePassword({
+                    activity: false,
+                    confPass: "",
+                    currentPass: "",
+                    newPass: "",
+                    error: ""
+                });
+            } else {
+                setChangePassword({
+                    activity: false,
+                    confPass: "",
+                    currentPass: "",
+                    newPass: "",
+                    error: "Something went wrong try again later"
+                });
+            }
+        }
+    }
     return (
         <Background>
             <View
@@ -40,15 +89,15 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     padding: 20
                 }}
             >
-                <Button weight="400" btnName="Setting" />
+                <Button weight="400" btnName={t("setting")} />
 
                 <View style={{ marginTop: 25, width: "100%", height: "100%" }}>
                     <Modal
                         animationType="slide"
                         transparent={true}
-                        visible={changePassword}
+                        visible={changePassword.activity}
                         onRequestClose={() => {
-                            setChangePassword(!changePassword);
+                            setChangePassword({ ...changePassword, activity: false });
                         }}
                     >
                         <View
@@ -78,13 +127,34 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     Password
                                 </Text>
                                 <View style={{ width: "100%" }}>
-                                    <CustomInput placeholder="Old Password" />
-                                    <CustomInput placeholder="New Password" />
-                                    <CustomInput placeholder="Confirm New Password" />
-                                    <Pressable onPress={() => setChangePassword(!changePassword)}>
+                                    {changePassword.error !== "" && (
+                                        <Text>{changePassword.error}</Text>
+                                    )}
+                                    <CustomInput
+                                        placeholder={t("oldPass")}
+                                        onChangeText={text =>
+                                            setChangePassword({
+                                                ...changePassword,
+                                                currentPass: text
+                                            })
+                                        }
+                                    />
+                                    <CustomInput
+                                        placeholder={t("newPass")}
+                                        onChangeText={text =>
+                                            setChangePassword({ ...changePassword, newPass: text })
+                                        }
+                                    />
+                                    <CustomInput
+                                        placeholder={t("confirmPass")}
+                                        onChangeText={text =>
+                                            setChangePassword({ ...changePassword, confPass: text })
+                                        }
+                                    />
+                                    <Pressable onPress={handleChangePass}>
                                         <Button
                                             bgColor="#130e5c"
-                                            btnName="Change Password"
+                                            btnName={t("chanPass")}
                                             weight="400"
                                         />
                                     </Pressable>
@@ -95,8 +165,8 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable>
                         <Button
                             weight="400"
-                            btnName="Change Password"
-                            onPress={() => setChangePassword(true)}
+                            btnName={t("chanPass")}
+                            onPress={handleChangePass}
                             bgColor="#FFF"
                             textColor="#130e5c"
                         />
@@ -133,7 +203,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                 }}
                             >
                                 <Text weight="700" style={{ fontSize: 20, color: colors.white }}>
-                                    Language
+                                    {t("Lang")}
                                 </Text>
                                 <View style={{ width: "100%", marginTop: 10 }}>
                                     <Button
@@ -142,6 +212,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("en")}
                                     />
                                     <Button
                                         weight="400"
@@ -149,6 +220,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("hi")}
                                     />
                                     <Button
                                         weight="400"
@@ -156,15 +228,16 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         bgColor="#FFF"
                                         textColor="#130e5c"
                                         style={{ marginVertical: 8 }}
+                                        onPress={() => handleLang("mi")}
                                     />
-                                    <Pressable>
+                                    {/* <Pressable>
                                         <Button
                                             btnName="Change language"
                                             weight="400"
                                             onPress={() => setLanguage(!language)}
                                             bgColor="#130e5c"
                                         />
-                                    </Pressable>
+                                    </Pressable> */}
                                 </View>
                             </View>
                         </View>
@@ -172,7 +245,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable onPress={() => setLanguage(!language)}>
                         <Button
                             weight="400"
-                            btnName="change Language"
+                            btnName={t("chanLang")}
                             bgColor="#FFF"
                             textColor="#130e5c"
                         />
@@ -215,9 +288,9 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                         fontSize: 20
                                     }}
                                 >
-                                    Delete Account
+                                    {t("deleteAc")}
                                 </Text>
-                                <CustomInput placeholder="Reason?" />
+                                <CustomInput placeholder={`${t("reason")} ${"?"}`} />
                                 <View style={{ width: "100%" }}>
                                     <Pressable
                                         onPress={async () => {
@@ -228,7 +301,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                                     >
                                         <Button
                                             weight="400"
-                                            btnName="Confirm"
+                                            btnName={t("confirm")}
                                             bgColor="#FFF"
                                             textColor="#130e5c"
                                         />
@@ -240,7 +313,7 @@ export function Setting({ navigation }: NavigationProps<"Setting">) {
                     <Pressable>
                         <Button
                             weight="400"
-                            btnName="Delete Account"
+                            btnName={t("deleteAc")}
                             onPress={() => setAccount(true)}
                             bgColor="#FFF"
                             textColor="#130e5c"
