@@ -157,7 +157,11 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
         }
     }
     React.useEffect(() => {
+        const ac = new AbortController();
         latLong();
+        return function cleanup() {
+            ac.abort();
+        };
     }, []);
 
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
