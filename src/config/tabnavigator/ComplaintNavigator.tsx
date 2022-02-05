@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
+    Bank,
     ComplaintGroup,
     ComplaintsLayout,
     Getstarted,
@@ -30,6 +31,7 @@ export default function ComplaintNavigator(): ReactElement {
             <Stack.Screen name="ViewUnidentifiedPerson" component={ViewUnidentifiedPerson} />
             <Stack.Screen name="ViewMissingPerson" component={ViewMissingPerson} />
             <Stack.Screen name="ViewWanted" component={ViewWanted} />
+            {/* <Stack.Screen name="Bank" component={Bank} /> */}
         </Stack.Navigator>
     );
 }

@@ -156,7 +156,7 @@ export function Post({ navigation }: NavigationProps<"Post">) {
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({
-                        userMessage: "Joi.string().required()"
+                        userMessage: "You can see your complaint status in complaint panal"
                     }),
                     headers: {
                         "Content-Type": "application/json",

@@ -45,12 +45,12 @@ export function AllComplaints({ navigation }: NavigationProps<"AllComplaints">) 
             uri: require("@assets/cyber.png"),
             navi: "MobileApp"
         },
-        {
-            id: 6,
-            name: `${t("bank")}`,
-            uri: require("@assets/bank.png"),
-            navi: "Bank"
-        },
+        // {
+        //     id: 6,
+        //     name: `${t("bank")}`,
+        //     uri: require("@assets/bank.png"),
+        //     navi: "Bank"
+        // },
         {
             id: 7,
             name: `${t("Get Near by Police Station ")}`,

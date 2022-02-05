@@ -60,19 +60,32 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
         try {
             const { granted } = await Location.requestForegroundPermissionsAsync();
             if (!granted) return;
-            const {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync();
-            setlatlng({ latitude, longitude });
+            return await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    distanceInterval: 1,
+                    timeInterval: 1
+                },
+                pos => {
+                    setlatlng({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+                }
+            );
         } catch (error) {
             console.log(error);
         }
     }
     useEffect(() => {
-        const ac = new AbortController();
-        latLong();
+        let locClean:
+            | {
+                  remove(): void;
+              }
+            | undefined;
+
+        latLong().then(remove => {
+            locClean = remove;
+        });
         return function cleanup() {
-            ac.abort();
+            locClean?.remove();
         };
     }, []);
     async function locationAddress() {
@@ -108,6 +121,7 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
         const { results } = await station.json();
         setNearbyStation(results);
         setPoliceLoading(true);
+
         setTimeout(() => {
             setPoliceLoading(false);
         }, 1000);
@@ -142,24 +156,24 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewPost");
+                const token = await fetch(sendNotification, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userMessage: "You can see your complaint status in complaint panal"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await token.json();
             } else {
                 setError(res.message);
                 setTimeout(() => {
                     setError("");
                 }, 3000);
             }
-            const token = await fetch(sendNotification, {
-                method: "POST",
-                body: JSON.stringify({
-                    userMessage: "Joi.string().required()"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
-                }
-            });
-            const statusChange = await token.json();
         } catch (err) {
             console.log(err);
         }
