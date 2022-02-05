@@ -238,7 +238,7 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                             );
                         })}
                 </View>
-                {changeStatus.status !== "" && (
+                {/* {changeStatus.status !== "" && (
                     <>
                         <Text
                             weight="200"
@@ -259,7 +259,7 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                             />
                         </View>
                     </>
-                )}
+                )} */}
                 <MediumText size={18} string={`${changeStatus.status} Found Date Range`} />
                 <View
                     style={{

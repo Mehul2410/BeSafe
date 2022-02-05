@@ -235,28 +235,7 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                             }
                         )}
                 </View>
-                {changeStatus.status !== "" && (
-                    <>
-                        <Text
-                            weight="200"
-                            color="#FFF"
-                        >{`Change Complaint status to ${changeStatus.status}`}</Text>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-around"
-                            }}
-                        >
-                            <Button weight="200" style={{ width: "45%" }} btnName="Yes" />
-                            <Button
-                                weight="200"
-                                style={{ width: "45%" }}
-                                btnName="No"
-                                onPress={() => setChangeStatus({ activity: false, status: "" })}
-                            />
-                        </View>
-                    </>
-                )}
+
                 <MediumText size={18} string={`${changeStatus.status} Date Range`} />
                 <View
                     style={{
