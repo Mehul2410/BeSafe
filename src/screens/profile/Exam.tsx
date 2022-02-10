@@ -1,7 +1,7 @@
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
-import { Text, View, Button, Platform } from "react-native";
+import { Text, View, Button, Platform, Alert } from "react-native";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -84,11 +84,17 @@ export async function registerForPushNotificationsAsync() {
                 const { status } = await Notifications.requestPermissionsAsync();
                 finalStatus = status;
             }
+            Alert.alert("status", finalStatus);
             if (finalStatus !== "granted") {
                 alert("Failed to get push token for push notification!");
                 return;
             }
-            token = (await Notifications.getExpoPushTokenAsync()).data;
+            token = (
+                await Notifications.getExpoPushTokenAsync({
+                    experienceId: "@vallabh_2920/BeSafe"
+                })
+            ).data;
+            Alert.alert("token", token);
         } else {
             alert("Must use physical device for Push Notifications");
         }
@@ -102,6 +108,5 @@ export async function registerForPushNotificationsAsync() {
         vibrationPattern: [0, 250, 250, 250],
         lightColor: "#FF231F7C"
     });
-
     return token;
 }

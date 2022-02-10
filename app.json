@@ -26,6 +26,7 @@
                 "foregroundImage": "./img/logo.png",
                 "backgroundColor": "#0085FF"
             },
+            "googleServicesFile": "./google-services.json",
             "package": "com.besafe"
         },
         "web": {
