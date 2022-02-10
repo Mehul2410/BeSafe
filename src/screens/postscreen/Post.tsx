@@ -169,6 +169,16 @@ export function Post({ navigation }: NavigationProps<"Post">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewPost");
+                setComplaint({
+                    complaintAgainstName: "",
+                    complaintAgainst: "",
+                    reason: "",
+                    locationName: "",
+                    locationAddress: "",
+                    currentSituation: "",
+                    nearestPoliceStation: "",
+                    nearestPoliceStationAddress: ""
+                });
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({

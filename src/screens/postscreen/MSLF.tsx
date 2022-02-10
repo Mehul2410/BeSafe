@@ -121,6 +121,18 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewMSLF");
+                setComplaint({
+                    incidenceDesc: "",
+                    dateFrom: "Date & Time",
+                    dateTo: "Date & Time",
+                    stationName: "",
+                    stationAddress: "",
+                    reportFor: "",
+                    lostLocName: "",
+                    lostLocAddress: "",
+                    thingDesc: "",
+                    thingName: ""
+                });
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({

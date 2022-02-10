@@ -126,6 +126,24 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewUnidentifiedPerson");
+                setComplaint({
+                    incidenceDesc: "",
+                    dateFrom: "Date & Time",
+                    dateTo: "Date & Time",
+                    height: "",
+                    expectedAge: "",
+                    upperDressColor: "",
+                    lowerDressColor: "",
+                    faceCutWithColor: "",
+                    hairCutWithColor: "",
+                    eyes: "",
+                    sex: "",
+                    locName: "",
+                    locAddress: "",
+                    stationName: "",
+                    stationAddress: "",
+                    reportFor: ""
+                });
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({

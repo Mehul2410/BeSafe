@@ -11,6 +11,7 @@ export default function PoliceNavigation(): ReactElement {
     const user = useSelector((state: RootStateOrAny) => state.auth);
     return (
         <Stack.Navigator
+            initialRouteName="PoliceDetail"
             screenOptions={{
                 headerMode: "screen",
                 headerShown: false

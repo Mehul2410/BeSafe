@@ -15,8 +15,10 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [imageUri, setImageUri] = React.useState<string>();
+    const [passport, setPassport] = React.useState<string>();
     const [error, setError] = React.useState<string>("");
     const [verificationDetails, setVerificationDetails] = React.useState({
+        phoneNo: "",
         adhaarCard: "",
         panCard: "",
         policeID: "",
@@ -119,6 +121,25 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                 <View style={styles.box2}>
                     <ScrollView>
                         {error !== "" && <RegularText string={error} />}
+                        <Text style={{ alignSelf: "center" }} weight="700" color="#FFF">
+                            Passport Size Photo
+                        </Text>
+                        <ImageInput
+                            imageUri={passport}
+                            onChangeImage={setPassport}
+                            style={{
+                                borderRadius: 70,
+                                marginVertical: 10,
+                                alignSelf: "center"
+                            }}
+                        />
+                        <CustomInput
+                            keyboardType="number-pad"
+                            onChangeText={text =>
+                                setVerificationDetails({ ...verificationDetails, phoneNo: text })
+                            }
+                            placeholder="Phone Number"
+                        />
                         <CustomInput
                             onChangeText={text =>
                                 setVerificationDetails({ ...verificationDetails, adhaarCard: text })
@@ -199,7 +220,7 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             }
                             placeholder={`${t("prsnl")} ${t("add")}`}
                         />
-                        <Text weight="700" color="#FFF">
+                        <Text style={{ alignSelf: "center" }} weight="700" color="#FFF">
                             {t("verPaper")}
                         </Text>
                         <ImageInput
@@ -207,7 +228,8 @@ export function PoliceDetail({ route, navigation }: NavigationProps<"PoliceDetai
                             onChangeImage={setImageUri}
                             style={{
                                 borderRadius: 70,
-                                marginBottom: 15
+                                marginVertical: 10,
+                                alignSelf: "center"
                             }}
                         />
                         <Button

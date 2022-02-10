@@ -156,6 +156,21 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewMissingPerson");
+                setComplaint({
+                    incidenceDesc: "",
+                    dateFrom: `${t("dateTime")}`,
+                    dateTo: `${t("dateTime")}`,
+                    name: "",
+                    fatherName: "",
+                    height: "",
+                    religion: "",
+                    sex: "",
+                    locName: "",
+                    locAddress: "",
+                    stationName: "",
+                    stationAddress: "",
+                    age: ""
+                });
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({
