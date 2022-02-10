@@ -21,7 +21,7 @@ function Navigation(): ReactElement {
         if (creds) {
             const expo = await registerForPushNotificationsAsync();
             setLoading(true);
-            Alert.alert("logined", JSON.stringify(expo));
+
             if (expo) {
                 try {
                     const token = await fetch(expoTokens, {
@@ -44,7 +44,7 @@ function Navigation(): ReactElement {
                         }
                     });
                     const data = await res.json();
-                    Alert.alert("logined", JSON.stringify(data));
+
                     if (data.success) {
                         dispatch(getTokens(creds));
                         dispatch(userData(data.user));

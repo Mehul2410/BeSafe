@@ -84,7 +84,6 @@ export async function registerForPushNotificationsAsync() {
                 const { status } = await Notifications.requestPermissionsAsync();
                 finalStatus = status;
             }
-            Alert.alert("status", finalStatus);
             if (finalStatus !== "granted") {
                 alert("Failed to get push token for push notification!");
                 return;
@@ -94,7 +93,6 @@ export async function registerForPushNotificationsAsync() {
                     experienceId: "@vallabh_2920/BeSafe"
                 })
             ).data;
-            Alert.alert("token", token);
         } else {
             alert("Must use physical device for Push Notifications");
         }
