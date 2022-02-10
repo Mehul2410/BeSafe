@@ -134,9 +134,9 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
                 "imageProof",
                 JSON.parse(
                     JSON.stringify({
-                        name: `image.${element.split(".")[1]}`,
+                        name: `image.${element.split(".").slice(-1)}`,
                         uri: element,
-                        type: `image/${element.split(".")[1]}`
+                        type: `image/${element.split(".").slice(-1)}`
                     })
                 )
             );
@@ -155,7 +155,7 @@ export function MissingPerson({ navigation }: NavigationProps<"MissingPerson">) 
             });
             const res = await submit.json();
             if (res.success) {
-                navigation.navigate("ViewPost");
+                navigation.navigate("ViewMissingPerson");
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({

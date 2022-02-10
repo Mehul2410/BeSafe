@@ -53,6 +53,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const complaint = await res.json();
+                dispatch(userComplaints(complaint));
                 //active status to be send from backend to login police
             }
         }
@@ -63,9 +65,9 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
         initiateSocketConnection((data: any) => {
             if (data) {
                 getComplaints();
-                AllComplaints((err: any, data: any) => {
-                    dispatch(userComplaints(data));
-                });
+                // AllComplaints((err: any, data: any) => {
+                //     dispatch(userComplaints(data));
+                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();

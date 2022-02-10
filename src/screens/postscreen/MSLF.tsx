@@ -99,9 +99,9 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                 "imageProof",
                 JSON.parse(
                     JSON.stringify({
-                        name: `image.${element.split(".")[1]}`,
+                        name: `image.${element.split(".").slice(-1)}`,
                         uri: element,
-                        type: `image/${element.split(".")[1]}`
+                        type: `image/${element.split(".").slice(-1)}`
                     })
                 )
             );
@@ -119,7 +119,6 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                 }
             });
             const res = await submit.json();
-            console.log(res);
             if (res.success) {
                 navigation.navigate("ViewMSLF");
                 const token = await fetch(sendNotification, {

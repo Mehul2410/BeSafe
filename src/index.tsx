@@ -19,7 +19,7 @@ function Navigation(): ReactElement {
         const creds = await getCredentials();
         if (creds) {
             const expo = await registerForPushNotificationsAsync();
-            console.log(expo);
+            // console.log(expo);
             if (expo) {
                 try {
                     const token = await fetch(expoTokens, {
@@ -34,7 +34,7 @@ function Navigation(): ReactElement {
                         }
                     });
                     const statusChange = await token.json();
-                    console.log(statusChange);
+                    // console.log(statusChange);
                     const res = await fetch(myDetails, {
                         method: "GET",
                         headers: {

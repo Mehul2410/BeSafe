@@ -54,6 +54,9 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const complaint = await res.json();
+                dispatch(userUnidentifiedPerson(complaint));
+
                 //active status to be send from backend to login police
             }
         }
@@ -64,9 +67,9 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                AllUnIdPerson((err: any, data: any) => {
-                    dispatch(userUnidentifiedPerson(data));
-                });
+                // AllUnIdPerson((err: any, data: any) => {
+                //     dispatch(userUnidentifiedPerson(data));
+                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
