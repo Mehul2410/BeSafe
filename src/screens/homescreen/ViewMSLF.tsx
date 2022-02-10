@@ -9,6 +9,7 @@ import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
     AllMSLF,
     closeSocket,
+    disconnectSocket,
     initiateSocketConnection,
     subscribeToChat
 } from "../../service/socketio.service";
@@ -46,6 +47,7 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
     const dispatch = useDispatch();
     async function getComplaints() {
         const data = await getCredentials();
+        console.log(data);
         if (data) {
             if (!isTokenExpired(data.access_token)) {
                 const res = await fetch(GETMSLF, {
@@ -55,6 +57,8 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const x = await res.json();
+                dispatch(userMslf(x));
                 //active status to be send from backend to login police
             }
         }
@@ -63,12 +67,13 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
     useEffect(() => {
         const ac = new AbortController();
         initiateSocketConnection((data: boolean) => {
+            console.log(data);
             if (data) {
                 getComplaints();
-                AllMSLF((err: any, data: any) => {
-                    console.log(data);
-                    dispatch(userMslf(data));
-                });
+                // AllMSLF((err: any, data: any) => {
+                //     console.log("hello", data);
+                //     dispatch(userMslf(data));
+                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
@@ -79,7 +84,8 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
         });
         return function cleanup() {
             ac.abort();
-            closeSocket();
+            disconnectSocket();
+            // closeSocket();
         };
     }, []);
     console.log(getAllComplaints);

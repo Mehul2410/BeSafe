@@ -1,34 +1,19 @@
 import { View, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
-import {
-    Background,
-    Button,
-    LightText,
-    LocationLoader,
-    MediumText,
-    RegularText,
-    Text
-} from "@components";
+import { Background, Button, LocationLoader, RegularText } from "@components";
 import { useTranslation } from "react-i18next";
+import * as Location from "expo-location";
 
 type Props = {};
 
 const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
     const { t, i18n } = useTranslation();
-    const [loading, setLoading] = React.useState(false);
     const [policeLoading, setPoliceLoading] = React.useState(false);
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
-    const [complaint, setComplaint] = React.useState({
-        locationAddress: "",
-        nearestPoliceStation: "",
-        nearestPoliceStationAddress: "",
-        stationName: "",
-        stationAddress: ""
-    });
+
     async function nearByPoliceStation() {
-        setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
         const station = await fetch(
             `https://trueway-places.p.rapidapi.com/FindPlacesNearby?location=${latlng?.latitude},${latlng?.longitude}&type=police_station&language=en`,
             {
@@ -46,6 +31,40 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
             setPoliceLoading(false);
         }, 1000);
     }
+    async function latLong() {
+        try {
+            const { granted } = await Location.requestForegroundPermissionsAsync();
+            if (!granted) return;
+            return await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    distanceInterval: 1,
+                    timeInterval: 1
+                },
+                pos => {
+                    setlatlng({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    React.useEffect(() => {
+        let locClean:
+            | {
+                  remove(): void;
+              }
+            | undefined;
+
+        latLong().then(remove => {
+            locClean = remove;
+        });
+        return function cleanup() {
+            locClean?.remove();
+        };
+    }, []);
+
     return (
         <Background>
             <View
@@ -62,20 +81,10 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
                     onPress={nearByPoliceStation}
                 />
                 {policeLoading && <LocationLoader />}
-                {complaint.stationName === "" ? (
-                    nearbyStation &&
+                {nearbyStation &&
                     nearbyStation.map((item: any, index) => {
                         return (
-                            <TouchableWithoutFeedback
-                                key={index}
-                                onPress={() => {
-                                    setComplaint({
-                                        ...complaint,
-                                        stationName: item.name,
-                                        stationAddress: item.address
-                                    });
-                                }}
-                            >
+                            <TouchableWithoutFeedback key={index}>
                                 <View
                                     style={{
                                         width: "100%",
@@ -99,6 +108,14 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
                                         string={`Address: ${item.address && item.address}`}
                                     />
                                     <RegularText
+                                        size={11}
+                                        color="#000"
+                                        textalign="justify"
+                                        string={`Phone number: ${
+                                            item.phone_number && item.phone_number
+                                        }`}
+                                    />
+                                    <RegularText
                                         color="#000"
                                         size={11}
                                         align="flex-start"
@@ -109,14 +126,7 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
                                 </View>
                             </TouchableWithoutFeedback>
                         );
-                    })
-                ) : (
-                    <Button
-                        weight="200"
-                        btnName="Saved Police Station"
-                        onPress={nearByPoliceStation}
-                    />
-                )}
+                    })}
             </View>
         </Background>
     );

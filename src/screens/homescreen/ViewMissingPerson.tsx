@@ -54,6 +54,9 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const complaint = await res.json();
+                dispatch(userMissingPerson(complaint));
+
                 //active status to be send from backend to login police
             }
         }
@@ -64,9 +67,9 @@ export function ViewMissingPerson({ navigation }: NavigationProps<"ViewMissingPe
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                AllMissingPerson((err: any, data: any) => {
-                    dispatch(userMissingPerson(data));
-                });
+                // AllMissingPerson((err: any, data: any) => {
+                //     dispatch(userMissingPerson(data));
+                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
