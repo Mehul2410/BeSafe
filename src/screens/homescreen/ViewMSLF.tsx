@@ -103,66 +103,68 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
                                 console.log(allData);
-                                return allData.mslf.map((item: any, index: any) => {
-                                    return (
-                                        <TouchableWithoutFeedback
-                                            key={index}
-                                            onPress={() => {
-                                                setX({ state: true, id: item._id });
-                                            }}
-                                        >
-                                            <View
-                                                style={{
-                                                    marginVertical: 10,
-                                                    width: "100%",
-                                                    backgroundColor: "#281B89",
-                                                    borderRadius: 10,
-                                                    padding: 10,
-                                                    elevation: 3
+                                return allData.mslf
+                                    .filter((items: any) => items.status !== "Solved")
+                                    .map((item: any, index: any) => {
+                                        return (
+                                            <TouchableWithoutFeedback
+                                                key={index}
+                                                onPress={() => {
+                                                    setX({ state: true, id: item._id });
                                                 }}
                                             >
-                                                <Modal
-                                                    transparent={true}
-                                                    animationType="slide"
-                                                    visible={x.state && item._id === x.id}
-                                                    onRequestClose={() => {
-                                                        setX({ state: false, id: "" });
-                                                    }}
-                                                >
-                                                    <MSLFLayout route={item} />
-                                                </Modal>
                                                 <View
                                                     style={{
-                                                        flexDirection: "row",
-                                                        alignItems: "center"
+                                                        marginVertical: 10,
+                                                        width: "100%",
+                                                        backgroundColor: "#281B89",
+                                                        borderRadius: 10,
+                                                        padding: 10,
+                                                        elevation: 3
                                                     }}
                                                 >
+                                                    <Modal
+                                                        transparent={true}
+                                                        animationType="slide"
+                                                        visible={x.state && item._id === x.id}
+                                                        onRequestClose={() => {
+                                                            setX({ state: false, id: "" });
+                                                        }}
+                                                    >
+                                                        <MSLFLayout route={item} />
+                                                    </Modal>
                                                     <View
                                                         style={{
                                                             flexDirection: "row",
                                                             alignItems: "center"
                                                         }}
                                                     >
-                                                        <StatusDetail string={item.status} />
                                                         <View
                                                             style={{
-                                                                flexDirection: "column",
-                                                                alignItems: "flex-start",
-                                                                marginLeft: 10
+                                                                flexDirection: "row",
+                                                                alignItems: "center"
                                                             }}
                                                         >
-                                                            <DateAndTime
-                                                                string={new Date(
-                                                                    item.createdAt!
-                                                                ).toLocaleDateString("en-IN")}
-                                                            />
-                                                            <DateAndTime
-                                                                string={new Date(
-                                                                    item.createdAt!
-                                                                ).toLocaleTimeString("en-IN")}
-                                                            />
-                                                        </View>
-                                                        {/* <Image
+                                                            <StatusDetail string={item.status} />
+                                                            <View
+                                                                style={{
+                                                                    flexDirection: "column",
+                                                                    alignItems: "flex-start",
+                                                                    marginLeft: 10
+                                                                }}
+                                                            >
+                                                                <DateAndTime
+                                                                    string={new Date(
+                                                                        item.createdAt!
+                                                                    ).toLocaleDateString("en-IN")}
+                                                                />
+                                                                <DateAndTime
+                                                                    string={new Date(
+                                                                        item.createdAt!
+                                                                    ).toLocaleTimeString("en-IN")}
+                                                                />
+                                                            </View>
+                                                            {/* <Image
                                                                     resizeMode="contain"
                                                                     style={{
                                                                         height: 22,
@@ -171,33 +173,33 @@ export function ViewMSLF({ navigation }: NavigationProps<"ViewMSLF">) {
                                                                     }}
                                                                     source={require("@assets/remainder.png")}
                                                                 /> */}
+                                                        </View>
                                                     </View>
+                                                    <Text
+                                                        weight="400"
+                                                        style={{
+                                                            color: colors.white,
+                                                            fontSize: 15,
+                                                            marginTop: 5
+                                                        }}
+                                                    >
+                                                        {item.reportFor}
+                                                    </Text>
+                                                    <Text
+                                                        numberOfLines={3}
+                                                        weight="400"
+                                                        style={{
+                                                            color: colors.white,
+                                                            fontSize: 12,
+                                                            paddingTop: 5
+                                                        }}
+                                                    >
+                                                        {item.incidenceDesc}
+                                                    </Text>
                                                 </View>
-                                                <Text
-                                                    weight="400"
-                                                    style={{
-                                                        color: colors.white,
-                                                        fontSize: 15,
-                                                        marginTop: 5
-                                                    }}
-                                                >
-                                                    {item.reportFor}
-                                                </Text>
-                                                <Text
-                                                    numberOfLines={3}
-                                                    weight="400"
-                                                    style={{
-                                                        color: colors.white,
-                                                        fontSize: 12,
-                                                        paddingTop: 5
-                                                    }}
-                                                >
-                                                    {item.incidenceDesc}
-                                                </Text>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    );
-                                });
+                                            </TouchableWithoutFeedback>
+                                        );
+                                    });
                             })}
                     </ScrollView>
                 </View>

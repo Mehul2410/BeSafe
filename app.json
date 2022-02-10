@@ -4,14 +4,14 @@
         "slug": "BeSafe",
         "version": "1.0.0",
         "orientation": "portrait",
-        "icon": "./img/logo.png",
+        "icon": "./img/appIcon.png",
         "splash": {
-            "image": "./img/logo.png",
+            "image": "./img/appIcon.png",
             "resizeMode": "contain",
             "backgroundColor": "#0085FF"
         },
         "notification": {
-            "icon": "./img/logo.png",
+            "icon": "./img/appIcon.png",
             "color": "#130e5c"
         },
         "updates": {
@@ -19,23 +19,26 @@
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.besafe",
+            "buildNumber": "1.0.0"
         },
         "android": {
             "adaptiveIcon": {
-                "foregroundImage": "./img/logo.png",
+                "foregroundImage": "./img/appIcon.png",
                 "backgroundColor": "#0085FF"
             },
-            "package": "com.besafe"
+            "package": "com.besafe",
+            "versionCode": 1
         },
         "web": {
-            "favicon": "./img/logo.png"
+            "favicon": "./img/appIcon.png"
         },
         "plugins": [
             [
                 "expo-notifications",
                 {
-                    "icon": "./img/logo.png",
+                    "icon": "./img/appIcon.png",
                     "color": "#130e5c",
                     "sounds": ["./sound/noti.wav"]
                 }

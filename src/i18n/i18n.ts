@@ -10,7 +10,8 @@ i18n.use(initReactI18next).init({
     fallbackLng: "en",
     resources: {
         en,
-        hi
+        hi,
+        mi
         // en json , hin json , marathi json
     }
 });
