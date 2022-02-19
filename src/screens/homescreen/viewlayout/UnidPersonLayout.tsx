@@ -342,7 +342,7 @@ export function UnidPersonLayout({ route }: any) {
                         <MediumText
                             align="flex-start"
                             size={18}
-                            string={`${t("exAge")}${route.expectedAge}`}
+                            string={`${t("exAge")} ${route.expectedAge}`}
                         />
                         <MediumText
                             align="flex-start"

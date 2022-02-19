@@ -4,6 +4,7 @@ export { Language } from "./language/Language";
 export { default as Register } from "./register/Register";
 export { default as SignIn } from "./register/SignIn/SignIn";
 export { default as SignUp } from "./register/SignUp/SignUp";
+export { default as forgotPass } from "./register/forgotPass/forgotPass";
 
 export { PoliceDetail } from "./register/police/detail/PoliceDetail";
 export { DetailFilled } from "./register/police/detailfilled/DetailFilled";
@@ -22,6 +23,7 @@ export { UnidPerson } from "./postscreen/UnidPerson";
 export { Bank } from "./postscreen/Bank";
 export { MobileApp } from "./postscreen/MobileApp";
 export { AllComplaints } from "./postscreen/AllComplaints";
+export { default as NearbyPolice } from "./postscreen/NearbyPolice";
 
 export { default as ViewAllComplaints } from "./homescreen/ViewAllComplaints";
 export { default as HistoryAllComplaints } from "./history/HistoryAllComplaints";

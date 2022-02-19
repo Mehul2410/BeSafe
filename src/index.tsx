@@ -11,6 +11,7 @@ import { getTokens, userData } from "@contexts/slice/authSlice";
 import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
 import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
+import { Alert } from "react-native";
 
 function Navigation(): ReactElement {
     const [loading, setLoading] = React.useState(false);
@@ -19,6 +20,7 @@ function Navigation(): ReactElement {
         const creds = await getCredentials();
         if (creds) {
             const expo = await registerForPushNotificationsAsync();
+            setLoading(true);
             if (expo) {
                 try {
                     const token = await fetch(expoTokens, {
@@ -44,7 +46,6 @@ function Navigation(): ReactElement {
                     if (data.success) {
                         dispatch(getTokens(creds));
                         dispatch(userData(data.user));
-                        setLoading(true);
                     } else {
                         setLoading(false);
                     }

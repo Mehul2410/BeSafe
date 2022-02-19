@@ -16,6 +16,7 @@ export type StackNavigatorParams = {
     DetailFilled: undefined;
     CitizenSignin: undefined;
     CitizenSignup: undefined;
+    forgotPass: undefined;
     SignIn: {
         uri: ImageSourcePropType;
         role: number;
@@ -48,6 +49,7 @@ export type StackNavigatorParams = {
     Bank: undefined;
     MobileApp: undefined;
     Exam: undefined;
+    NearbyPolice: undefined;
     ViewPost: undefined;
     ViewWanted: undefined;
     ViewCyberCrime: undefined;

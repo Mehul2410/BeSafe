@@ -340,6 +340,11 @@ export function MissingPersonLayout({ route }: any) {
                         <MediumText
                             align="flex-start"
                             size={18}
+                            string={`${t("exAge")} ${route.expectedAge && route.expectedAge}`}
+                        />
+                        <MediumText
+                            align="flex-start"
+                            size={18}
                             string={`${t("religion")} ${route.religion}`}
                         />
                         <MediumText

@@ -99,9 +99,9 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                 "imageProof",
                 JSON.parse(
                     JSON.stringify({
-                        name: `image.${element.split(".")[1]}`,
+                        name: `image.${element.split(".").slice(-1)}`,
                         uri: element,
-                        type: `image/${element.split(".")[1]}`
+                        type: `image/${element.split(".").slice(-1)}`
                     })
                 )
             );
@@ -121,24 +121,36 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewMSLF");
+                setComplaint({
+                    incidenceDesc: "",
+                    dateFrom: "Date & Time",
+                    dateTo: "Date & Time",
+                    stationName: "",
+                    stationAddress: "",
+                    reportFor: "",
+                    lostLocName: "",
+                    lostLocAddress: "",
+                    thingDesc: "",
+                    thingName: ""
+                });
+                const token = await fetch(sendNotification, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userMessage: "You can see your complaint status in complaint panal"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await token.json();
             } else {
                 setError(res.message);
                 setTimeout(() => {
                     setError("");
-                }, 3000);
+                }, 10000);
             }
-            const token = await fetch(sendNotification, {
-                method: "POST",
-                body: JSON.stringify({
-                    userMessage: "Joi.string().required()"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
-                }
-            });
-            const statusChange = await token.json();
         } catch (err) {
             console.log(err);
         }
@@ -148,16 +160,33 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
         try {
             const { granted } = await Location.requestForegroundPermissionsAsync();
             if (!granted) return;
-            const {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync();
-            setlatlng({ latitude, longitude });
+            return await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    distanceInterval: 1,
+                    timeInterval: 1
+                },
+                pos => {
+                    setlatlng({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+                }
+            );
         } catch (error) {
             console.log(error);
         }
     }
     React.useEffect(() => {
-        latLong();
+        let locClean:
+            | {
+                  remove(): void;
+              }
+            | undefined;
+
+        latLong().then(remove => {
+            locClean = remove;
+        });
+        return function cleanup() {
+            locClean?.remove();
+        };
     }, []);
 
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
@@ -231,28 +260,7 @@ export function MSLF({ navigation }: NavigationProps<"MSLF">) {
                             }
                         )}
                 </View>
-                {changeStatus.status !== "" && (
-                    <>
-                        <Text
-                            weight="200"
-                            color="#FFF"
-                        >{`Change Complaint status to ${changeStatus.status}`}</Text>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "space-around"
-                            }}
-                        >
-                            <Button weight="200" style={{ width: "45%" }} btnName="Yes" />
-                            <Button
-                                weight="200"
-                                style={{ width: "45%" }}
-                                btnName="No"
-                                onPress={() => setChangeStatus({ activity: false, status: "" })}
-                            />
-                        </View>
-                    </>
-                )}
+
                 <MediumText size={18} string={`${changeStatus.status} Date Range`} />
                 <View
                     style={{

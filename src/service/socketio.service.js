@@ -1,21 +1,30 @@
+import { getCredentials } from "@contexts/store/credentials";
 import { io } from "socket.io-client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let socket;
 
-export const initiateSocketConnection = cb => {
-    socket = io("https://besaferestapi.herokuapp.com");
+export const initiateSocketConnection = async cb => {
+    const cred = await getCredentials();
+
+    if (cred) {
+        socket = io("http://besaferestapi.herokuapp.com");
+    }
+    // socket = io("https://besaferestapi.herokuapp.com");
     socket.on("connect", () => {
         console.log(`Connecting socket...`);
         return cb(socket.connected);
     });
 };
 
-export const disconnectSocket = () => {
+export const disconnectSocket = async () => {
     console.log("Disconnecting socket...");
     if (socket) socket.disconnect();
 };
-export const closeSocket = () => {
+export const closeSocket = async () => {
     console.log("close socket...");
+    const { access_token } = JSON.parse(await AsyncStorage.getItem("keys"));
+    socket.removeListener(`${access_token}sendMSLF`);
     if (socket) socket.close();
 };
 
@@ -29,8 +38,12 @@ export const AllComplaints = cb => {
         return cb(null, msg);
     });
 };
-export const AllMSLF = cb => {
-    socket.on("getmslf", msg => {
+export const AllMSLF = async cb => {
+    // var real = socket.connect();
+    const { access_token } = JSON.parse(await AsyncStorage.getItem("keys"));
+    socket.emit("g", { token: access_token });
+    socket.once(access_token, msg => {
+        console.log(msg);
         return cb(null, msg);
     });
 };

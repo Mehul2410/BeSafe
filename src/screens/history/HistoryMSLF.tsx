@@ -15,6 +15,7 @@ import {
 import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
 import { userMslf } from "@contexts/slice/complaintsSlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
+import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
 //     _id?: string;
@@ -34,6 +35,7 @@ import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 type multiProps = any[];
 
 export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
+    const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
         (state: RootStateOrAny) => state.complaints.mslf

@@ -3,6 +3,7 @@ import Text from "../text/Text";
 import { View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomInput from "../CustomInput/CustomInput";
+import { useTranslation } from "react-i18next";
 
 interface complaintProps {
     error?: string;
@@ -10,6 +11,8 @@ interface complaintProps {
 }
 
 function Complaint({ error, children }: complaintProps) {
+    const { t } = useTranslation();
+
     const scrollView = useRef<ScrollView>(null);
     return (
         <View
@@ -23,7 +26,7 @@ function Complaint({ error, children }: complaintProps) {
             }}
         >
             <Text weight="700" style={{ color: "#FFF", fontSize: 18, textAlign: "center" }}>
-                Your details will be verified before processing!
+                {t("verifiedBeforeProcessing")}
             </Text>
             <Text
                 weight="400"
@@ -35,7 +38,7 @@ function Complaint({ error, children }: complaintProps) {
                     marginVertical: 10
                 }}
             >
-                Strict action will be taken for registering false complaint!!!
+                {t("strictAction")}
             </Text>
             <View
                 style={{

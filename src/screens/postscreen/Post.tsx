@@ -10,7 +10,7 @@ import {
     Complaint,
     Text
 } from "@components";
-import { View, Image } from "react-native";
+import { View, Image, TouchableOpacity } from "react-native";
 import { allUsers, createPost, sendNotification } from "@contexts/api/client";
 import { getCredentials } from "@contexts/store/credentials";
 import * as Location from "expo-location";
@@ -58,23 +58,39 @@ export function Post({ navigation }: NavigationProps<"Post">) {
         });
         const result = await res.json();
         setUser(result);
+    }
+
+    async function latLong() {
         try {
             const { granted } = await Location.requestForegroundPermissionsAsync();
             if (!granted) return;
-            const {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync();
-            setlatlng({ latitude, longitude });
+            return await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    distanceInterval: 1,
+                    timeInterval: 1
+                },
+                pos => {
+                    setlatlng({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+                }
+            );
         } catch (error) {
             console.log(error);
         }
-        return true;
     }
-
     React.useEffect(() => {
         const ac = new AbortController();
+        let locClean:
+            | {
+                  remove(): void;
+              }
+            | undefined;
+        latLong().then(remove => {
+            locClean = remove;
+        });
         fetcher(allUsers);
         return function cleanup() {
+            locClean?.remove();
             ac.abort();
         };
     }, []);
@@ -131,9 +147,9 @@ export function Post({ navigation }: NavigationProps<"Post">) {
                 "imageProof",
                 JSON.parse(
                     JSON.stringify({
-                        name: `image.${element.split(".")[1]}`,
+                        name: `image.${element.split(".").slice(-1)}`,
                         uri: element,
-                        type: `image/${element.split(".")[1]}`
+                        type: `image/${element.split(".").slice(-1)}`
                     })
                 )
             );
@@ -153,10 +169,20 @@ export function Post({ navigation }: NavigationProps<"Post">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewPost");
+                setComplaint({
+                    complaintAgainstName: "",
+                    complaintAgainst: "",
+                    reason: "",
+                    locationName: "",
+                    locationAddress: "",
+                    currentSituation: "",
+                    nearestPoliceStation: "",
+                    nearestPoliceStationAddress: ""
+                });
                 const token = await fetch(sendNotification, {
                     method: "POST",
                     body: JSON.stringify({
-                        userMessage: "Joi.string().required()"
+                        userMessage: "You can see your complaint status in complaint panal"
                     }),
                     headers: {
                         "Content-Type": "application/json",
@@ -360,12 +386,9 @@ export function Post({ navigation }: NavigationProps<"Post">) {
                     onAddImage={handleAdd}
                     onRemoveImage={(uri: string) => handleRemove(uri)}
                 />
-                <Button
-                    btnName="Submit"
-                    weight="200"
-                    style={{ fontSize: 18, marginTop: 6 }}
-                    onPress={submitComplaint}
-                />
+                <TouchableOpacity onPress={submitComplaint}>
+                    <Button btnName="Submit" weight="200" style={{ fontSize: 18, marginTop: 6 }} />
+                </TouchableOpacity>
             </Complaint>
         </Background>
     );

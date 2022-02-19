@@ -29,24 +29,17 @@ export async function getAccessUsingRefresh(refreshToken: string) {
 
 async function getVerifiedKeys(keys: setCredProps) {
     console.log("Loading keys from storage");
-
     if (keys) {
         console.log("checking access");
-
         if (!isTokenExpired(keys.access_token)) {
             console.log("returning access");
-
             return keys;
         } else {
             console.log("access expired");
-
             console.log("checking refresh expiry");
-
             if (!isTokenExpired(keys.refresh_token)) {
                 console.log("fetching access using refresh");
-
                 const response = await getAccessUsingRefresh(keys.refresh_token);
-
                 if (response.success === true) {
                     await AsyncStorage.setItem("keys", JSON.stringify(response));
                     console.log("UPDATED ONE");

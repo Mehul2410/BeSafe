@@ -104,9 +104,9 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                 "imageProof",
                 JSON.parse(
                     JSON.stringify({
-                        name: `image.${element.split(".")[1]}`,
+                        name: `image.${element.split(".").slice(-1)}`,
                         uri: element,
-                        type: `image/${element.split(".")[1]}`
+                        type: `image/${element.split(".").slice(-1)}`
                     })
                 )
             );
@@ -126,24 +126,42 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
             const res = await submit.json();
             if (res.success) {
                 navigation.navigate("ViewUnidentifiedPerson");
+                setComplaint({
+                    incidenceDesc: "",
+                    dateFrom: "Date & Time",
+                    dateTo: "Date & Time",
+                    height: "",
+                    expectedAge: "",
+                    upperDressColor: "",
+                    lowerDressColor: "",
+                    faceCutWithColor: "",
+                    hairCutWithColor: "",
+                    eyes: "",
+                    sex: "",
+                    locName: "",
+                    locAddress: "",
+                    stationName: "",
+                    stationAddress: "",
+                    reportFor: ""
+                });
+                const token = await fetch(sendNotification, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        userMessage: "You can see your complaint status in complaint panal"
+                    }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        authorization: `Bearer ${creds.access_token}`
+                    }
+                });
+                const statusChange = await token.json();
             } else {
                 setError(res.message);
                 setTimeout(() => {
                     setError("");
                 }, 3000);
             }
-            const token = await fetch(sendNotification, {
-                method: "POST",
-                body: JSON.stringify({
-                    userMessage: "Joi.string().required()"
-                }),
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                    authorization: `Bearer ${creds.access_token}`
-                }
-            });
-            const statusChange = await token.json();
         } catch (err) {
             console.log(err);
         }
@@ -153,16 +171,33 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
         try {
             const { granted } = await Location.requestForegroundPermissionsAsync();
             if (!granted) return;
-            const {
-                coords: { latitude, longitude }
-            } = await Location.getCurrentPositionAsync();
-            setlatlng({ latitude, longitude });
+            return await Location.watchPositionAsync(
+                {
+                    accuracy: Location.Accuracy.High,
+                    distanceInterval: 1,
+                    timeInterval: 1
+                },
+                pos => {
+                    setlatlng({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+                }
+            );
         } catch (error) {
             console.log(error);
         }
     }
     useEffect(() => {
-        latLong();
+        let locClean:
+            | {
+                  remove(): void;
+              }
+            | undefined;
+
+        latLong().then(remove => {
+            locClean = remove;
+        });
+        return function cleanup() {
+            locClean?.remove();
+        };
     }, []);
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState({
         from: false,
@@ -234,7 +269,7 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                             );
                         })}
                 </View>
-                {changeStatus.status !== "" && (
+                {/* {changeStatus.status !== "" && (
                     <>
                         <Text
                             weight="200"
@@ -255,7 +290,7 @@ export function UnidPerson({ navigation }: NavigationProps<"UnidPerson">) {
                             />
                         </View>
                     </>
-                )}
+                )} */}
                 <MediumText size={18} string={`${changeStatus.status} Found Date Range`} />
                 <View
                     style={{

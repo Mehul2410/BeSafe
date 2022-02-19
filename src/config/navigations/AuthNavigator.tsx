@@ -7,7 +7,8 @@ import {
     SignIn,
     SignUp,
     PoliceDetail,
-    DetailFilled
+    DetailFilled,
+    forgotPass
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -28,6 +29,7 @@ export default function AuthNavigator(): ReactElement {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="forgotPass" component={forgotPass} />
         </Stack.Navigator>
     );
 }

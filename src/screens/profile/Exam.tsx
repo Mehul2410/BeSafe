@@ -88,21 +88,24 @@ export async function registerForPushNotificationsAsync() {
                 alert("Failed to get push token for push notification!");
                 return;
             }
-            token = (await Notifications.getExpoPushTokenAsync()).data;
+            token = (
+                await Notifications.getExpoPushTokenAsync({
+                    experienceId: "@vallabh_2920/BeSafe"
+                })
+            ).data;
         } else {
             alert("Must use physical device for Push Notifications");
         }
     } catch (error) {
         console.log(error);
     }
-    if (Platform.OS === "android") {
-        Notifications.setNotificationChannelAsync("default", {
-            name: "default",
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: "#FF231F7C"
-        });
-    }
+    Notifications.setNotificationChannelAsync("BeSafe", {
+        name: "BeSafe",
+        sound: "noti.wav",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C"
+    });
 
     return token;
 }

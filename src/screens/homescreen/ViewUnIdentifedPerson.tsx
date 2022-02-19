@@ -54,6 +54,9 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const complaint = await res.json();
+                dispatch(userUnidentifiedPerson(complaint));
+
                 //active status to be send from backend to login police
             }
         }
@@ -64,9 +67,9 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                AllUnIdPerson((err: any, data: any) => {
-                    dispatch(userUnidentifiedPerson(data));
-                });
+                // AllUnIdPerson((err: any, data: any) => {
+                //     dispatch(userUnidentifiedPerson(data));
+                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
@@ -101,66 +104,68 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
                                 console.log(allData);
-                                return allData.unIdPerson.map((item: any, index: any) => {
-                                    return (
-                                        <TouchableWithoutFeedback
-                                            key={index}
-                                            onPress={() => {
-                                                setX({ state: true, id: item._id });
-                                            }}
-                                        >
-                                            <View
-                                                style={{
-                                                    marginVertical: 10,
-                                                    width: "100%",
-                                                    backgroundColor: "#281B89",
-                                                    borderRadius: 10,
-                                                    padding: 10,
-                                                    elevation: 3
+                                return allData.unIdPerson
+                                    .filter((items: any) => items.status !== "Solved")
+                                    .map((item: any, index: any) => {
+                                        return (
+                                            <TouchableWithoutFeedback
+                                                key={index}
+                                                onPress={() => {
+                                                    setX({ state: true, id: item._id });
                                                 }}
                                             >
-                                                <Modal
-                                                    transparent={true}
-                                                    animationType="slide"
-                                                    visible={x.state && item._id === x.id}
-                                                    onRequestClose={() => {
-                                                        setX({ state: false, id: "" });
-                                                    }}
-                                                >
-                                                    <UnidPersonLayout route={item} />
-                                                </Modal>
                                                 <View
                                                     style={{
-                                                        flexDirection: "row",
-                                                        alignItems: "center"
+                                                        marginVertical: 10,
+                                                        width: "100%",
+                                                        backgroundColor: "#281B89",
+                                                        borderRadius: 10,
+                                                        padding: 10,
+                                                        elevation: 3
                                                     }}
                                                 >
+                                                    <Modal
+                                                        transparent={true}
+                                                        animationType="slide"
+                                                        visible={x.state && item._id === x.id}
+                                                        onRequestClose={() => {
+                                                            setX({ state: false, id: "" });
+                                                        }}
+                                                    >
+                                                        <UnidPersonLayout route={item} />
+                                                    </Modal>
                                                     <View
                                                         style={{
                                                             flexDirection: "row",
                                                             alignItems: "center"
                                                         }}
                                                     >
-                                                        <StatusDetail string={item.status} />
                                                         <View
                                                             style={{
-                                                                flexDirection: "column",
-                                                                alignItems: "flex-start",
-                                                                marginLeft: 10
+                                                                flexDirection: "row",
+                                                                alignItems: "center"
                                                             }}
                                                         >
-                                                            <DateAndTime
-                                                                string={new Date(
-                                                                    item.createdAt!
-                                                                ).toLocaleDateString("en-IN")}
-                                                            />
-                                                            <DateAndTime
-                                                                string={new Date(
-                                                                    item.createdAt!
-                                                                ).toLocaleTimeString("en-IN")}
-                                                            />
-                                                        </View>
-                                                        {/* <Image
+                                                            <StatusDetail string={item.status} />
+                                                            <View
+                                                                style={{
+                                                                    flexDirection: "column",
+                                                                    alignItems: "flex-start",
+                                                                    marginLeft: 10
+                                                                }}
+                                                            >
+                                                                <DateAndTime
+                                                                    string={new Date(
+                                                                        item.createdAt!
+                                                                    ).toLocaleDateString("en-IN")}
+                                                                />
+                                                                <DateAndTime
+                                                                    string={new Date(
+                                                                        item.createdAt!
+                                                                    ).toLocaleTimeString("en-IN")}
+                                                                />
+                                                            </View>
+                                                            {/* <Image
                                                                     resizeMode="contain"
                                                                     style={{
                                                                         height: 22,
@@ -169,33 +174,33 @@ export function ViewUnidentifiedPerson({ navigation }: NavigationProps<"ViewUnid
                                                                     }}
                                                                     source={require("@assets/remainder.png")}
                                                                 /> */}
+                                                        </View>
                                                     </View>
+                                                    <Text
+                                                        weight="400"
+                                                        style={{
+                                                            color: colors.white,
+                                                            fontSize: 15,
+                                                            marginTop: 5
+                                                        }}
+                                                    >
+                                                        {`${t("unidPerson")} ${t("report")}`}
+                                                    </Text>
+                                                    <Text
+                                                        numberOfLines={3}
+                                                        weight="400"
+                                                        style={{
+                                                            color: colors.white,
+                                                            fontSize: 12,
+                                                            paddingTop: 5
+                                                        }}
+                                                    >
+                                                        {item.incidenceDesc}
+                                                    </Text>
                                                 </View>
-                                                <Text
-                                                    weight="400"
-                                                    style={{
-                                                        color: colors.white,
-                                                        fontSize: 15,
-                                                        marginTop: 5
-                                                    }}
-                                                >
-                                                    {`${t("unidPerson")} ${t("report")}`}
-                                                </Text>
-                                                <Text
-                                                    numberOfLines={3}
-                                                    weight="400"
-                                                    style={{
-                                                        color: colors.white,
-                                                        fontSize: 12,
-                                                        paddingTop: 5
-                                                    }}
-                                                >
-                                                    {item.incidenceDesc}
-                                                </Text>
-                                            </View>
-                                        </TouchableWithoutFeedback>
-                                    );
-                                });
+                                            </TouchableWithoutFeedback>
+                                        );
+                                    });
                             })}
                     </ScrollView>
                 </View>
