@@ -8,9 +8,7 @@ import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
 import {
-    AllComplaints,
     closeSocket,
-    disconnectSocket,
     initiateSocketConnection,
     subscribeToChat
 } from "../../service/socketio.service";

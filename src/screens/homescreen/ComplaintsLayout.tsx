@@ -337,7 +337,7 @@ export function ComplaintsLayout({ route }: any) {
                                 size={15}
                                 color="#000"
                                 string={`${t("stationName")} ${
-                                    route.stationName && route.stationName
+                                    route.nearestPoliceStation && route.nearestPoliceStation
                                 }`}
                             />
                             <RegularText
@@ -345,7 +345,8 @@ export function ComplaintsLayout({ route }: any) {
                                 color="#000"
                                 textalign="justify"
                                 string={`${t("add")}: ${
-                                    route.stationAddress && route.stationAddress
+                                    route.nearestPoliceStationAddress &&
+                                    route.nearestPoliceStationAddress
                                 }`}
                             />
                         </View>
@@ -373,6 +374,7 @@ export function ComplaintsLayout({ route }: any) {
                 >
                     <ScrollView>
                         <FlatListHead />
+
                         {assignComplaint.activity &&
                             role === 4000 &&
                             police?.map(item => (

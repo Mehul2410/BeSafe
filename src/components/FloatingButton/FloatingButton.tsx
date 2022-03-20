@@ -1,20 +1,54 @@
-import { StyleSheet, Text, View, ViewProps, Animated } from "react-native";
+import { StyleSheet, Text, View, ViewProps } from "react-native";
 import React from "react";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { updatePoliceStatus } from "@contexts/api/client";
+import { getCredentials } from "@contexts/store/credentials";
 
 type Props = {} & ViewProps;
 
 export default function FloatingButton({ style }: Props) {
     const [toggle, setToggle] = React.useState(false);
+
+    async function handleUpdateStatus(status: boolean) {
+        const creds = await getCredentials();
+        if (creds) {
+            const updateStatus = await fetch(updatePoliceStatus, {
+                method: "PUT",
+                body: JSON.stringify({
+                    status
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    authorization: `Bearer ${creds.access_token}`
+                }
+            });
+            const res = await updateStatus.json();
+            if (res.success) {
+                setToggle(!toggle);
+            }
+        }
+    }
+
     return (
         <View style={[styles.box, style]}>
             {toggle && (
                 <View style={{}}>
                     <View style={styles.btn1}>
-                        <Text style={{ color: "#FFF", fontSize: 12 }}>Active</Text>
+                        <Text
+                            style={{ color: "#FFF", fontSize: 12 }}
+                            onPress={() => handleUpdateStatus(true)}
+                        >
+                            Active
+                        </Text>
                     </View>
                     <View style={styles.btn2}>
-                        <Text style={{ color: "#FFF", fontSize: 12 }}>Inactive</Text>
+                        <Text
+                            style={{ color: "#FFF", fontSize: 12 }}
+                            onPress={() => handleUpdateStatus(false)}
+                        >
+                            Inactive
+                        </Text>
                     </View>
                 </View>
             )}

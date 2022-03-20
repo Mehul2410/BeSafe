@@ -33,3 +33,4 @@ export const assignReport = "https://besaferestapi.herokuapp.com/api/assignRepor
 export const assignMissing = "https://besaferestapi.herokuapp.com/api/assignMissing";
 export const assignMSLF = "https://besaferestapi.herokuapp.com/api/assignMSLF";
 export const assignUnIdPerson = "https://besaferestapi.herokuapp.com/api/assignUnIdPerson";
+export const updatePoliceStatus = "https://besaferestapi.herokuapp.com/api/updatePoliceStatus";

@@ -11,7 +11,6 @@ import { getTokens, userData } from "@contexts/slice/authSlice";
 import { expoTokens, myDetails } from "@contexts/api/client";
 import PoliceNavigation from "@config/tabnavigator/PoliceNavigation";
 import { registerForPushNotificationsAsync } from "./screens/profile/Exam";
-import { Alert } from "react-native";
 
 function Navigation(): ReactElement {
     const [loading, setLoading] = React.useState(false);
