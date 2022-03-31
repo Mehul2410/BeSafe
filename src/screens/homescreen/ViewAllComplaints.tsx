@@ -1,12 +1,16 @@
 import { View, TouchableWithoutFeedback, Image, FlatList } from "react-native";
 import React from "react";
 import { NavigationProps } from "@types";
-import { Background, LightText, MediumText, Text } from "@components";
+import { Background, FloatingButton, LightText, MediumText, Text } from "@components";
 import { useTranslation } from "react-i18next";
+import { RootStateOrAny, useSelector } from "react-redux";
 
 type Props = {};
 
-const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">) => {
+const ViewAllComplaints = ({ navigation, route }: NavigationProps<"ViewAllComplaints">) => {
+    const { userDetails, id, name, role, avatar, email } = useSelector(
+        (state: RootStateOrAny) => state.auth
+    );
     const { t, i18n } = useTranslation();
     const complaints = [
         { id: 0, name: `${t("reportCom")}`, uri: require("@assets/report.png"), navi: "ViewPost" },
@@ -108,6 +112,7 @@ const ViewAllComplaints = ({ navigation }: NavigationProps<"ViewAllComplaints">)
                     }
                 />
             </View>
+            {role === 5000 && <FloatingButton style={{ bottom: 10, right: 15 }} />}
         </Background>
     );
 };
