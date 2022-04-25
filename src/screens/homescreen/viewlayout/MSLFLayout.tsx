@@ -13,7 +13,7 @@ import {
 } from "@components";
 import { colors } from "@utils";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { assignMSLF, getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignMSLF, getStationPolice, updateMslfStatus, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -45,7 +45,7 @@ export function MSLFLayout({ route }: any) {
         const creds = await getCredentials();
         if (creds) {
             try {
-                const res = await fetch(updateStatus, {
+                const res = await fetch(updateMslfStatus, {
                     method: "PUT",
                     body: JSON.stringify({
                         status: changeStatus.status,
@@ -107,6 +107,7 @@ export function MSLFLayout({ route }: any) {
                                 authorization: `Bearer ${cred.access_token}`
                             }
                         });
+                        // console.log(assignComplaint);
                         // const data = await res.json();
                     } catch (error) {
                         console.log(error);
@@ -168,6 +169,12 @@ export function MSLFLayout({ route }: any) {
                             align="center"
                             textalign="left"
                             string={item.userDetails && item.userDetails.policePost}
+                        />
+                        <RegularText
+                            color="#FFF"
+                            align="center"
+                            textalign="left"
+                            string={item.userDetails && item.userDetails.caseCount}
                         />
                     </View>
                 </View>
@@ -436,7 +443,7 @@ export function MSLFLayout({ route }: any) {
                         style={{
                             color: colors.white
                         }}
-                        btnName={`${t("assignTo")} ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignName}`}
                     />
                 </View>
             </View>

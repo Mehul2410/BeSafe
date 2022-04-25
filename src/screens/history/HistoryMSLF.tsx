@@ -3,17 +3,15 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { GETMSLF, mslfHistory } from "@contexts/api/client";
+import { mslfHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
-    MSLFHistory,
     closeSocket,
     subscribeToChat,
     initiateSocketConnection
 } from "../../service/socketio.service";
-import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
-import { userMslf } from "@contexts/slice/complaintsSlice";
+import { userMslf } from "@contexts/slice/historySlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 import { useTranslation } from "react-i18next";
 
@@ -37,9 +35,7 @@ type multiProps = any[];
 export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
     const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
-    const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.mslf
-    );
+    const getAllComplaints: multiProps = useSelector((state: RootStateOrAny) => state.history.mslf);
 
     const dispatch = useDispatch();
     async function getComplaints() {
@@ -53,6 +49,8 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                const x = await res.json();
+                dispatch(userMslf(x));
                 //active status to be send from backend to login police
             }
         }
@@ -63,9 +61,6 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                MSLFHistory((err: any, data: any) => {
-                    dispatch(userMslf(data));
-                });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
@@ -79,7 +74,6 @@ export function HistoryMSLF({ navigation }: NavigationProps<"HistoryMSLF">) {
             closeSocket();
         };
     }, []);
-    console.log(getAllComplaints);
     const [x, setX] = React.useState({ state: false, id: "" });
     return (
         <Background>

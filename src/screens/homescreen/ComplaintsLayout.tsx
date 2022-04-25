@@ -1,13 +1,5 @@
 import React from "react";
-import {
-    View,
-    Image,
-    Modal,
-    FlatList,
-    ScrollView,
-    Touchable,
-    TouchableOpacity
-} from "react-native";
+import { View, Image, Modal, ScrollView, TouchableOpacity } from "react-native";
 import {
     Text,
     DateAndTime,
@@ -20,15 +12,11 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
 import { assignReport, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
-// import { ListItem } from "react-native-elements";
-// import { subscribeToChat } from "../../service/socketio.service";
 
 function Police({ item, select }: any) {
     return (
@@ -62,6 +50,12 @@ function Police({ item, select }: any) {
                     align="center"
                     textalign="left"
                     string={item.userDetails && item.userDetails.policePost}
+                />
+                <RegularText
+                    color="#FFF"
+                    align="center"
+                    textalign="left"
+                    string={item.userDetails && item.userDetails.caseCount}
                 />
             </View>
         </View>
@@ -104,6 +98,7 @@ export function ComplaintsLayout({ route }: any) {
                         authorization: `Bearer ${creds.access_token}`
                     }
                 });
+
                 const statusChange = await res.json();
                 if (statusChange.acknowledged) {
                     console.log("updated");

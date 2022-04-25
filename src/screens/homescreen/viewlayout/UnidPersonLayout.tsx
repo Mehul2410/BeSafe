@@ -13,7 +13,12 @@ import {
 } from "@components";
 import { colors } from "@utils";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { assignUnIdPerson, getStationPolice, updateStatus } from "@contexts/api/client";
+import {
+    assignUnIdPerson,
+    getStationPolice,
+    updateStatus,
+    updateUnidPersonStatus
+} from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -43,7 +48,7 @@ export function UnidPersonLayout({ route }: any) {
         const creds = await getCredentials();
         if (creds) {
             try {
-                const res = await fetch(updateStatus, {
+                const res = await fetch(updateUnidPersonStatus, {
                     method: "PUT",
                     body: JSON.stringify({
                         status: changeStatus.status,
@@ -168,6 +173,12 @@ export function UnidPersonLayout({ route }: any) {
                             align="center"
                             textalign="left"
                             string={item.userDetails && item.userDetails.policePost}
+                        />
+                        <RegularText
+                            color="#FFF"
+                            align="center"
+                            textalign="left"
+                            string={item.userDetails && item.userDetails.caseCount}
                         />
                     </View>
                 </View>
@@ -463,7 +474,7 @@ export function UnidPersonLayout({ route }: any) {
                         style={{
                             color: colors.white
                         }}
-                        btnName={`${t("assignTo")} ${route.assignTo}`}
+                        btnName={`${t("assignTo")} ${route.assignName}`}
                     />
                 </View>
             </View>

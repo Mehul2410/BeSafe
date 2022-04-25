@@ -12,7 +12,7 @@ import {
 } from "@components";
 import { colors } from "@utils";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { getStationPolice, updateStatus, updateUnidPersonStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -44,7 +44,7 @@ export function UnidPersonLayout({ route }: any) {
         const creds = await getCredentials();
         if (creds) {
             try {
-                const res = await fetch(updateStatus, {
+                const res = await fetch(updateUnidPersonStatus, {
                     method: "PUT",
                     body: JSON.stringify({
                         status: changeStatus.status,

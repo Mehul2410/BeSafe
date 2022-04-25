@@ -13,7 +13,8 @@ const initialState = {
     active: false,
     complaints: [],
     userDetails: undefined,
-    notificationToken: ""
+    notificationToken: "",
+    history: []
 };
 
 export const authSlice = createSlice({
@@ -49,12 +50,16 @@ export const authSlice = createSlice({
         userComplaints: (state, action) => {
             const { myComplaints } = action.payload;
             state.complaints = myComplaints;
+        },
+        historyComplaints: (state, action) => {
+            const { myComplaints } = action.payload;
+            state.history = myComplaints;
         }
     },
     extraReducers: {}
 });
 
 // Action creators are generated for each case reducer function
-export const { signUp, getTokens, userData, userComplaints } = authSlice.actions;
+export const { signUp, getTokens, userData, userComplaints, historyComplaints } = authSlice.actions;
 
 export default authSlice.reducer;

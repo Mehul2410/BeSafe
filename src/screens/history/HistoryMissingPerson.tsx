@@ -3,17 +3,15 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { getMissingPerson, missingPersonHistory } from "@contexts/api/client";
+import { missingPersonHistory } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
     subscribeToChat,
-    MISSINGPersonHistory,
     closeSocket,
     initiateSocketConnection
 } from "../../service/socketio.service";
-import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
-import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
+import { userMissingPerson } from "@contexts/slice/historySlice";
 import { MissingPersonLayout } from "./viewlayout/MissingPersonLayout";
 import { useTranslation } from "react-i18next";
 
@@ -38,7 +36,7 @@ export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMis
     const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.missingPerson
+        (state: RootStateOrAny) => state.history.missingPerson
     );
 
     const dispatch = useDispatch();
@@ -53,6 +51,7 @@ export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMis
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                dispatch(userMissingPerson(await res.json()));
                 //active status to be send from backend to login police
             }
         }
@@ -63,9 +62,6 @@ export function HistoryMissingPerson({ navigation }: NavigationProps<"HistoryMis
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                MISSINGPersonHistory((err: any, data: any) => {
-                    dispatch(userMissingPerson(data));
-                });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();

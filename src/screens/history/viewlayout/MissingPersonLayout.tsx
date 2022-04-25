@@ -14,7 +14,7 @@ import {
 import { colors } from "@utils";
 import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { getStationPolice, updateStatus } from "@contexts/api/client";
+import { getStationPolice, updateMissingStatus, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
@@ -49,7 +49,7 @@ export function MissingPersonLayout({ route }: any) {
         const creds = await getCredentials();
         if (creds) {
             try {
-                const res = await fetch(updateStatus, {
+                const res = await fetch(updateMissingStatus, {
                     method: "PUT",
                     body: JSON.stringify({
                         status: changeStatus.status,
