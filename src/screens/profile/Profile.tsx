@@ -86,7 +86,7 @@ export function Profile({ navigation, route }: NavigationProps<"UserProfile">) {
                         <ProfileText name={t("editProfile")} navigate="EditProfile" />
                     )}
                     {/* history */}
-                    <ProfileText name={t("history")} navigate="Exam" />
+                    <ProfileText name={t("history")} navigate="HistoryAllComplaints" />
                     <ProfileText name={t("setting")} navigate="Setting" />
                     <ProfileText name={t("help")} navigate="Help" />
                     <Text

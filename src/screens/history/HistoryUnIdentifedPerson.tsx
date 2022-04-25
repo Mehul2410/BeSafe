@@ -14,7 +14,7 @@ import {
     UnIdPersonHistory
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "./viewlayout/ComplaintsLayout";
-import { userUnidentifiedPerson } from "@contexts/slice/complaintsSlice";
+import { userUnidentifiedPerson } from "@contexts/slice/historySlice";
 import { useTranslation } from "react-i18next";
 
 // interface complaintProps {
@@ -39,7 +39,7 @@ export function HistoryUnIdentifedPerson({
 }: NavigationProps<"HistoryUnidentifiedPerson">) {
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.UnidentifiedPerson
+        (state: RootStateOrAny) => state.history.UnidentifiedPerson
     );
     const { t } = useTranslation();
 
@@ -55,6 +55,7 @@ export function HistoryUnIdentifedPerson({
                         authorization: `Bearer ${data.access_token}`
                     }
                 });
+                dispatch(userUnidentifiedPerson(await res.json()));
                 //active status to be send from backend to login police
             }
         }
@@ -65,10 +66,6 @@ export function HistoryUnIdentifedPerson({
         initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-
-                UnIdPersonHistory((err: any, data: any) => {
-                    dispatch(userUnidentifiedPerson(data));
-                });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();

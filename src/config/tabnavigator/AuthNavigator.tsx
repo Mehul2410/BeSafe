@@ -11,7 +11,8 @@ import {
     HistoryAllComplaints,
     HistoryMSLF,
     HistoryUnIdentifedPerson,
-    HistoryMissingPerson
+    HistoryMissingPerson,
+    HistoryReport
 } from "@screens";
 
 import { StackNavigatorParams } from "@types";
@@ -32,7 +33,7 @@ export default function AuthNavigator(): ReactElement {
             <Stack.Screen name="ComplaintGroup" component={ComplaintGroup} />
             <Stack.Screen name="Exam" component={Exam} />
             <Stack.Screen name="HistoryAllComplaints" component={HistoryAllComplaints} />
-            <Stack.Screen name="HistoryPost" component={ComplaintGroup} />
+            <Stack.Screen name="HistoryPost" component={HistoryReport} />
             <Stack.Screen name="HistoryMSLF" component={HistoryMSLF} />
             <Stack.Screen name="HistoryUnidentifiedPerson" component={HistoryUnIdentifedPerson} />
             <Stack.Screen name="HistoryMissingPerson" component={HistoryMissingPerson} />

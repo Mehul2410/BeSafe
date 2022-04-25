@@ -23,7 +23,11 @@ export const resetPass = "https://besaferestapi.herokuapp.com/api/reset-password
 export const myDetails = "https://besaferestapi.herokuapp.com/api/mydetails";
 export const policeDetails = "https://besaferestapi.herokuapp.com/api/policeDetails";
 export const citizenDetails = "https://besaferestapi.herokuapp.com/api/citizenDetails";
-export const updateStatus = "https://besaferestapi.herokuapp.com/api/updateStatus";
+export const updateStatus = "https://besaferestapi.herokuapp.com/api/updateReportStatus";
+export const updateMissingStatus = "https://besaferestapi.herokuapp.com/api/updateMissingStatus";
+export const updateMslfStatus = "https://besaferestapi.herokuapp.com/api/updateMslfStatus";
+export const updateUnidPersonStatus =
+    "https://besaferestapi.herokuapp.com/api/updateUnidPersonStatus";
 export const allUsers = "https://besaferestapi.herokuapp.com/api/allusers";
 export const getStationPolice = "https://besaferestapi.herokuapp.com/api/getStationPolice";
 export const expoTokens = "https://besaferestapi.herokuapp.com/api/expoTokens";
@@ -33,3 +37,4 @@ export const assignReport = "https://besaferestapi.herokuapp.com/api/assignRepor
 export const assignMissing = "https://besaferestapi.herokuapp.com/api/assignMissing";
 export const assignMSLF = "https://besaferestapi.herokuapp.com/api/assignMSLF";
 export const assignUnIdPerson = "https://besaferestapi.herokuapp.com/api/assignUnIdPerson";
+export const updatePoliceStatus = "https://besaferestapi.herokuapp.com/api/updatePoliceStatus";
