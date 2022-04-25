@@ -56,6 +56,8 @@ export type StackNavigatorParams = {
     ViewMissingPerson: undefined;
     ViewMSLF: undefined;
     ViewUnidentifiedPerson: undefined;
+    ViewMobApp: undefined;
+    ViewBank: undefined;
     HistoryPost: undefined;
     HistoryWanted: undefined;
     HistoryCyberCrime: undefined;
@@ -63,8 +65,6 @@ export type StackNavigatorParams = {
     HistoryMSLF: undefined;
     HistoryUnidPerson: undefined;
     HistoryUnidentifiedPerson: undefined;
-    ViewBank: undefined;
-    ViewMobileApp: undefined;
     ViewExam: undefined;
     ViewAllComplaints: undefined;
     HistoryAllComplaints: undefined;

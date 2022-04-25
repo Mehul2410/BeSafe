@@ -44,15 +44,14 @@ const ViewAllComplaints = ({ navigation, route }: NavigationProps<"ViewAllCompla
             id: 5,
             name: `${t("mobApp")}`,
             uri: require("@assets/cyber.png"),
-            navi: "MobileApp"
+            navi: "ViewMobApp"
+        },
+        {
+            id: 6,
+            name: `${t("bank")}`,
+            uri: require("@assets/bank.png"),
+            navi: "ViewBank"
         }
-
-        // {
-        //     id: 6,
-        //     name: `${t("bank")}`,
-        //     uri: require("@assets/bank.png"),
-        //     navi: "Bank"
-        // }
     ];
 
     const Btn = ({ item }: any) => {

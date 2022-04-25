@@ -35,6 +35,8 @@ export { ViewMSLF } from "./homescreen/ViewMSLF";
 export { ViewUnidentifiedPerson } from "./homescreen/ViewUnIdentifedPerson";
 export { ViewMissingPerson } from "./homescreen/ViewMissingPerson";
 export { ViewWanted } from "./homescreen/ViewWanted";
+export { ViewMobApp } from "./homescreen/ViewMobApp";
+export { ViewBank } from "./homescreen/ViewBank";
 export { HistoryReport } from "./history/HistoryReport";
 export { HistoryMSLF } from "./history/HistoryMSLF";
 export { HistoryUnIdentifedPerson } from "./history/HistoryUnIdentifedPerson";

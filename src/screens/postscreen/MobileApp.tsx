@@ -27,6 +27,8 @@ export function MobileApp({ route }: NavigationProps<"MobileApp">) {
         nearestPoliceStation: "",
         nearestPoliceStationAddress: ""
     });
+    console.log(complaint);
+
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
 
     const handleAdd = (uri: string) => {

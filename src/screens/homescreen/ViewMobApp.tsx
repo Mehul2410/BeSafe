@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, ScrollView, TouchableWithoutFeedback, Modal } from "react-native";
+import React, { useEffect } from "react";
+import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native";
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { complaints } from "@contexts/api/client";
+import { getMissingPerson } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
-import { userComplaints } from "@contexts/slice/authSlice";
 import {
-    AllComplaints,
+    subscribeToChat,
+    AllMissingPerson,
     closeSocket,
-    disconnectSocket,
     initiateSocketConnection,
-    subscribeToChat
+    disconnectSocket
 } from "../../service/socketio.service";
-import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
+import { ComplaintsLayout } from "./ComplaintsLayout";
+import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
 import { useTranslation } from "react-i18next";
+import { MobAppLayout } from "./viewlayout/MobAppLayout";
 
 // interface complaintProps {
 //     _id?: string;
@@ -34,19 +35,19 @@ import { useTranslation } from "react-i18next";
 // type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
+export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
     const { t } = useTranslation();
-
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.auth.complaints
+        (state: RootStateOrAny) => state.complaints.missingPerson
     );
+
     const dispatch = useDispatch();
     async function getComplaints() {
         const data = await getCredentials();
         if (data) {
             if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(complaints, {
+                const res = await fetch(getMissingPerson, {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -54,7 +55,8 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                     }
                 });
                 const complaint = await res.json();
-                dispatch(userComplaints(complaint));
+                dispatch(userMissingPerson(complaint));
+
                 //active status to be send from backend to login police
             }
         }
@@ -62,11 +64,11 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
 
     useEffect(() => {
         const ac = new AbortController();
-        initiateSocketConnection((data: any) => {
+        initiateSocketConnection((data: boolean) => {
             if (data) {
                 getComplaints();
-                // AllComplaints((err: any, data: any) => {
-                //     dispatch(userComplaints(data));
+                // AllMissingPerson((err: any, data: any) => {
+                //     dispatch(userMissingPerson(data));
                 // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
@@ -81,6 +83,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
             closeSocket();
         };
     }, []);
+    console.log(getAllComplaints);
     const [x, setX] = React.useState({ state: false, id: "" });
     return (
         <Background>
@@ -93,14 +96,15 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                 }}
             >
                 <Text style={{ color: "#FFF", marginBottom: 18, textAlign: "center" }}>
-                    {t("reportCom")}
+                    {`Mobile App Complaints`}
                 </Text>
                 {!loading && <ComplaintLoader />}
                 <View>
                     <ScrollView>
                         {getAllComplaints &&
                             getAllComplaints.map((allData: any[]) => {
-                                return allData.complaints
+                                console.log(allData);
+                                return allData.missingPerson
                                     .filter((items: any) => items.status !== "Solved")
                                     .map((item: any, index: any) => {
                                         return (
@@ -128,7 +132,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                                                             setX({ state: false, id: "" });
                                                         }}
                                                     >
-                                                        <ComplaintsLayout route={item} />
+                                                        <MobAppLayout route={item} />
                                                     </Modal>
                                                     <View
                                                         style={{
@@ -180,10 +184,10 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                                                             marginTop: 5
                                                         }}
                                                     >
-                                                        {t("reason")}
+                                                        {`${t("missPerson")} ${t("report")}`}
                                                     </Text>
                                                     <Text
-                                                        numberOfLines={3}
+                                                        numberOfLines={2}
                                                         weight="400"
                                                         style={{
                                                             color: colors.white,
@@ -191,7 +195,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                                                             paddingTop: 5
                                                         }}
                                                     >
-                                                        {item.reason}
+                                                        {`${t("name")}: ${item.name}`}
                                                     </Text>
                                                 </View>
                                             </TouchableWithoutFeedback>
@@ -204,10 +208,3 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
         </Background>
     );
 }
-
-// id={a?.id}
-// status={a?.status}
-// date={a?.date}
-// time={a?.time}
-// reason={a?.reason}
-// text={a?.text}
