@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, ScrollView, TouchableWithoutFeedback, Modal } from "react-native";
+import React, { ReactElement, useEffect } from "react";
+import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native";
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
@@ -8,33 +8,16 @@ import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import { userComplaints } from "@contexts/slice/authSlice";
 import {
-    AllComplaints,
     closeSocket,
-    disconnectSocket,
     initiateSocketConnection,
     subscribeToChat
 } from "../../service/socketio.service";
 import { ComplaintsLayout } from "../homescreen/ComplaintsLayout";
 import { useTranslation } from "react-i18next";
 
-// interface complaintProps {
-//     _id?: string;
-//     complaintType?: string;
-//     createdAt?: Date;
-//     location?: {
-//         name?: string;
-//     };
-//     proof?: string;
-//     reason?: string;
-//     status?: string;
-//     updatedAt?: Date;
-//     image?: string[];
-// }
-
-// type multiProps = complaintProps[];
 type multiProps = any[];
 
-export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
+export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">): ReactElement {
     const { t } = useTranslation();
 
     const [loading, setLoading] = React.useState(false);
@@ -54,6 +37,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                     }
                 });
                 const complaint = await res.json();
+
                 dispatch(userComplaints(complaint));
                 //active status to be send from backend to login police
             }
@@ -65,9 +49,6 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
         initiateSocketConnection((data: any) => {
             if (data) {
                 getComplaints();
-                // AllComplaints((err: any, data: any) => {
-                //     dispatch(userComplaints(data));
-                // });
                 subscribeToChat((err: any, data: any) => {
                     if (data.success) {
                         getComplaints();
@@ -82,6 +63,7 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
         };
     }, []);
     const [x, setX] = React.useState({ state: false, id: "" });
+
     return (
         <Background>
             <View
@@ -99,104 +81,91 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
                 <View>
                     <ScrollView>
                         {getAllComplaints &&
-                            getAllComplaints.map((allData: any[]) => {
-                                return allData.complaints
-                                    .filter((items: any) => items.status !== "Solved")
-                                    .map((item: any, index: any) => {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                key={index}
-                                                onPress={() => {
-                                                    setX({ state: true, id: item._id });
+                            getAllComplaints.map((item: any, index) => {
+                                return (
+                                    <TouchableWithoutFeedback
+                                        key={index}
+                                        onPress={() => {
+                                            setX({ state: true, id: item._id });
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                marginVertical: 10,
+                                                width: "100%",
+                                                backgroundColor: "#281B89",
+                                                borderRadius: 10,
+                                                padding: 10,
+                                                elevation: 3
+                                            }}
+                                        >
+                                            <Modal
+                                                transparent={true}
+                                                animationType="slide"
+                                                visible={x.state && item._id === x.id}
+                                                onRequestClose={() => {
+                                                    setX({ state: false, id: "" });
+                                                }}
+                                            >
+                                                <ComplaintsLayout route={item} />
+                                            </Modal>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    alignItems: "center"
                                                 }}
                                             >
                                                 <View
                                                     style={{
-                                                        marginVertical: 10,
-                                                        width: "100%",
-                                                        backgroundColor: "#281B89",
-                                                        borderRadius: 10,
-                                                        padding: 10,
-                                                        elevation: 3
+                                                        flexDirection: "row",
+                                                        alignItems: "center"
                                                     }}
                                                 >
-                                                    <Modal
-                                                        transparent={true}
-                                                        animationType="slide"
-                                                        visible={x.state && item._id === x.id}
-                                                        onRequestClose={() => {
-                                                            setX({ state: false, id: "" });
-                                                        }}
-                                                    >
-                                                        <ComplaintsLayout route={item} />
-                                                    </Modal>
+                                                    <StatusDetail string={item.status} />
                                                     <View
                                                         style={{
-                                                            flexDirection: "row",
-                                                            alignItems: "center"
+                                                            flexDirection: "column",
+                                                            alignItems: "flex-start",
+                                                            marginLeft: 10
                                                         }}
                                                     >
-                                                        <View
-                                                            style={{
-                                                                flexDirection: "row",
-                                                                alignItems: "center"
-                                                            }}
-                                                        >
-                                                            <StatusDetail string={item.status} />
-                                                            <View
-                                                                style={{
-                                                                    flexDirection: "column",
-                                                                    alignItems: "flex-start",
-                                                                    marginLeft: 10
-                                                                }}
-                                                            >
-                                                                <DateAndTime
-                                                                    string={new Date(
-                                                                        item.createdAt!
-                                                                    ).toLocaleDateString("en-IN")}
-                                                                />
-                                                                <DateAndTime
-                                                                    string={new Date(
-                                                                        item.createdAt!
-                                                                    ).toLocaleTimeString("en-IN")}
-                                                                />
-                                                            </View>
-                                                            {/* <Image
-                                                                    resizeMode="contain"
-                                                                    style={{
-                                                                        height: 22,
-                                                                        width: 22,
-                                                                        marginLeft: 4
-                                                                    }}
-                                                                    source={require("@assets/remainder.png")}
-                                                                /> */}
-                                                        </View>
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleDateString("en-IN")}
+                                                        />
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleTimeString("en-IN")}
+                                                        />
                                                     </View>
-                                                    <Text
-                                                        weight="400"
-                                                        style={{
-                                                            color: colors.white,
-                                                            fontSize: 15,
-                                                            marginTop: 5
-                                                        }}
-                                                    >
-                                                        {t("reason")}
-                                                    </Text>
-                                                    <Text
-                                                        numberOfLines={3}
-                                                        weight="400"
-                                                        style={{
-                                                            color: colors.white,
-                                                            fontSize: 12,
-                                                            paddingTop: 5
-                                                        }}
-                                                    >
-                                                        {item.reason}
-                                                    </Text>
                                                 </View>
-                                            </TouchableWithoutFeedback>
-                                        );
-                                    });
+                                            </View>
+                                            <Text
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 15,
+                                                    marginTop: 5
+                                                }}
+                                            >
+                                                {t("reason")}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={4}
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 12,
+                                                    paddingTop: 5
+                                                }}
+                                            >
+                                                {item.reason}
+                                            </Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                );
                             })}
                     </ScrollView>
                 </View>
@@ -204,10 +173,3 @@ export function ComplaintGroup({ navigation }: NavigationProps<"ViewPost">) {
         </Background>
     );
 }
-
-// id={a?.id}
-// status={a?.status}
-// date={a?.date}
-// time={a?.time}
-// reason={a?.reason}
-// text={a?.text}

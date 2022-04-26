@@ -40,7 +40,6 @@ const HistoryAllComplaints = ({ navigation }: NavigationProps<"HistoryAllComplai
             uri: require("@assets/Wanted.png"),
             navi: "Wanted"
         },
-
         {
             id: 5,
             name: `${t("mobApp")}`,
