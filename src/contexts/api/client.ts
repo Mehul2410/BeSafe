@@ -4,6 +4,7 @@ export const signInUser = "https://besafebackend-production.up.railway.app/api/l
 export const createPost = "https://besafebackend-production.up.railway.app/api/complaints";
 // export const createPost = "https://besafebackend-production.up.railway.app/api/complaints";
 export const missingPerson = "https://besafebackend-production.up.railway.app/api/missingPerson";
+export const mobileApp = "https://besafebackend-production.up.railway.app/api/mobileApp";
 export const unIdPerson = "https://besafebackend-production.up.railway.app/api/unIdPerson";
 // export const mslf = "https://besafebackend-production.up.railway.app/api/mslf";
 export const mslf = "https://besafebackend-production.up.railway.app/api/mslf";
@@ -13,6 +14,7 @@ export const unIdPersonHistory =
     "https://besafebackend-production.up.railway.app/api/unIdPersonHistory";
 export const getMissingPerson =
     "https://besafebackend-production.up.railway.app/api/getMissingPerson";
+export const getMobiApp = "https://besafebackend-production.up.railway.app/api/getMobiApp";
 export const complaintsHistory =
     "https://besafebackend-production.up.railway.app/api/complaintsHistory";
 export const mslfHistory = "https://besafebackend-production.up.railway.app/api/mslfHistory";
@@ -30,6 +32,8 @@ export const policeDetails = "https://besafebackend-production.up.railway.app/ap
 export const citizenDetails = "https://besafebackend-production.up.railway.app/api/citizenDetails";
 export const updateStatus =
     "https://besafebackend-production.up.railway.app/api/updateReportStatus";
+export const updateMobiAppStatus =
+    "https://besafebackend-production.up.railway.app/api/updateMobiAppStatus";
 export const updateMissingStatus =
     "https://besafebackend-production.up.railway.app/api/updateMissingStatus";
 export const updateMslfStatus =
@@ -44,6 +48,7 @@ export const sendNotification = "https://besafebackend-production.up.railway.app
 // export const sendNotification = "https://besafebackend-production.up.railway.app/api/sendNoti";
 export const assignReport = "https://besafebackend-production.up.railway.app/api/assignReport";
 export const assignMissing = "https://besafebackend-production.up.railway.app/api/assignMissing";
+export const assignMobiApp = "https://besafebackend-production.up.railway.app/api/assignMobiApp";
 export const assignMSLF = "https://besafebackend-production.up.railway.app/api/assignMSLF";
 export const assignUnIdPerson =
     "https://besafebackend-production.up.railway.app/api/assignUnIdPerson";

@@ -14,7 +14,7 @@ import React from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
 import * as Location from "expo-location";
 import { getCredentials } from "@contexts/store/credentials";
-import { sendNotification } from "@contexts/api/client";
+import { mobileApp, sendNotification } from "@contexts/api/client";
 
 export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
     const [error, setError] = React.useState("");
@@ -23,6 +23,7 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
     const [locationLoading, setLocationLoading] = React.useState(false);
     const [imageUris, setImageUris] = React.useState<string[]>([]);
     const [location, setLocation] = React.useState("");
+    const [station, setStation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
         incidenceDesc: "",
@@ -31,7 +32,7 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
         nearestPoliceStation: "",
         nearestPoliceStationAddress: ""
     });
-    console.log(complaint);
+
     async function latLong() {
         try {
             const { granted } = await Location.requestForegroundPermissionsAsync();
@@ -87,12 +88,31 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
             }
         );
         const { results } = await loc.json();
-        setLocation(results[0].address);
+        setLocation(results[0]?.address);
         setLocationLoading(true);
         setTimeout(() => {
             setLocationLoading(false);
         }, 1000);
     }
+    // async function stationAddress() {
+    //     const loc = await fetch(
+    //         `https://trueway-places.p.rapidapi.com/FindPlaceByText?text=${complaint.nearestPoliceStation}&language=en`,
+    //         {
+    //             method: "GET",
+    //             headers: {
+    //                 "x-rapidapi-host": "trueway-places.p.rapidapi.com",
+    //                 "x-rapidapi-key": "4dbe734a50msh60cc149bbe99849p1aefa1jsn434bf0188f79"
+    //             }
+    //         }
+    //     );
+    //     const { results } = await loc.json();
+    //     console.log(results);
+    //     setStation(results[0]?.address);
+    //     setLocationLoading(true);
+    //     setTimeout(() => {
+    //         setLocationLoading(false);
+    //     }, 1000);
+    // }
     async function nearByPoliceStation() {
         setComplaint({ ...complaint, nearestPoliceStation: "", nearestPoliceStationAddress: "" });
         const station = await fetch(
@@ -128,9 +148,10 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
             );
         });
         formData.append("data", JSON.stringify(complaint));
+        console.log("hello");
         const creds = await getCredentials();
         try {
-            const submit = await fetch(mobile, {
+            const submit = await fetch(mobileApp, {
                 method: "POST",
                 body: formData,
                 headers: {
@@ -140,6 +161,7 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
                 }
             });
             const res = await submit.json();
+            console.log(res);
             if (res.success) {
                 navigation.navigate("ViewMobApp");
                 setComplaint({
@@ -226,6 +248,48 @@ export function MobileApp({ navigation, route }: NavigationProps<"MobileApp">) {
                     />
                 )}
 
+                {/* <CustomInput
+                    onChangeText={text => setComplaint({ ...complaint, nearestPoliceStation: "" })}
+                    editable={complaint.nearestPoliceStationAddress ? false : true}
+                    placeholder={`${changeStatus.status} Station Name`}
+                />
+                {locationLoading && <PostLoader />}
+                {station !== "" && <RegularText string={station} />}
+                {station === "" ? (
+                    <>
+                        <Button
+                            btnName={
+                                complaint.nearestPoliceStationAddress
+                                    ? "Saved Address"
+                                    : "Check location Address"
+                            }
+                            weight="400"
+                            onPress={stationAddress}
+                        />
+                        {complaint.nearestPoliceStationAddress !== "" && (
+                            <Button
+                                btnName="Change Address"
+                                weight="400"
+                                onPress={() =>
+                                    setComplaint({ ...complaint, nearestPoliceStationAddress: "" })
+                                }
+                            />
+                        )}
+                    </>
+                ) : (
+                    <Button
+                        btnName="Approve Address"
+                        weight="400"
+                        onPress={() => {
+                            setComplaint({
+                                ...complaint,
+                                nearestPoliceStationAddress: location
+                            });
+                            setLocation("");
+                        }}
+                    />
+                )}
+                <Text style={{ color: "#FFF", textAlign: "center" }}>OR</Text> */}
                 <Button
                     weight="400"
                     btnName="Get Near by Police Station"

@@ -12,14 +12,11 @@ import {
     Heading
 } from "@components";
 import { colors } from "@utils";
-import { NavigationProps } from "@types";
 import ImageViewer from "react-native-image-zoom-viewer";
-import { assignMissing, getStationPolice, updateStatus } from "@contexts/api/client";
+import { assignMissing, assignMobiApp, getStationPolice, updateStatus } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-// import { ListItem } from "react-native-elements";
-// import { subscribeToChat } from "../../service/socketio.service";
 
 export function MobAppLayout({ route }: any) {
     const { t } = useTranslation();
@@ -94,7 +91,7 @@ export function MobAppLayout({ route }: any) {
             if (cred) {
                 if (!isTokenExpired(cred.access_token)) {
                     try {
-                        const res = await fetch(assignMissing, {
+                        const res = await fetch(assignMobiApp, {
                             method: "PUT",
                             body: JSON.stringify({
                                 assignName: assignComplaint.name,

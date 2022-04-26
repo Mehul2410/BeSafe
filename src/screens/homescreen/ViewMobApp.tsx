@@ -3,43 +3,25 @@ import { View, ScrollView, TouchableWithoutFeedback, Modal } from "react-native"
 import { Background, StatusDetail, Text, DateAndTime, ComplaintLoader } from "@components";
 import { NavigationProps } from "@types";
 import { colors } from "@utils";
-import { getMissingPerson } from "@contexts/api/client";
+import { getMissingPerson, getMobiApp } from "@contexts/api/client";
 import { getCredentials, isTokenExpired } from "@contexts/store/credentials";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import {
     subscribeToChat,
-    AllMissingPerson,
     closeSocket,
-    initiateSocketConnection,
-    disconnectSocket
+    initiateSocketConnection
 } from "../../service/socketio.service";
-import { ComplaintsLayout } from "./ComplaintsLayout";
-import { userMslf, userMissingPerson } from "@contexts/slice/complaintsSlice";
+import { userMobApp } from "@contexts/slice/complaintsSlice";
 import { useTranslation } from "react-i18next";
 import { MobAppLayout } from "./viewlayout/MobAppLayout";
 
-// interface complaintProps {
-//     _id?: string;
-//     complaintType?: string;
-//     createdAt?: Date;
-//     location?: {
-//         name?: string;
-//     };
-//     proof?: string;
-//     reason?: string;
-//     status?: string;
-//     updatedAt?: Date;
-//     image?: string[];
-// }
-
-// type multiProps = complaintProps[];
 type multiProps = any[];
 
 export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
     const { t } = useTranslation();
     const [loading, setLoading] = React.useState(false);
     const getAllComplaints: multiProps = useSelector(
-        (state: RootStateOrAny) => state.complaints.missingPerson
+        (state: RootStateOrAny) => state.complaints.mobApp
     );
 
     const dispatch = useDispatch();
@@ -47,7 +29,7 @@ export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
         const data = await getCredentials();
         if (data) {
             if (!isTokenExpired(data.access_token)) {
-                const res = await fetch(getMissingPerson, {
+                const res = await fetch(getMobiApp, {
                     method: "GET",
                     headers: {
                         Accept: "application/json",
@@ -55,8 +37,7 @@ export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
                     }
                 });
                 const complaint = await res.json();
-                dispatch(userMissingPerson(complaint));
-
+                dispatch(userMobApp(complaint));
                 //active status to be send from backend to login police
             }
         }
@@ -102,70 +83,66 @@ export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
                 <View>
                     <ScrollView>
                         {getAllComplaints &&
-                            getAllComplaints.map((allData: any[]) => {
-                                console.log(allData);
-                                return allData.missingPerson
-                                    .filter((items: any) => items.status !== "Solved")
-                                    .map((item: any, index: any) => {
-                                        return (
-                                            <TouchableWithoutFeedback
-                                                key={index}
-                                                onPress={() => {
-                                                    setX({ state: true, id: item._id });
+                            getAllComplaints.map((item: any, index) => {
+                                return (
+                                    <TouchableWithoutFeedback
+                                        key={index}
+                                        onPress={() => {
+                                            setX({ state: true, id: item._id });
+                                        }}
+                                    >
+                                        <View
+                                            style={{
+                                                marginVertical: 10,
+                                                width: "100%",
+                                                backgroundColor: "#281B89",
+                                                borderRadius: 10,
+                                                padding: 10,
+                                                elevation: 3
+                                            }}
+                                        >
+                                            <Modal
+                                                transparent={true}
+                                                animationType="slide"
+                                                visible={x.state && item._id === x.id}
+                                                onRequestClose={() => {
+                                                    setX({ state: false, id: "" });
+                                                }}
+                                            >
+                                                <MobAppLayout route={item} />
+                                            </Modal>
+                                            <View
+                                                style={{
+                                                    flexDirection: "row",
+                                                    alignItems: "center"
                                                 }}
                                             >
                                                 <View
                                                     style={{
-                                                        marginVertical: 10,
-                                                        width: "100%",
-                                                        backgroundColor: "#281B89",
-                                                        borderRadius: 10,
-                                                        padding: 10,
-                                                        elevation: 3
+                                                        flexDirection: "row",
+                                                        alignItems: "center"
                                                     }}
                                                 >
-                                                    <Modal
-                                                        transparent={true}
-                                                        animationType="slide"
-                                                        visible={x.state && item._id === x.id}
-                                                        onRequestClose={() => {
-                                                            setX({ state: false, id: "" });
-                                                        }}
-                                                    >
-                                                        <MobAppLayout route={item} />
-                                                    </Modal>
+                                                    <StatusDetail string={item.status} />
                                                     <View
                                                         style={{
-                                                            flexDirection: "row",
-                                                            alignItems: "center"
+                                                            flexDirection: "column",
+                                                            alignItems: "flex-start",
+                                                            marginLeft: 10
                                                         }}
                                                     >
-                                                        <View
-                                                            style={{
-                                                                flexDirection: "row",
-                                                                alignItems: "center"
-                                                            }}
-                                                        >
-                                                            <StatusDetail string={item.status} />
-                                                            <View
-                                                                style={{
-                                                                    flexDirection: "column",
-                                                                    alignItems: "flex-start",
-                                                                    marginLeft: 10
-                                                                }}
-                                                            >
-                                                                <DateAndTime
-                                                                    string={new Date(
-                                                                        item.createdAt!
-                                                                    ).toLocaleDateString("en-IN")}
-                                                                />
-                                                                <DateAndTime
-                                                                    string={new Date(
-                                                                        item.createdAt!
-                                                                    ).toLocaleTimeString("en-IN")}
-                                                                />
-                                                            </View>
-                                                            {/* <Image
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleDateString("en-IN")}
+                                                        />
+                                                        <DateAndTime
+                                                            string={new Date(
+                                                                item.createdAt!
+                                                            ).toLocaleTimeString("en-IN")}
+                                                        />
+                                                    </View>
+                                                    {/* <Image
                                                                     resizeMode="contain"
                                                                     style={{
                                                                         height: 22,
@@ -174,33 +151,32 @@ export function ViewMobApp({ navigation }: NavigationProps<"ViewMobApp">) {
                                                                     }}
                                                                     source={require("@assets/remainder.png")}
                                                                 /> */}
-                                                        </View>
-                                                    </View>
-                                                    <Text
-                                                        weight="400"
-                                                        style={{
-                                                            color: colors.white,
-                                                            fontSize: 15,
-                                                            marginTop: 5
-                                                        }}
-                                                    >
-                                                        {`${t("missPerson")} ${t("report")}`}
-                                                    </Text>
-                                                    <Text
-                                                        numberOfLines={2}
-                                                        weight="400"
-                                                        style={{
-                                                            color: colors.white,
-                                                            fontSize: 12,
-                                                            paddingTop: 5
-                                                        }}
-                                                    >
-                                                        {`${t("name")}: ${item.name}`}
-                                                    </Text>
                                                 </View>
-                                            </TouchableWithoutFeedback>
-                                        );
-                                    });
+                                            </View>
+                                            <Text
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 15,
+                                                    marginTop: 5
+                                                }}
+                                            >
+                                                {`${t("missPerson")} ${t("report")}`}
+                                            </Text>
+                                            <Text
+                                                numberOfLines={2}
+                                                weight="400"
+                                                style={{
+                                                    color: colors.white,
+                                                    fontSize: 12,
+                                                    paddingTop: 5
+                                                }}
+                                            >
+                                                {`${t("name")}: ${item.name}`}
+                                            </Text>
+                                        </View>
+                                    </TouchableWithoutFeedback>
+                                );
                             })}
                     </ScrollView>
                 </View>
