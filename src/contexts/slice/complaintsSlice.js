@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     mslf: [],
     missingPerson: [],
-    UnidentifiedPerson: []
+    UnidentifiedPerson: [],
+    mobApp: []
 };
 
 export const complaintsSlice = createSlice({
@@ -21,12 +22,17 @@ export const complaintsSlice = createSlice({
         userUnidentifiedPerson: (state, action) => {
             const { myComplaints } = action.payload;
             state.UnidentifiedPerson = myComplaints;
+        },
+        userMobApp: (state, action) => {
+            const { myComplaints } = action.payload;
+            state.mobApp = myComplaints;
         }
     },
     extraReducers: {}
 });
 
 // Action creators are generated for each case reducer function
-export const { userMslf, userMissingPerson, userUnidentifiedPerson } = complaintsSlice.actions;
+export const { userMslf, userMobApp, userMissingPerson, userUnidentifiedPerson } =
+    complaintsSlice.actions;
 
 export default complaintsSlice.reducer;

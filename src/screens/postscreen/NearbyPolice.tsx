@@ -30,6 +30,7 @@ const NearbyPolice = ({ navigation }: NavigationProps<"NearbyPolice">) => {
         setTimeout(() => {
             setPoliceLoading(false);
         }, 1000);
+        console.log(results);
     }
     async function latLong() {
         try {

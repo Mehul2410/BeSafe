@@ -1,6 +1,7 @@
 import {
     Background,
     Button,
+    CheckBox,
     Complaint,
     CustomInput,
     ImageInputList,
@@ -22,16 +23,14 @@ export function Bank({ route }: NavigationProps<"Bank">) {
     const [location, setLocation] = React.useState("");
     const [latlng, setlatlng] = React.useState<{ latitude: number; longitude: number }>();
     const [complaint, setComplaint] = React.useState({
-        complaintAgainstName: "",
-        complaintAgainst: "",
-        reason: "",
-        complaintType: "",
+        incidenceDesc: "",
         locationName: "",
         locationAddress: "",
-        currentSituation: "",
         nearestPoliceStation: "",
-        nearestPoliceStationAddress: ""
+        nearestPoliceStationAddress: "",
+        reportFor: ""
     });
+    console.log(complaint);
     const [nearbyStation, setNearbyStation] = React.useState<[]>();
 
     const handleAdd = (uri: string) => {
@@ -160,7 +159,10 @@ export function Bank({ route }: NavigationProps<"Bank">) {
     return (
         <Background>
             <Complaint>
-                <CustomInput placeholder="explaining the complete incidence" />
+                <CustomInput
+                    placeholder="explaining the complete incidence"
+                    onChangeText={text => setComplaint({ ...complaint, incidenceDesc: text })}
+                />
                 <Button
                     btnName="Select Report Type"
                     weight="200"
@@ -180,20 +182,28 @@ export function Bank({ route }: NavigationProps<"Bank">) {
                             "Online Transactions"
                         ].map((items, index) => {
                             return (
-                                <Button
-                                    weight="200"
-                                    style={{
-                                        margin: 3,
-                                        width: 140,
-                                        paddingVertical: 5,
-                                        borderRadius: 30,
-                                        backgroundColor:
-                                            changeStatus.status === items ? "#0d054b" : "#1D0ECC"
-                                    }}
+                                // <Button
+                                //     weight="200"
+                                //     style={{
+                                //         margin: 3,
+                                //         width: 140,
+                                //         paddingVertical: 5,
+                                //         borderRadius: 30,
+                                //         backgroundColor:
+                                //             changeStatus.status === items ? "#0d054b" : "#1D0ECC"
+                                //     }}
+                                //     key={index}
+                                //     onPress={() =>
+                                //         setChangeStatus({ ...changeStatus, status: items })
+                                //     }
+                                //     btnName={items}
+                                // />
+                                <CheckBox
                                     key={index}
-                                    onPress={() =>
-                                        setChangeStatus({ ...changeStatus, status: items })
-                                    }
+                                    onPress={() => {
+                                        setChangeStatus({ ...changeStatus, status: items });
+                                        setComplaint({ ...complaint, reportFor: items });
+                                    }}
                                     btnName={items}
                                 />
                             );

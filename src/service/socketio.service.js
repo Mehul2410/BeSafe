@@ -8,7 +8,7 @@ export const initiateSocketConnection = async cb => {
     const cred = await getCredentials();
 
     if (cred) {
-        socket = io("https://besaferestapi.herokuapp.com");
+        socket = io("https://besafebackend-production.up.railway.app");
     }
     // socket = io("https://besaferestapi.herokuapp.com");
     socket.on("connect", () => {

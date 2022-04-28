@@ -6,7 +6,9 @@ import {
     ComplaintsLayout,
     Getstarted,
     ViewAllComplaints,
+    ViewBank,
     ViewMissingPerson,
+    ViewMobApp,
     ViewMSLF,
     ViewUnidentifiedPerson,
     ViewWanted
@@ -31,7 +33,8 @@ export default function ComplaintNavigator(): ReactElement {
             <Stack.Screen name="ViewUnidentifiedPerson" component={ViewUnidentifiedPerson} />
             <Stack.Screen name="ViewMissingPerson" component={ViewMissingPerson} />
             <Stack.Screen name="ViewWanted" component={ViewWanted} />
-            {/* <Stack.Screen name="Bank" component={Bank} /> */}
+            <Stack.Screen name="ViewMobApp" component={ViewMobApp} />
+            <Stack.Screen name="ViewBank" component={ViewBank} />
         </Stack.Navigator>
     );
 }
